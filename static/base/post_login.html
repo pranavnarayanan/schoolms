@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>{% block page_title %} {% endblock %}</title>
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link rel="stylesheet" href="/static/bootstrap/bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/bootstrap/bower_components/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/static/bootstrap/bower_components/Ionicons/css/ionicons.min.css">
+  <link rel="stylesheet" href="/static/bootstrap/dist/css/AdminLTE.min.css">
+  <link rel="stylesheet" href="/static/bootstrap/dist/css/skins/skin-blue.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+  <link rel="stylesheet" href="/static/bootstrap/custom/css/image.css">
+  {% block page_specific_css %}{% endblock %}
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+  <header class="main-header">
+    <a href="../Redirect/UserHome" class="logo">
+      <span class="logo-mini"><b>MS</b></span>
+      <span class="logo-lg"><b>M</b>yShishya</span>
+    </a>
+
+    <nav class="navbar navbar-static-top" role="navigation">
+      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+        <span class="sr-only">Toggle navigation</span>
+      </a>
+
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+
+          <li class="dropdown messages-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="modal" data-target="#modal-role-change">
+              {{ ui_data.current_role.role }} &nbsp;&nbsp; <i class="fa fa-user-o">&nbsp;</i>
+              <span class="label label-success">{{ ui_data.user_roles | length }}</span>
+            </a>
+          </li>
+
+          <li class="dropdown messages-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="fa fa-bell-o"></i>
+              <span class="label label-warning" id="notification_count_top"></span>
+            </a>
+            <ul class="dropdown-menu" style="width:500px">
+              <li class="header">
+                <i id="notification_count_bottom"></i>
+                <i  class="fa fa-eye pull-right"></i>
+              </li>
+              <li>
+                <ul class="menu" id="notification_div">
+                </ul>
+              </li>
+              <li class="footer"><a href="#">See all notifications</a></li>
+            </ul>
+          </li>
+
+          <li>
+            <a href="../Messages"><i class="fa fa-envelope"></i>
+            <span id="messages_count_id" class="label label-danger"></span>
+            </a>
+          </li>
+
+          <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <img src="../static/bootstrap/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+              <span class="hidden-xs">{{ ui_data.header.name }}</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li class="user-header">
+                <img src="../static/bootstrap/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                <p>{{ ui_data.header.name }}
+                  <small>Myshishya ID  : <b>{{ ui_data.header.product_id }}</b></small>
+                </p>
+              </li>
+              <li class="user-footer">
+                <div class="pull-left">
+                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                </div>
+                <div class="pull-right">
+                  <a href="..\Redirect\Logout" class="btn btn-default btn-flat">Logout</a>
+                </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+
+    </nav>
+  </header>
+
+
+    <aside class="main-sidebar">
+        <section class="sidebar">
+            <div class="user-panel">
+                <div class="pull-left image">
+                    <img src="../static/bootstrap/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                </div>
+                <div onClick="changeOnlineStatus()" class="pull-left info">
+                    <p>{{ ui_data.header.name }}</p>
+                    {% if ui_data.is_online %}
+                        <a id="online_status"><i class="fa fa-circle text-success"></i> Online</a>
+                    {% else %}
+                        <a id="online_status"><i class="fa fa-circle text-error"></i> Offline </a>
+                    {% endif %}
+                </div>
+            </div>
+            <ul class="sidebar-menu" data-widget="tree" style="cursor: pointer">
+                <li class="header">HEADER</li>
+
+                <!-----SIDEBAR BEGINS-------->
+
+                <li class="{{ is_home }}">
+                    <a href="../Home/"><i class="fa fa-home"></i> <span>Home</span></a>
+                </li>
+
+                {% if ui_data.sidebar.role == None %}
+
+                    <!-- TASKS -->
+                    <li class="{{ is_tasks }}">
+                        <a href="../Tasks"><i class="fa fa-tasks"></i> <span>Tasks</span></a>
+                    </li>
+
+                    <!-- SETTINGS -->
+                    <li class="{{ is_settings }}">
+                        <a href="../Settings"><i class="fa fa-gear"></i> <span>Settings</span></a>
+                    </li>
+
+                    <!-- Notifications -->
+                    <li class="{{ is_notifications }}">
+                        <a href="../Notification"><i class="fa fa-bell-o "></i> <span>Notifications</span></a>
+                    </li>
+
+                    <!-- Messages -->
+                    <li class="{{ is_messages }}">
+                        <a href="../Messages"><i class="fa fa-envelope-o"></i> <span>Messages</span></a>
+                    </li>
+                {% endif %}
+
+                <!-- ROLES -->
+                    <li class="treeview {{ is_roles }} {{ is_raise_role_request }} {{ is_raised_roles }} {{ is_role_requests_received }}">
+                      <a>
+                        <i class="fa fa-user-o"></i>
+                        <span>Roles</span>
+                        <span class="pull-right-container">
+                          <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                      </a>
+                      <ul class="treeview-menu">
+                            <li class="{{ is_role }} "><a href="../Roles"><i class="fa fa-list"></i>List My Roles</a></li>
+                          {% if ui_data.sidebar.role == "institution_super_user"  or ui_data.sidebar.role == "school_admin" or ui_data.sidebar.role == "teacher"  %}
+                            <li class="{{ is_raise_role_request }}"><a href="../Roles/AssignRole"><i class="fa fa-dot-circle-o"></i>Assign User Roles</a></li>
+                            <li class="{{ is_raised_roles }}"><a href="../Roles/RolesRaised"><i class="fa fa-dot-circle-o"></i>Roles Raised</a></li>
+                            <li class="{{ is_role_requests_received }}"><a href="../Roles/RoleRequestsReceived"><i class="fa fa-send"></i>Received Requests</a></li>
+                          {% endif %}
+                      </ul>
+                    </li>
+
+                <!-- ORGANIZAION -->
+                {% if ui_data.sidebar.role == "site_admin" %}
+                    <li class="treeview {{ is_organizations_home }} {{ is_list_all_organization_groups_active }} {{ is_list_all_organization_active }} {{ is_new_organization_group_active }}{{ is_new_organization_active }}">
+                      <a>
+                        <i class="fa fa-building-o"></i>
+                        <span>Organization</span>
+                        <span class="pull-right-container">
+                          <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                      </a>
+                      <ul class="treeview-menu">
+                        <li class="{{ is_organizations_home }}"><a href="../Organization"><i class="fa fa-area-chart"></i>Organization Home</a></li>
+                        <li class="{{ is_list_all_organization_groups_active }}"><a href="../Organization/OrganizationGroups"><i class="fa fa-list"></i>List All Groups</a></li>
+                        <li class="{{ is_list_all_organization_active }}"><a href="../Organization/Organizations"><i class="fa fa-tasks"></i>List All Organizations</a></li>
+                        <li class="{{ is_new_organization_group_active }}"><a href="../Organization/RegisterGroup"><i class="fa fa-building"></i>New Organization Group</a></li>
+                        <li class="{{ is_new_organization_active }}"><a href="../Organization/RegisterOrganization"><i class="fa fa-home"></i>New Organization</a></li>
+                      </ul>
+                    </li>
+                {% endif %}
+
+                {% if ui_data.sidebar.role == "school_admin" or ui_data.sidebar.role == "principal" %}
+                    <li class="treeview {{ is_list_all_classes }} {{ is_add_new_class }}">
+                      <a>
+                        <i class="fa fa-building-o"></i>
+                        <span>Classes</span>
+                        <span class="pull-right-container">
+                          <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                      </a>
+                      <ul class="treeview-menu">
+                        <li class="{{ is_list_all_classes }}"><a href="../Classes"><i class="fa fa-group"></i>List Classes</a></li>
+                      {% if ui_data.sidebar.role == "school_admin" %}
+                        <li class="{{ is_add_new_class }}"><a href="../Classes/AddNewClass"><i class="fa fa-plus-square"></i>Add New Class</a></li>
+                      {% endif %}
+                      </ul>
+                    </li>
+                {% endif %}
+
+                {% if ui_data.sidebar.role == "school_admin" or ui_data.sidebar.role == "principal" %}
+                    <li class="treeview {{ is_list_school_timings }} {{ is_add_school_timings }}">
+                      <a>
+                        <i class="fa fa-clock-o"></i>
+                        <span>School Timings</span>
+                        <span class="pull-right-container">
+                          <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                      </a>
+                      <ul class="treeview-menu">
+                        <li class="{{ is_list_school_timings }}">
+                            <a href="../SchoolTimings/"><i class="fa fa-list-ol"></i> <span>List All Timings</span></a>
+                        </li>
+                        <li class="{{ is_add_school_timings }}">
+                            <a href="../SchoolTimings/AddTiming"><i class="fa fa-plus-square"></i> <span>Add Timing</span></a>
+                        </li>
+                      </ul>
+                    </li>
+                {% endif %}
+
+
+                <li class="treeview {{ is_list_subjects }} {{ is_add_subject }}">
+                  <a>
+                    <i class="fa fa-clock-o"></i>
+                    <span>Subjects</span>
+                    <span class="pull-right-container">
+                      <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                  </a>
+                  <ul class="treeview-menu">
+                    <li class="{{ is_list_subjects }}">
+                        <a href="../Subjects/"><i class="fa fa-list-ol"></i> <span>List Subjects</span></a>
+                    </li>
+                    <li class="{{ is_add_subject }}">
+                        <a href="../Subjects/AddSubject"><i class="fa fa-plus-square"></i> <span>Add Subject</span></a>
+                    </li>
+                  </ul>
+                </li>
+
+
+
+                    <li class="treeview {{ is_book_search }} {{ is_add_new_book }}">
+                      <a>
+                        <i class="fa fa-book"></i>
+                        <span>Books</span>
+                        <span class="pull-right-container">
+                          <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                      </a>
+                      <ul class="treeview-menu">
+                        <li class="{{ is_list_all_classes }}"><a href="../Books"><i class="fa fa-address-book"></i>Search Book</a></li>
+                        <li class="{{ is_add_new_class }}"><a href="../Books/AddBook"><i class="fa fa-plus-square"></i>Add Book</a></li>
+                      </ul>
+                    </li>
+
+                <!-----SIDEBAR ENDS---------->
+
+            </ul>
+        </section>
+    </aside>
+
+
+  <div class="content-wrapper">
+    <section class="content-header">
+      <h1>
+        {% block page_heading %} {% endblock %}
+        {% if ui_data.current_role.type == "home" %}
+            <small>User Home</small>
+        {% endif %}
+        {% if ui_data.current_role.type == "organization" %}
+            <small>[{{ ui_data.current_role.name }}, &nbsp;{{ ui_data.current_role.address }}]</small>
+        {% endif %}
+        {% if ui_data.current_role.type == "organization_group" %}
+            <small>[{{ ui_data.current_role.name }}]</small>
+        {% endif %}
+        {% if ui_data.current_role.type == "user" %}
+            <small>[{{ ui_data.current_role.name }}, &nbsp;{{ ui_data.current_role.address }}]</small>
+        {% endif %}
+
+
+
+      </h1>
+      <ol class="breadcrumb">
+        {% block breadcrumb %} {% endblock %}
+      </ol>
+    </section>
+
+    <section class="content">
+        <div class="box-body">
+
+        {% if messages %}
+            {% for msg in messages %}
+
+                {% if msg.level_tag == "success" %}
+                    <div class="alert alert-success alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <i class="fa fa-check"></i> &nbsp; <b>Success</b> : {{ msg.message }}
+                    </div>
+                {% endif %}
+
+                {% if msg.level_tag == "warning" %}
+                    <div class="alert alert-warning alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <i class="fa fa-warning"></i> &nbsp; <b>Warning</b> : {{ msg.message }}
+                    </div>
+                {% endif %}
+
+                {% if msg.level_tag == "info" %}
+                    <div class="alert alert-info alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <i class="fa fa-info"></i> &nbsp; <b>Info</b> : {{ msg.message }}
+                    </div>
+                {% endif %}
+
+                {% if msg.level_tag == "error" %}
+                    <div class="alert alert-error alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <i class="fa fa-close"></i> &nbsp; <b>Error</b> : {{ msg.message }}
+                    </div>
+                {% endif %}
+
+            {% endfor %}
+        {% endif %}
+
+        <!-- use below div to push JS messages -->
+        <div id="js_messages"></div>
+        <!--------------------------------------->
+
+          {% block content %} {% endblock %}
+        </div>
+    </section>
+  </div>
+
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">Version: 1.0</div>
+    <strong>Copyright &copy; 2016 <a href="#">Myshishya</a>.</strong> All rights reserved.
+  </footer>
+
+   <!---- MODAL START---------------------------------->
+      <div class="modal fade" id="modal-default">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              {% block modal %} {%  endblock %}
+            </div>
+          </div>
+      </div>
+
+    <div class="modal fade" id="modal-role-change">
+        <form action="../Roles/Change" method="post">
+          {% csrf_token %}
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                 <button type="submit" value="0" class="pull-right btn btn-info">
+                 <i class="fa fa-home" style="color: greenyellow"> &nbsp; </i>Home</button>
+                 <h4 class="modal-title">Roles <font size="2"> [{{ ui_data.user_roles | length }} active]</font>
+                 </h4>
+                 <small style="color:#00ca6d">Current Role : {{ ui_data.current_role.role }} - {{ ui_data.current_role.name }}, {{ ui_data.current_role.address }}</small>
+              </div>
+                <div class="col-xs-12" style="cursor: pointer">
+                    <div class="box-body table-responsive no-padding">
+                      <table class="table table-hover">
+                        {% for role in  ui_data.user_roles %}
+                         <tr>
+                          <td><img src="../static/bootstrap/dist/img/user2-160x160.jpg" class="custom-logo-on-table"></td>
+                          <td>{{ role.name }}</td>
+                          <td>{{ role.description }}<br>{{ role.place }}</td>
+                          <td>[
+                          {% if role.type == "EN_OrganizationGroup" %}
+                            <i class="fa fa-institution" style="color: #00ca6d"></i>
+                          {% endif %}
+                          {% if role.type == "EN_Organization" %}
+                            <i class="fa fa-building" style="color: orangered"></i>
+                          {% endif %}
+                          {% if role.type == "EN_Users" %}
+                            <i class="fa fa-user" style="color: #00caff"></i>
+                          {% endif %}
+                         {{ role.product_id }}]</td>
+                          <td><button type="submit" name="user_role_id" value="{{ role.role_id }}" class="btn btn-info"><i class="fa fa-save"></i></button></td>
+                         </tr>
+                        {% endfor %}
+                      </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                   <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+          </div>
+        </form>
+    </div>
+   <!---- MODAL END ----------------------------------->
+
+  <div class="control-sidebar-bg"></div>
+</div>
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="/static/bootstrap/bower_components/jquery-ui/jquery-ui.min.js"></script>
+<script src="/static/bootstrap/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/static/bootstrap/dist/js/adminlte.min.js"></script>
+<script src="/static/bootstrap/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+{% block page_specific_js %} {% endblock %}
+<script src="/static/bootstrap/dist/js/pages/dashboard.js"></script>
+<script>
+
+    setInterval(function() {
+      //getLiveNotifications();
+    },3000); //on every 3 seconds
+
+    setInterval(function() {
+      //getUnreadMessagesNotification()
+    },3000); //on every 3 seconds
+
+
+    function getLiveNotifications(){
+        notification_count = $("#notification_count").val();
+        last_notification_id = $("#last_notification_id").val();
+        $.ajax({
+          url:"../Notification/LiveNotify",
+          method:"POST",
+          data:{
+              "notification_count_from_ui":notification_count,
+              "last_notification_id_from_ui":last_notification_id
+          },
+          success:function (data) {
+             var parsedData = $.parseJSON(data);
+
+             if(parsedData["have_change"] == 1){
+                 $("#notification_count").val(parsedData["notification_count_from_db"]);
+                 $("#last_notification_id").val(parsedData["last_notification_id_from_db"]);
+
+                 var notifications = parsedData["notifications"];
+                 if (notifications.length != 0){
+                    $("#notification_count_top").html(notifications.length);
+                 } else{
+                     $("#notification_count_top").html("");
+                 }
+
+                 $("#notification_count_bottom").html("You have "+notifications.length+" notification(s)");
+                 var li = "";
+                 $.each(notifications, function () {
+                   var link = "";
+                   if(this.pattern === "received_role_request") {
+                       link = 'href="../Roles/RoleRequestsReceived"';
+                   } else if(this.pattern === "role_request_rejected" || this.pattern === "role_request_approved"){
+                       link = 'href="../Roles/"';
+                   }else{
+                       link = 'href="#"';
+                   }
+
+                   var close_tag = "";
+                   if(this.can_change_status_directly === true){
+                       close_tag = '<i class="pull-right fa fa-close" onClick="changeActivityStatus('+this.activity_id+')"></i>';
+                   }
+
+                   li += '<li onClick="Load"><a '+link+'>';
+                   li += '<div class="pull-left"><img src="../static/bootstrap/dist/img/user2-160x160.jpg" class="img-circle"></div>';
+                   li += '<h4>'+this.subject+'<small><i class="fa fa-clock-o"></i>&nbsp;'+this.created_on+'</small> </h4>';
+                   li += '<p>from '+this.created_by_name+' - '+this.product_id+" "+close_tag+'</p>';
+                   li += '</a></li>';
+                 });
+                 $("#notification_div").html(li);
+             }
+
+          },
+          error:function(data){
+            $(".content").html("Notification Error : \n"+data.responseText);
+           }
+       });
+    }
+
+    /*
+    * Get Unread Messages Count
+    */
+    function getUnreadMessagesNotification(){
+        $.ajax({
+          url:"../Messages/GetUnreadMsgsCount",
+          type:"POST",
+          success:function(data){
+              if(data == 0)
+              $("#messages_count_id").html("");
+              else
+              $("#messages_count_id").html(data);
+          },
+           error:function(data){
+              //$(".content").html("Messaging Error : \n"+data.responseText);
+          }
+        });
+    }
+
+    /*
+     * Online / Offline Status Change
+     */
+    function changeOnlineStatus(){
+        $.ajax({
+          url:"../Redirect/ChangeOnlineStatus",
+          type:"POST",
+          success:function(data){
+              if(data == "True")
+              $("#online_status").html('<i class="fa fa-circle text-success"></i> Online');
+              else
+              $("#online_status").html('<i class="fa fa-circle text-error"></i> Offline');
+          }
+        });
+    }
+</script>
+
+<!--- Live update purpose -->
+<input type="hidden" id="last_notification_id" value="0">
+<input type="hidden" id="notification_count" value="0">
+<!--- end ------------------>
+
+</body>
+</html>

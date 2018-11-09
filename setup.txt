@@ -1,0 +1,52 @@
+django-admin startproject schoolms
+
+__Basic_Installation___________________________________________________
+
+python -m pip install django
+pip3 install django-widget-tweaks
+
+__AWS CONFIGURE_________________________________________________________
+python -m pip install --upgrade pip --user
+pip install botocore --upgrade
+
+pip install awscli [for storing the credentials through cmd]
+aws configure
+    * AWS Access Key ID [None]: input your access key
+    * AWS Secret Access Key [None]: input your secret access key
+    * Default region name [None]: input your region
+    * Default output format [None]: json
+aws s3 ls
+pip install boto3 --user
+
+
+__DB_Drop_______________________________________________________________
+
+File : basic_details.py
+Line : choices = TL_Gender().asChoice()
+
+File : forms --> contact.py
+Line : choices = EntityChoice.CountryMobileCodes(),
+
+File : new_organization.py
+
+Line :
+    choices = EntityChoice.CountryMobileCodes()
+    choices = TL_Affiliation().asChoice()
+    choices = TL_InstitutionType().asChoice()
+    choices = TL_BooksCategory().asChoice()
+    choices = TL_BooksSubCategory().asChoice()
+
+
+
+___Deployment____________________________________________________________
+
+172.31.25.126   --> RDP ip address
+13.126.211.101  --> AWS EC2 instance public ip address
+Start server on 172.31.25.126:80
+Specify Django port on AWS HTTP Request.
+
+___Notes_________________________________________________________________
+
+Add new App:
+
+python manage.py startapp <appname>

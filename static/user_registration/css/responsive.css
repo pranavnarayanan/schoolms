@@ -1,0 +1,38 @@
+@charset "utf-8";
+/* CSS Document */
+
+@media (max-width: 575px)
+{
+	.registration .footer .left,
+	.registration .footer .right
+	{
+		text-align:center !important;
+	}
+	.registration .footer .select-wrapper
+	{
+		margin:0 auto;
+	}
+	.registration .footer .left
+	{
+	    padding-left: 15px !important;
+	}
+	.registration .footer .right
+	{
+		padding-right:15px !important;
+	}
+	.registration .footer .right a
+	{
+		margin:0 10px;
+	}
+	.registration.page3 .code_input
+	{
+		padding:0 5px;
+	}
+}
+@media (max-width: 350px)
+{
+	.registration .btn_back
+	{
+		margin-bottom:10px;
+	}
+}

@@ -1,0 +1,118 @@
+{% extends "base/signup.html" %}
+
+{% block page_title %} User Registration {% endblock %}
+{% block page_specific_css %}{% endblock %}
+{% block page_description %} Contact Details {% endblock %}
+
+{% block content %}
+
+    <form class="w-100" method="post" action="SaveContactPageDetails">
+    {% csrf_token %}
+    {% load widget_tweaks %}
+
+        <div class="col-md-7 col-sm-12">
+            <div class="row">
+
+               <div class="col-sm-6">
+                    <div class="form-line text-center">
+                          <label>Code</label>
+                          {% render_field form.mobile_country_code class="form-line text-center"  %}
+                          <div class="validation">
+                              <label class="error">{{ form.mobile_country_code.errors }}</label>
+                          </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                      <div class="form-line text-center">
+                          <label>Mobile Number</label>
+                          {% render_field form.mobile_number class="form-control" %}
+                      </div>
+                      <div class="validation">
+                          <label class="error">{{ form.mobile_number.errors }}</label>
+                          <!--<label class="desc">Your Number</label>-->
+                      </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-7 col-sm-12">
+            <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                      <div class="form-line text-center">
+                          <label>Secondary Number</label>
+                          {% render_field form.secondary_number class="form-control" %}
+                      </div>
+                      <div class="validation">
+                          <label class="error">{{ form.secondary_number.errors }}</label>
+                          <!--<label class="desc">Your Number</label>-->
+                      </div>
+                  </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                         <p class="perm_address">
+                             <label>
+                                 {% render_field form.publish_your_site class="check_perm_address" %}
+                                 <span>This is my landline number</span>
+                             </label>
+                         </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-7 col-sm-12">
+            <div class="form-group">
+                <div class="form-line text-center">
+                    <label>Email</label>
+                    {% render_field form.email_id class="form-control" %}
+                </div>
+                <div class="validation">
+                    <label class="error">{{ form.email.errors }}</label>
+                    <!--<label class="desc">Some Description</label>-->
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-7 col-sm-12">
+            <div class="form-group">
+                <div class="form-line text-center">
+                    <label>Website</label>
+                    {% render_field form.website class="form-control" %}
+                </div>
+                <div class="validation">
+                    <label class="error">{{ form.website.errors }}</label>
+                    <!--<label class="desc">Some Description</label>-->
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-7 col-sm-12">
+            <div class="form-group">
+                 <p class="perm_address">
+                     <label>
+                         {% render_field form.is_landline_number class="check_perm_address" %}
+                         <span>Publish Your Page</span>
+                     </label>
+                 </p>
+            </div>
+        </div>
+
+        <div class="col-md-7 col-sm-12 text-right">
+            <div class="form-group">
+                <button type="submit" name="contact_submit_button" value="back" class="btn_next waves-effect orange accent-2"><i class="fa fa-arrow-circle-left"></i>&nbsp;&nbsp;Previous Page</button>
+                <button type="submit" name="contact_submit_button" value="next" class="btn_next waves-effect blue accent-2">Proceed&nbsp;&nbsp;<i class="fa fa-arrow-circle-right"></i></button>
+            </div>
+        </div>
+
+    </form>
+
+{% endblock %}
+
+{% block image %} <img src="/static/user_registration/images/1.png"/> {% endblock %}
+
+{% block page_specific_js %}{% endblock %}

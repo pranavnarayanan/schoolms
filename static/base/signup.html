@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>{% block page_title %} {% endblock %}</title>
+    <link rel="icon" href="#" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+	<link rel="stylesheet" href="/static/user_registration/css/bootstrap.min.css">
+    <link href="/static/user_registration/css/datepicker/bootstrap-material-datetimepicker.css" rel="stylesheet" type="text/css">
+    <link href="/static/user_registration/css/style.css" rel="stylesheet" type="text/css">
+    <link href="/static/user_registration/css/responsive.css" rel="stylesheet" type="text/css">
+    {% block page_specific_css %} {% endblock %}
+</head>
+
+<body>
+    <div class="container registration page1">
+        <div class="row">
+            <div class="col-lg-8 col-md-12 col-xs-12 offset-lg-2 offset-md-0">
+
+                <div class="form_box row">
+                    <div class="col-md-7 col-sm-12"><p class="p1">MyShishya</p></div>
+                    <div class="col-md-7 col-sm-12"><p class="p2">{% block page_description %} {% endblock %}</p></div>
+
+                    <div class="col-md-7 col-sm-12">
+                     {% if messages %}
+                        {% for msg in messages %}
+                            {% if msg.level_tag == "error" or msg.level_tag == "warning"  %}
+                                <p class="p3" style="color: red"> <b>{{ msg.level_tag }}</b> : {{ msg.message }} </p>
+                            {% else %}
+                                <p class="p3" style="color: limegreen"> <b>{{ msg.level_tag }}</b> : {{ msg.message }} </p>
+                            {% endif %}
+                        {% endfor %}
+                     {% endif %}
+                    </div>
+
+                    <div class="col-md-5 d-none d-md-block d-lg-block d-xl-block right">
+                        {% block image %} {% endblock %}
+                        <span><font size="1px">All_Rights_Reserved</font></span>
+                    </div>
+                    {% block content %} {% endblock %}
+                </div>
+
+                <div class="row footer">
+                    <div class="col-sm-3 col-12 text-left left pl-0">
+                        <select>
+                        <option>English</option>
+                        <option>Malayalam</option>
+                        <option>Hindi</option>
+                        <option>Tamil</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-9 col-12 text-right right pr-0">
+                        <a href="#">Help</a><a href="#">Privacy</a><a href="#">Terms</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+<script src="/static/user_registration/js/bootstrap.min.js"></script>
+<script src="/static/user_registration/js/datepicker/moment.js"></script>
+<script src="/static/user_registration/js/datepicker/bootstrap-material-datetimepicker.js"></script>
+<script src="/static/user_registration/js/maskedinput.js"></script>
+<script src="/static/user_registration/js/script.js"></script>
+{% block page_specific_js %} {% endblock %}
+
+</html>
