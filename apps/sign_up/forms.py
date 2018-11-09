@@ -41,11 +41,20 @@ class FORM_UserBasicsDetails(forms.Form):
     # Address Details Form
 '''
 class FORM_AddressDetails(forms.Form):
+
+    def __init__(self, *args, **kwargs):
+        super(FORM_AddressDetails, self).__init__(*args, **kwargs)
+        try:
+            if len(self.data) > 0:
+                self.fields['area'].choices = Choice.getZipcodeAreas(self.data["zipcode"])
+        except Exception as e:
+            print(" --- ERROR : "+e.__str__())
+
     house_name         = forms.CharField(min_length=2,max_length=100,required=False)
     street             = forms.CharField(min_length=2,max_length=100,required=False)
     landmark           = forms.CharField(max_length=100,required=False)
     zipcode            = forms.CharField(min_length=4,max_length=6,required=False)
-    area               = forms.ChoiceField(choices=Choice.getZipcodeAreas(),required=False)
+    area               = forms.ChoiceField(choices=[],required=False)
     is_current_address = forms.BooleanField(required=False)
 
     def clean(self):

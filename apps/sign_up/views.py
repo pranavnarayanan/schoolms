@@ -1,11 +1,9 @@
-import json
 from apps.sign_up.forms import *
 from django.template import loader
 from django.contrib import messages
 from apps.users.models import TL_Gender
 from displaykey.display_key import DisplayKey
 from apps.sign_up.helper.constants import Constants
-from django.views.decorators.csrf import csrf_exempt
 from apps.utilities.entities.country import EN_Country
 from apps.utilities.entities.zipcode import EN_Zipcode
 from apps.sign_up.helper.data_commit import SaveRecord
@@ -37,7 +35,6 @@ def savePrimaryPageDetails(request):
                     ur = UserRegistrationSessions(request).getCorrespondingDBRecord()
                     ur.name = form_data.cleaned_data.get("name")
                     ur.date_of_birth = form_data.cleaned_data.get("date_of_birth")
-
                     ur.gender = TL_Gender.objects.get(code=form_data.cleaned_data.get("gender"))
                     ur.save()
                     return HttpResponseRedirect("LoadContactPage")
@@ -49,8 +46,7 @@ def savePrimaryPageDetails(request):
         else:
             return HttpResponseRedirect("../Login")
     else:
-        messages.error(request,DisplayKey.get("error_not_a_post_request"))
-        return index(request)
+        return HttpResponseRedirect("../SignUp")
 
 
 ''''
@@ -96,8 +92,7 @@ def saveContactPageDetails(request):
             request.method = "GET"
             return index(request)
     else:
-        messages.error(request,DisplayKey.get("error_not_a_post_request"))
-        return loadContactPage(request)
+        return HttpResponseRedirect("LoadContactPage")
 
 
 ''''
@@ -127,7 +122,7 @@ def savePermanentAddressPageDetails(request):
                     ur.permanent_street = form_data.cleaned_data.get("street")
                     ur.permanent_landmark = form_data.cleaned_data.get("landmark")
                     ur.permanent_zipcode = form_data.cleaned_data.get("zipcode")
-                    ur.permanent_area = EN_Zipcode.objects.filter(id=int(form_data.cleaned_data.get("area"))).first()
+                    ur.permanent_area_id = int(form_data.cleaned_data.get("area"))
                     ur.is_current_address = form_data.cleaned_data.get("is_current_address")
                     if ur.is_current_address:
                         ur.current_house_name = None
@@ -154,15 +149,14 @@ def savePermanentAddressPageDetails(request):
                 ur.save()
             else:
                 messages.warning(request,"Invalid Zipcode")
-            return loadPermanentAddressPage(request)
+            return HttpResponseRedirect("LoadPermanentAddressPage")
         else:
             # Note: Converting method to GET from POST
             # If not changed, in session_helper class, form validation will be trigerred
             request.method = "GET"
             return loadContactPage(request)
     else:
-        messages.error(request, DisplayKey.get("error_not_a_post_request"))
-        return loadPermanentAddressPage(request)
+        return HttpResponseRedirect("LoadPermanentAddressPage")
 
 
 ''''
@@ -205,9 +199,7 @@ def saveCurrentAddressPageDetails(request):
             request.method = "GET"
             return loadPermanentAddressPage(request)
     else:
-        messages.error(request,DisplayKey.get("error_not_a_post_request"))
-        return loadCurrentAddressPage(request)
-
+        return HttpResponseRedirect("LoadCurrentAddressPage")
 
 
 
@@ -262,37 +254,4 @@ def saveCredentialPageDetails(request):
             ur = UserRegistrationSessions(request).getCorrespondingDBRecord()
             return loadPermanentAddressPage(request) if ur.is_current_address else loadCurrentAddressPage(request)
     else:
-        messages.error(request,DisplayKey.get("error_not_a_post_request"))
-        return loadCredentialsPage(request)
-
-
-
-
-
-
-''''
-    Function  : Ajax function to get all areas associated with a zipcode
-    Method    : POST
-'''
-@csrf_exempt
-def ajaxGetAreaFromZipcode(request):
-    if request.is_ajax():
-        zipcode = request.POST["zipcode"]
-        countryID = request.POST["country"]
-        rows = EN_Zipcode.objects.values("id","city","district","state").filter(pincode=zipcode, country_id = countryID)
-        returnList = []
-        for row in rows:
-            rowDict = {
-                "id"       : row["id"],
-                "city"     : row["city"],
-                "district" : row["district"],
-                "state"    : row["state"]
-            }
-            returnList.append(rowDict)
-
-        jsonResponse = json.dumps(returnList)
-        return HttpResponse(jsonResponse)
-    else:
-        return HttpResponseRedirect("BasicDetails?message=direct_access_denied")
-
-
+        return HttpResponseRedirect("LoadCredentialsPage")

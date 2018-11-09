@@ -16,6 +16,4 @@ urlpatterns = [
 
     path(r'LoadCredentialsPage',views.loadCredentialsPage, name="Load Credentials Page"),
     path(r'SaveCredentialPageDetails',views.saveCredentialPageDetails, name="Save Credential Page Details"),
-
-    path(r'AjaxGetAreaFromZipcode',views.ajaxGetAreaFromZipcode, name="Ajax - Get Area From Zipcodee")
 ]
