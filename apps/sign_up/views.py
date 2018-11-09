@@ -126,7 +126,8 @@ def savePermanentAddressPageDetails(request):
                     ur.permanent_house_name= form_data.cleaned_data.get("house_name")
                     ur.permanent_street = form_data.cleaned_data.get("street")
                     ur.permanent_landmark = form_data.cleaned_data.get("landmark")
-                    ur.permanent_zipcode = EN_Zipcode.objects.get(id=form_data.cleaned_data.get("zipcode"))
+                    ur.permanent_zipcode = form_data.cleaned_data.get("zipcode")
+                    ur.permanent_area = EN_Zipcode.objects.filter(id=int(form_data.cleaned_data.get("area"))).first()
                     ur.is_current_address = form_data.cleaned_data.get("is_current_address")
                     if ur.is_current_address:
                         ur.current_house_name = None
@@ -140,6 +141,20 @@ def savePermanentAddressPageDetails(request):
                     return loadPermanentAddressPage(request)
             else:
                 return loadPermanentAddressPage(request)
+        if (request.POST["permanent_address_submit_button"] == "zipcode"):
+            ur = UserRegistrationSessions(request).getCorrespondingDBRecord()
+            zipcode = request.POST.get("zipcode")
+            areaList = EN_Zipcode.objects.filter(pincode = zipcode)
+            if(areaList.exists()):
+                ur.permanent_house_name = request.POST.get("house_name")
+                ur.permanent_street = request.POST.get("street")
+                ur.permanent_landmark = request.POST.get("landmark")
+                ur.permanent_zipcode = zipcode
+                ur.permanent_area = areaList.first()
+                ur.save()
+            else:
+                messages.warning(request,"Invalid Zipcode")
+            return loadPermanentAddressPage(request)
         else:
             # Note: Converting method to GET from POST
             # If not changed, in session_helper class, form validation will be trigerred

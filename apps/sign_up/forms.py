@@ -4,6 +4,7 @@ from django import forms
 from apps.login.models import EN_LoginCredentials
 from apps.sign_up.helper.choice_helper import Choice
 from apps.users.models import EN_Contacts
+from apps.utilities.entities.zipcode import EN_Zipcode
 
 '''
     # Basic Details Form
@@ -44,6 +45,7 @@ class FORM_AddressDetails(forms.Form):
     street             = forms.CharField(min_length=2,max_length=100,required=False)
     landmark           = forms.CharField(max_length=100,required=False)
     zipcode            = forms.CharField(min_length=4,max_length=6,required=False)
+    area               = forms.ChoiceField(choices=Choice.getZipcodeAreas(),required=False)
     is_current_address = forms.BooleanField(required=False)
 
     def clean(self):
@@ -54,11 +56,22 @@ class FORM_AddressDetails(forms.Form):
 
         if house_name == "" or house_name == None:
             self.add_error("house_name", "House Name is mandatory")
-        elif street == "" or street == None:
+        if street == "" or street == None:
             self.add_error("street", "Street is mandatory")
-        elif zipcode == "" or zipcode == None:
+        if zipcode == "" or zipcode == None:
             self.add_error("zipcode", "Zipcode is mandatory")
-
+        else:
+            if not EN_Zipcode.objects.filter(pincode=zipcode).exists():
+                self.add_error("zipcode", "Invalid zipcode entered")
+            else:
+                try:
+                    area = data["area"]
+                    if area == None or area == "":
+                        self.add_error("area", "Area is mandatory")
+                    elif not EN_Zipcode.objects.filter(id=area).exists():
+                        self.add_error("area", "Invalid area selected")
+                except:
+                    pass
         return data
 
 

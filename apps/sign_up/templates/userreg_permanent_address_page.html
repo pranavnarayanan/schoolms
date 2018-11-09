@@ -55,20 +55,30 @@
                 </div>
                 <div class="validation">
                     <label class="error">{{ form.zipcode.errors }}</label>
-                    <!--<label class="desc">Some Description</label>-->
                 </div>
             </div>
         </div>
 
 
+        <div class="form-group col-md-7 col-sm-12">
+            <div class="form-line text-center">
+                <button type="submit" name="permanent_address_submit_button" value="zipcode">Fetch Zipcode Areas</button>
+            </div>
+        </div>
+
+        {% if form.area|length > 0 %}
         <div class="col-md-7 col-sm-12">
             <div class="form-group">
                 <div class="form-line text-center">
                     <label>Area</label>
-                    <input value="Anchal PO, Kollam, Kerala" readonly type="text" id="ajax_area_field" class="form-control">
+                    {% render_field form.area class="form-line text-center"  %}
+                </div>
+                <div class="validation">
+                    <label class="error">{{ form.area.errors }}</label>
                 </div>
             </div>
         </div>
+        {% endif %}
 
         <div class="col-md-7 col-sm-12">
             <div class="form-group">
