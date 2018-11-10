@@ -59,77 +59,36 @@
             </div>
         </div>
 
+        <div class="form-group col-md-7 col-sm-12">
+            <div class="form-line text-center">
+                <button type="submit" name="current_address_submit_button" value="zipcode">Fetch Zipcode Areas</button>
+            </div>
+        </div>
 
+        {% if form.area|length > 0 %}
         <div class="col-md-7 col-sm-12">
             <div class="form-group">
                 <div class="form-line text-center">
                     <label>Area</label>
-                    <select id="area_field">
-                    <option disabled >Select Area</option>
-                    </select>
+                    {% render_field form.area class="form-line text-center"  %}
+                </div>
+                <div class="validation">
+                    <label class="error">{{ form.area.errors }}</label>
                 </div>
             </div>
         </div>
+        {% endif %}
 
-        <div class="col-md-7 col-sm-12">
-            <div class="form-group">
-                <button type="button" onclick="load()">Load Area</button>
-            </div>
-        </div>
-
-
+        {% if form.area|length > 0 %}
         <div class="col-md-7 col-sm-12 text-right">
             <div class="form-group">
                 <button type="submit" name="current_address_submit_button" value="back" class="btn_next waves-effect orange accent-2"><i class="fa fa-arrow-circle-left"></i>&nbsp;&nbsp;Previous Page</button>
                 <button type="submit" name="current_address_submit_button" value="next" class="btn_next waves-effect blue accent-2">Proceed&nbsp;&nbsp;<i class="fa fa-arrow-circle-right"></i></button>
             </div>
         </div>
+        {% endif %}
 
     </form>
 {% endblock %}
-
 {% block image %} <img src="/static/user_registration/images/3.png"/> {% endblock %}
-
-<!-- Add page specific js here-->
-{% block page_specific_js %}
-    <script type="text/javascript">
-        var zip = "0ABC0";
-        function loadArea(){
-            var newZip = $("#zipcode_id").val();
-            if(zip !== newZip){
-                zip = newZip;
-                $.ajax({
-                    url:"GetZipicodeData",
-                    method:"POST",
-                    data:{
-                        "zipcode":zip,
-                        "country":1
-                    },
-                    success:function(data){
-                        var op = '';
-                        var json = $.parseJSON(data);
-                        $(json).each(function(i,val){
-                            var temp = val["city"]+", "+val["district"]+", "+val["state"];
-                            op += '<option value="'+val["id"]+'">'+temp+'</option>';
-                        });
-                        //alert(op);
-                        $('#area_field').html(op);
-                    },
-                    error:function(data){
-                        alert("Error : "+data)
-                    }
-                })
-            }
-        }
-
-        function load(){
-            var op = '';
-            op += '<option value="val_1">Value 1</option>';
-            op += '<option value="val_2">Value 2</option>';
-            op += '<option value="val_3">Value 3</option>';
-            op += '<option value="val_4">Value 4</option>';
-            $('#area_field').html(op);
-        }
-
-    </script>
-{% endblock %}
+{% block page_specific_js %}{% endblock %}

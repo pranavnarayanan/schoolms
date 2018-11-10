@@ -24,7 +24,7 @@ class EN_UserRegistration(models.Model):
     permanent_landmark   = models.CharField(max_length=100, null=True)
     permanent_zipcode    = models.CharField(max_length=7, null=True)
     permanent_area       = models.ForeignKey(EN_Zipcode, on_delete=models.CASCADE, null=True,related_name='permanent_area')
-    is_current_address   = models.BooleanField(default=True)
+    is_current_address   = models.BooleanField(default=False)
 
     current_house_name   = models.CharField(max_length=100, null=True)
     current_street       = models.CharField(max_length=100, null=True)

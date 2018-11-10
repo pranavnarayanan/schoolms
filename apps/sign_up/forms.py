@@ -1,5 +1,7 @@
 import re
 import datetime
+from logging import Logger
+
 from django import forms
 from apps.login.models import EN_LoginCredentials
 from apps.sign_up.helper.choice_helper import Choice
@@ -48,7 +50,8 @@ class FORM_AddressDetails(forms.Form):
             if len(self.data) > 0:
                 self.fields['area'].choices = Choice.getZipcodeAreas(self.data["zipcode"])
         except Exception as e:
-            print(" --- ERROR : "+e.__str__())
+            Logger.error(e.__str__())
+            pass
 
     house_name         = forms.CharField(min_length=2,max_length=100,required=False)
     street             = forms.CharField(min_length=2,max_length=100,required=False)
@@ -116,18 +119,18 @@ class FORM_ContactDetails(forms.Form):
     # Credentials Form
 '''
 class FORM_CredentialDetails(forms.Form):
-    username                  = forms.CharField(min_length=5,max_length=15,required=False)
-    password                  = forms.CharField(min_length=5,max_length=15,required=False)
+    username = forms.CharField(min_length=5,max_length=15,required=False)
+    password = forms.CharField(min_length=5,max_length=15,required=False)
     subscribe_for_news_letter = forms.BooleanField(required=False)
 
     def clean(self):
         data = self.cleaned_data
         uName = data["username"]
         pWord = data["password"]
-        if EN_LoginCredentials.objects.filter(username=uName).exists():
+        if uName == "" or uName == None:
+            self.add_error("username", "Username cannot be empty")
+        elif EN_LoginCredentials.objects.filter(username=uName).exists():
             self.add_error("username", "Username already exists")
-        elif uName == "" or uName == None:
-            self.add_error("username", "Username cannot be null")
         if pWord == "" or pWord == None:
-            self.add_error("password", "Password cannot be null")
+            self.add_error("password", "Password cannot be empty")
         return data

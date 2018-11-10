@@ -91,12 +91,14 @@
             </div>
         </div>
 
+        {% if form.area|length > 0 %}
         <div class="col-md-7 col-sm-12 text-right">
             <div class="form-group">
                 <button type="submit" name="permanent_address_submit_button" value="back" class="btn_next waves-effect orange accent-2"><i class="fa fa-arrow-circle-left"></i>&nbsp;&nbsp;Previous Page</button>
                 <button type="submit" name="permanent_address_submit_button" value="next" class="btn_next waves-effect blue accent-2">Proceed&nbsp;&nbsp;<i class="fa fa-arrow-circle-right"></i></button>
             </div>
         </div>
+        {% endif %}
 
     </form>
 {% endblock %}

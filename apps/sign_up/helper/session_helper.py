@@ -45,9 +45,7 @@ class UserRegistrationSessions():
                 form.fields["street"].initial = ur.permanent_street
                 form.fields["landmark"].initial = ur.permanent_landmark
                 form.fields["zipcode"].initial = ur.permanent_zipcode
-
                 form.fields["area"].widget.choices = Choice.getZipcodeAreas(ur.permanent_zipcode)
-
                 form.fields["area"].initial = (int(form.fields["area"].widget.choices[0][0]) if len(form.fields["area"].widget.choices) > 0 else None) if ur.permanent_area == None else ur.permanent_area.id
                 form.fields["is_current_address"].initial = ur.is_current_address
 
@@ -58,7 +56,8 @@ class UserRegistrationSessions():
                 form.fields["street"].initial = ur.current_street
                 form.fields["landmark"].initial = ur.current_landmark
                 form.fields["zipcode"].initial = ur.current_zipcode
-                form.fields["area"] = Choice.getZipcodeAreas(ur.permanent_zipcode)
+                form.fields["area"].widget.choices = Choice.getZipcodeAreas(ur.current_zipcode)
+                form.fields["area"].initial = (int(form.fields["area"].widget.choices[0][0]) if len(form.fields["area"].widget.choices) > 0 else None) if ur.current_area == None else ur.current_area.id
                 form.fields["is_current_address"].initial = True
 
         elif form_type == Constants.ContactPage:

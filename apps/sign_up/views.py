@@ -176,23 +176,38 @@ def loadCurrentAddressPage(request):
     Method    : POST
 '''
 def saveCurrentAddressPageDetails(request):
-    if(request.method == "POST"):
+    if (request.method == "POST"):
         form_data = FORM_AddressDetails(request.POST)
-        if(request.POST["current_address_submit_button"] == "next"):
+        if (request.POST["current_address_submit_button"] == "next"):
             if (form_data.is_valid()):
                 try:
                     ur = UserRegistrationSessions(request).getCorrespondingDBRecord()
                     ur.current_house_name= form_data.cleaned_data.get("house_name")
                     ur.current_street = form_data.cleaned_data.get("street")
                     ur.current_landmark = form_data.cleaned_data.get("landmark")
-                    ur.current_zipcode = EN_Zipcode.objects.get(id=form_data.cleaned_data.get("zipcode"))
+                    ur.current_zipcode = form_data.cleaned_data.get("zipcode")
+                    ur.current_area_id = int(form_data.cleaned_data.get("area"))
                     ur.save()
                     return HttpResponseRedirect("LoadCredentialsPage")
                 except Exception as e:
-                    messages.error(request,e.__str__())
+                    messages.error(request, e.__str__())
                     return loadCurrentAddressPage(request)
             else:
                 return loadCurrentAddressPage(request)
+        if (request.POST["current_address_submit_button"] == "zipcode"):
+            ur = UserRegistrationSessions(request).getCorrespondingDBRecord()
+            zipcode = request.POST.get("zipcode")
+            areaList = EN_Zipcode.objects.filter(pincode = zipcode)
+            if(areaList.exists()):
+                ur.current_house_name = request.POST.get("house_name")
+                ur.current_street = request.POST.get("street")
+                ur.current_landmark = request.POST.get("landmark")
+                ur.current_zipcode = zipcode
+                ur.current_area = areaList.first()
+                ur.save()
+            else:
+                messages.warning(request,"Invalid Zipcode")
+            return HttpResponseRedirect("LoadCurrentAddressPage")
         else:
             # Note: Converting method to GET from POST
             # If not changed, in session_helper class, form validation will be trigerred
@@ -200,8 +215,6 @@ def saveCurrentAddressPageDetails(request):
             return loadPermanentAddressPage(request)
     else:
         return HttpResponseRedirect("LoadCurrentAddressPage")
-
-
 
 ''''
     Function  : Loads the Credentials Page
@@ -250,8 +263,15 @@ def saveCredentialPageDetails(request):
         else:
             # Note: Converting method to GET from POST
             # If not changed, in session_helper class, form validation will be trigerred
-            request.method = "GET"
             ur = UserRegistrationSessions(request).getCorrespondingDBRecord()
-            return loadPermanentAddressPage(request) if ur.is_current_address else loadCurrentAddressPage(request)
+            if (form_data.is_valid()):
+                ur.username = form_data.cleaned_data.get("username")
+                ur.password = form_data.cleaned_data.get("password")
+                ur.subscribe_for_news_letter = form_data.cleaned_data.get("subscribe_for_news_letter")
+                ur.save()
+                request.method = "GET"
+                return loadPermanentAddressPage(request) if ur.is_current_address else loadCurrentAddressPage(request)
+            else:
+                return loadCredentialsPage(request)
     else:
         return HttpResponseRedirect("LoadCredentialsPage")
