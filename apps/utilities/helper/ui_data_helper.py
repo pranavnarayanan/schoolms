@@ -30,9 +30,9 @@ class UIDataHelper:
                     "name"       : "Gafoor KA",
                     "product_id" : "MY1202344",
                     "type"       : "user"
-                },
-                page : "active"
-            }
+                }
+            },
+            page : "active"
         }
 
     '''
