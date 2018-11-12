@@ -4,7 +4,7 @@ from django.template import loader
 from apps.login.forms import FORM_ResetPassword, FORM_LoginDetails
 from apps.login.helper import LoginHelper
 from displaykey.display_key import DisplayKey
-from properties.properties import Properties
+from properties.session_properties import SessionProperties
 
 ''''
     Function  : Loads the Login Page
@@ -35,14 +35,11 @@ def validateLogin(request):
                 messages.error(request,DisplayKey.get("invalid_credentials"))
                 return index(request)
             else:
-                request.session[Properties.USER_SESSION_KEY] = userId
+                request.session[SessionProperties.USER_ID_KEY] = userId
+                lh.updateOnlineStatusAndLoggedInTime()
+                lh.setStaticUIData()
+                lh.setActiveRole()
                 return HttpResponseRedirect("../../Home")
-                '''
-                    urHelper = UserRolesHelper(userId)
-                    urHelper.setDefaultRoleOnSession(request)
-                    request.session[Properties.USER_SESSION_KEY] = userId
-                    return HttpResponseRedirect("../Home")
-                '''
         else:
             return index(request)
     else:
