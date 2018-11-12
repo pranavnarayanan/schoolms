@@ -42,6 +42,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'middleware.user_registration.MW_UserRegistration',
+    'middleware.authentication.MW_Authentication',
+    'middleware.post_login.MW_PostLoginCommon',
+    #'config.middleware.role_accessiblity_on_app_authentication.MW_RoleAccessiblityOnAppAuthentication',
 ]
 
 ROOT_URLCONF = 'schoolms.urls'
