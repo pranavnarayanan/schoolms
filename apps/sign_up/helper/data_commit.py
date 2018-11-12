@@ -46,7 +46,7 @@ class SaveRecord():
         enPermanentAddress.house_name = user_reg_instance.permanent_house_name
         enPermanentAddress.street = user_reg_instance.permanent_street
         enPermanentAddress.landmark = user_reg_instance.permanent_landmark
-        enPermanentAddress.zipcode = user_reg_instance.permanent_zipcode
+        enPermanentAddress.zipcode = user_reg_instance.permanent_area
         enPermanentAddress.is_current_address = user_reg_instance.is_current_address
         enPermanentAddress.is_permanent_address = True
         enPermanentAddress.user = enUser
@@ -58,7 +58,7 @@ class SaveRecord():
             enCurrentAddress.house_name = user_reg_instance.current_house_name
             enCurrentAddress.street = user_reg_instance.current_street
             enCurrentAddress.landmark = user_reg_instance.current_landmark
-            enCurrentAddress.zipcode = user_reg_instance.current_zipcode
+            enCurrentAddress.zipcode = user_reg_instance.current_area
             enCurrentAddress.is_current_address = True
             enPermanentAddress.is_permanent_address = False
             enCurrentAddress.user = enUser
