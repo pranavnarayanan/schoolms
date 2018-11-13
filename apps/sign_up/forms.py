@@ -1,7 +1,6 @@
 import re
 import datetime
 from logging import Logger
-
 from django import forms
 from apps.login.models import EN_LoginCredentials
 from apps.sign_up.helper.choice_helper import Choice

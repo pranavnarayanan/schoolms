@@ -1,0 +1,82 @@
+{% extends "base/post_login.html" %}
+{% block page_title %} Organization Groups {% endblock %}
+{% block page_heading %} Organization Groups {% endblock %}
+
+{% block breadcrumb %}
+    <li><a href="Home"><i class="fa fa-dashboard"></i> Home</a></li>
+    <li class="active"><a> Organization Groups</a></li>
+{% endblock %}
+
+
+{% block content %}
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title" id="table_heading"></h3>
+              <div class="box-tools">
+                <div class="input-group input-group-sm" style="width: 300px;">
+                      <input type="text" id="table_search" class="form-control pull-right" placeholder="Search">
+                      <div class="input-group-btn">
+                        <button onclick="search()" type="button" class="btn btn-default"><i class="fa fa-search"></i></button>
+                        <button onclick="clearFilter()" type="button" class="btn btn-default"><i class="fa fa-close"></i></button>
+                        <button onclick='pagination("backward")' type="button" class="btn btn-default"><i class="fa fa-backward"></i> Previous</button>
+                        <button onclick='pagination("forward")' type="button" class="btn btn-default">Next <i class="fa fa-forward"></i></button>
+                      </div>
+                </div>
+              </div>
+            </div>
+            <div class="box-body table-responsive no-padding">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                      <th>#</th>
+                      <th>Myshishya ID</th>
+                      <th>Group Name</th>
+                      <th>Logo</th>
+                      <th>website</th>
+                 </tr>
+                </thead>
+                <tbody id="table_content">
+                </tbody>
+              </table>
+            </div>
+
+            <!---Loading Bar-->
+            <div id="page_loading_div"></div>
+            <!-- End Loading----->
+
+          </div>
+        </div>
+      </div>
+{% endblock %}
+
+
+
+{% block page_specific_css %}
+{% endblock %}
+
+{% block page_specific_js  %}
+<script src="../static/bootstrap/custom/js/table_data_loader.js"></script>
+<script>
+  loadData(_page,_records_count,_search);
+  function loadData(page,records_count,search_keyword){
+      _page = page;
+      _records_count = records_count;
+      _search = search_keyword;
+      getJsonResponse("GetOrganizationGroups",_page,_records_count,_search).success(function (data) {
+           $("#page_loading_div").removeClass("overlay");
+           $("#page_loading_div").html("");
+           var tableContent = "";
+           var parsedData = $.parseJSON(data);
+           _total_pages = parsedData["total_pages"];
+           _total_records = parsedData["total_records"];
+           $("#table_heading").html("Page "+_page+" of "+_total_pages+"<small> ["+_total_records+" records found]</small>");
+           $.each(parsedData["data"], function(index, element) {
+              tableContent += '<tr><td>'+((index+1)+((_page-1)*_records_count))+'</td><td>'+element["product_id"]+'</td><td>'+element["name"]+'</td><td>'+element["logo"]+'</td><td>'+element["website"]+'</td></tr>';
+           });
+           $("#table_content").html(tableContent);
+        });
+  }
+</script>
+{% endblock %}

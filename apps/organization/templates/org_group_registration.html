@@ -1,0 +1,76 @@
+{% extends "base/post_login.html" %}
+{% block page_title %} New Organization Group{% endblock %}
+{% block page_heading %} New Organization Groups {% endblock %}
+
+{% block breadcrumb %}
+    <li><a href="Home"><i class="fa fa-dashboard"></i> Home</a></li>
+    <li class="active"><a> New Organization Group</a></li>
+{% endblock %}
+
+{% block content %}
+    <form action="SaveOrganizationGroup" method="post">
+        {% csrf_token %}
+        {% load widget_tweaks %}
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Organization Group</h3>
+                    </div>
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label >Group Name</label>
+                            {% render_field form.groupname class="form-control" placeholder="Example: Sabarigiri Group Of Institutions"%}
+                        </div>
+                        <div class="form-group">
+                            <label >Website</label>
+                            {% render_field form.website class="form-control" placeholder="Example: www.sabarigirigroup.com"%}
+                        </div>
+                        <div class="form-group">
+                            {% render_field form.createpage %}
+                            <label>
+                                Create myshishya page for your group
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Organization Logo</h3>
+                    </div>
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="exampleInputFile">File input</label>
+                            <input type="file" id="exampleInputFile">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-info">Cancel</button>
+                        <button type="reset" class="btn btn-warning">Reset</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+{% endblock %}
+
+
+
+{% block page_specific_css %}
+{% endblock %}
+
+{% block page_specific_js  %}
+{% endblock %}

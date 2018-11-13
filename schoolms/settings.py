@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'apps.login',
     'apps.users',
     'apps.home',
+    'apps.organization',
 ]
 
 
@@ -58,6 +59,7 @@ TEMPLATES = [
             os.path.join(BASE_DIR, 'apps/users/templates'),
             os.path.join(BASE_DIR, 'apps/login/templates'),
             os.path.join(BASE_DIR, 'apps/home/templates'),
+            os.path.join(BASE_DIR, 'apps/organization/templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
