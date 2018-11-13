@@ -6,8 +6,10 @@ from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.views.decorators.csrf import csrf_exempt
+from apps.activity.helper import ActivityHelper
 from apps.organization.forms import *
 from apps.organization.models import *
+from apps.roles.models import EN_UserRoles, TL_Roles
 from apps.users.models import EN_Users
 from apps.utilities.entities.account_status import TL_AccountStatus
 from apps.utilities.entities.country import EN_Country
@@ -170,7 +172,6 @@ def saveOrganizationDetails(request):
                 return HttpResponseRedirect("../Organization/RegisterOrganization")
 
             #--Roles---------------
-            '''
             inst_super_user = EN_Users.objects.get(product_id=formData.get("organization_su_prd_id"))
             userRole = EN_UserRoles()
             userRole.user = inst_super_user
@@ -200,7 +201,6 @@ def saveOrganizationDetails(request):
                 userRole.delete()
                 messages.error(request, "Failed to create activity : {}".format(e.__context__))
                 return HttpResponseRedirect("../Organization/RegisterOrganization")
-            '''
             #---------------------
 
             messages.success(request, DisplayKey.get("organization_registration_success"))
