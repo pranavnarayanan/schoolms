@@ -1,0 +1,153 @@
+{% extends "base/post_login.html" %}
+
+{% block page_title %} Assign Role {% endblock %}
+{% block page_heading %} Assign Role {% endblock %}
+
+{% block breadcrumb %}
+    <li><a href="Home"><i class="fa fa-dashboard"></i> Home</a></li>
+    <li class="active"><a> Assign Roles </a></li>
+{% endblock %}
+
+{% block content %}
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Requested Role : {{ selected_role }}</h3>
+              <div class="box-tools">
+                {% if my_role == "teacher" %}
+                  <button onclick="doAction()" class="action_button pull-right btn btn-success"><i class="fa fa-send"></i> Send Request </button>
+                {% endif %}
+                {% if my_role == "institution_super_user" or  my_role == "school_admin" %}
+                  <button  onclick="doAction()" class="action_button pull-right btn btn-success"><i class="fa fa-check"></i> Approve Selected</button>
+                {% endif %}
+              </div>
+            </div>
+            <div class="box-body table-responsive no-padding">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                      <th><input class="checkall" type="checkbox" style="height: 20px!important;width: 20px!important;"></th>
+                      <th>Image</th>
+                      <th>Name</th>
+                      <th>Address</th>
+                 </tr>
+                </thead>
+                <tbody>
+                {% for user in user_list %}
+                <tr>
+                  <td><input onclick="selectAction({{ user.id }})" id="chkbox_{{ user.id }}" class="sel_checkbox" type="checkbox" style="height: 20px!important;width: 20px!important;"></td>
+                  <td><img src="../static/bootstrap/dist/img/user2-160x160.jpg" class="img-circle custom-logo-on-table"></td>
+                  <td>
+                  {% if user.gender == "male" %}
+                    <i class="fa fa-male" style="color: blue"></i>
+                  {% endif %}
+                  {% if user.gender == "female" %}
+                    <i class="fa fa-female" style="color: #9F0053"></i>
+                  {% endif %}
+                  {% if user.gender != "female" and  user.gender != "male" %}
+                    <i class="fa fa-transgender"  style="color: red"></i>
+                  {% endif %}
+                      &nbsp;{{ user.name }}<br><i class="fa fa-arrow-right"></i>&nbsp;Myshishya Id : {{ user.product_id }}
+                  </td>
+                  <td><i class="fa fa-home bg-orange-active"></i> : {{ user.address }}<br> <i class="fa fa-phone bg-blue-active"></i> : {{ user.contact_no }}</td>
+                {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    <input type="hidden" id="organization_id" value="{{ organization_id }}">
+    <input type="hidden" id="selected_role" value="{{ selected_role }}">
+    <input type="hidden" id="ids" name="ids" value="0">
+{% endblock %}
+
+
+
+{% block page_specific_css %}
+    <link rel="stylesheet" href="../static/bootstrap/custom/css/image.css">
+{% endblock %}
+
+{% block page_specific_js  %}
+    <script>
+        $(".action_button").hide();
+        var actualUserList = [];
+        var selectedUserList = [];
+        {% for user in user_list %}
+        actualUserList.push({{ user.id }});
+        {% endfor %}
+        var selectedUserList = [];
+        var clicked = false;
+        $(".checkall").on("click", function() {
+          $(".sel_checkbox").prop("checked", !clicked);
+          clicked = !clicked;
+          if(clicked){
+              selectedUserList = actualUserList;
+          }else{
+              selectedUserList = [];
+          }
+          if(selectedUserList.length > 0){
+              $(".action_button").show();
+              $("#ids").val(selectedUserList.toString());
+          }else{
+              $(".action_button").hide();
+              $("#ids").val(0);
+          }
+        });
+
+        function selectAction(id) {
+            if($("#chkbox_" + id).is(":checked") === true){
+                var flag = false;
+                for(var i=0; i<selectedUserList.length; i++){
+                    if(selectedUserList[i] === id){
+                        flag = true;
+                        break;
+                    }
+                }
+                if(!flag){
+                    selectedUserList.push(id);
+                }
+            }else{
+                for(var i=0; i<selectedUserList.length; i++){
+                    if(selectedUserList[i] === id){
+                        selectedUserList.splice(i, 1);
+                    }
+                }
+            }
+            if(selectedUserList.length > 0){
+                $(".action_button").show();
+                $("#ids").val(selectedUserList.toString());
+            }else{
+                $(".action_button").hide();
+                $("#ids").val(0);
+            }
+        }
+
+
+    function doAction(){
+        $.ajax({
+            url:"SaveAssignedRole",
+            method:"POST",
+            data:{
+                "organization_id" : $("#organization_id").val(),
+                "selected_role" : $("#selected_role").val(),
+                "ids" : $("#ids").val()
+            },
+            success:function(data){
+                var parsedData = $.parseJSON(data);
+                if(parsedData["status"] == true)
+                    window.location.replace("RolesRaised");
+                else{
+                    var message = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><i class="fa fa-close"></i> &nbsp; <b>Error</b> : '+parsedData["message"]+'</div>';
+                    $("#js_messages").html(message);
+                }
+            },
+            error:function(data){
+                alert("Error : "+data.responseText);
+            }
+        });
+
+    }
+    </script>
+{% endblock %}

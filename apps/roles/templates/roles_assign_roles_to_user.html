@@ -1,0 +1,69 @@
+{% extends "base/post_login.html" %}
+
+{% block page_title %} Assign Roles {% endblock %}
+{% block page_heading %} Assign Roles {% endblock %}
+
+
+{% block breadcrumb %}
+    <li><a href="../Home"><i class="fa fa-dashboard"></i> Home</a></li>
+    <li class="active"><a> Assign Role</a></li>
+{% endblock %}
+
+
+{% block content %}
+    <form action="ValidateAssignedRole" method="post">
+        {% csrf_token %}
+        {% load widget_tweaks %}
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label>Select Role</label>
+                            <select name="role_selected" id="role_selected" onChange="OnChangeRole()" class="form-control">
+                                {% for role in roles %}
+                                    <option value="{{ role.code }}">{{ role.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group" id="school_div">
+                            <label>Select School</label>
+                            <select name="organization_id" class="form-control">
+                                {% for school in schools_list %}
+                                    <option value="{{ school.org_id }}">{{ school.org_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Myshishya ID(s) <small  style="color:deeppink; padding-left: 10px!important;"> [Use comma (,) as delimitor]</small></label>
+                            {% render_field form.product_ids class="form-control" style="height:100px!important;" placeholder="MY1000001,MY1000002,MY1000003,MY1000099"%}
+                            <span style="color: #ff4500; ">{{ form.product_ids.errors }}</span>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <button type="reset" class="btn btn-warning"><i class="fa fa-refresh">&nbsp;</i>Reset</button>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-save">&nbsp;</i>Submit</button>
+                    </div>
+                 </div>
+            </div>
+         </div>
+    </form>
+{% endblock %}
+
+
+{% block page_specific_css %}
+{% endblock %}
+
+{% block page_specific_js  %}
+    <script>
+    OnChangeRole();
+    function OnChangeRole(){
+        role_selected = $("#role_selected").val();
+        if(role_selected == "school_admin")
+            $("#school_div").show();
+        else
+            $("#school_div").hide();
+    }
+    </script>
+{% endblock %}

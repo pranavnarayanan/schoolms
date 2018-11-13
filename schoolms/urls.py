@@ -20,7 +20,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('SignUp/', include("apps.sign_up.urls")),
     path('Login/', include("apps.login.urls")),
-    path('Activity/', include("apps.activity.urls")),
+    path('Notification/', include("apps.activity.urls")),
     path('Roles/', include("apps.roles.urls")),
     path('Home/', include("apps.home.urls")),
     path('Organization/', include("apps.organization.urls")),

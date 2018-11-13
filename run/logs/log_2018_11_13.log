@@ -1,2 +1,5 @@
 10:23:06,868 root ERROR Middleware Authentication Denied User ID None To Access App Activity 
 10:23:18,100 django.request WARNING Not Found: /favicon.ico
+12:00:05,137 root ERROR Middleware Authentication Denied User ID None To Access App Roles 
+12:00:18,885 django.request WARNING Not Found: /Roles/GetMyRoles
+12:11:10,809 django.request WARNING Not Found: /Notification/GetMyNotifications

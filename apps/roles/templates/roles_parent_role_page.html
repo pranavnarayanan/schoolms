@@ -1,0 +1,167 @@
+{% extends "base/post_login.html" %}
+
+{% block page_title %} Assign Role {% endblock %}
+{% block page_heading %} Assign Role {% endblock %}
+{% block page_description %}  [Create New Role For User] {% endblock %}
+
+{% block breadcrumb %}
+    <li><a href="Home"><i class="fa fa-dashboard"></i> Home</a></li>
+    <li class="active"><a> Assign Roles </a></li>
+{% endblock %}
+
+{% block content %}
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Assign Parent Role</h3>
+            </div>
+            <div class="box-body table-responsive no-padding">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                      <th>Student Details</th>
+                      <th>Parent Details</th>
+                      <th>Action</th>
+                 </tr>
+                </thead>
+                <tbody>
+                {% for user in user_list %}
+                <tr id="tab_{{ user.id }}">
+                    <td style="width:35%; vertical-align: middle!important;">
+                        <table>
+                            <tr>
+                                <td><img src="../static/bootstrap/dist/img/user2-160x160.jpg" class="img-circle custom-logo-on-table"></td>
+                                <td>{{ user.name }} - {{ user.product_id }}<br> {{ user.address }} <br> {{ user.contact_no }}</td>
+                                <input type="hidden" id="parent_of_{{ user.id }}" value="0">
+                            </tr>
+                        </table>
+                    </td>
+                    <td style="width:35%; vertical-align: middle!important;">
+                        <table id="parent_table_{{ user.id }}">
+                        </table>
+                    </td>
+                    <td style="width:30%; vertical-align: middle!important;">
+                      <label>Enter Parent ID Here</label>
+                        <div class="input-group input-group-sm">
+                        <input type="text" class="form-control" id="product_ids_{{ user.id }}" placeholder="parent ids">
+                        <span class="input-group-btn">
+                          <button type="button" onclick="loadUsers({{ user.id }})" class="btn btn-info btn-flat"><i class="fa fa-search"></i></button>
+                        </span>
+                      </div>
+                      <small class="has-error" id="error_msg_{{ user.id }}"></small>
+                        <br>
+                      <button id="send_btn_{{ user.id }}" class="send_btn btn btn-success" onclick="sendParentRequest({{ user.id }})"><i class="fa fa-check"></i> Send Request </button>
+                      <button id="close_btn_{{ user.id }}" class="send_btn btn btn-warning" onclick="close_tab({{ user.id }})"><i class="fa fa-close"></i> Close Tab </button>
+                      <button id="erase_btn_{{ user.id }}" class="erase_btn pull-right btn btn-danger" onclick="eraseClick({{ user.id }})"><i class="fa fa-trash"></i> Erase</button>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    <input type="hidden" id="organization_id" value="{{ organization_id }}">
+    <input type="hidden" id="selected_role" value="{{ selected_role }}">
+{% endblock %}
+
+
+
+{% block page_specific_css %}
+    <link rel="stylesheet" href="../static/bootstrap/custom/css/image.css">
+    <style>
+    .parent_box{
+        border-top: 1px solid cornflowerblue;
+        border-bottom: 1px solid cornflowerblue;
+    }
+    </style>
+{% endblock %}
+
+{% block page_specific_js  %}
+    <script>
+    $(".send_btn").hide();
+    $(".erase_btn").hide();
+    function loadUsers(id){
+        prd_ids = $("#product_ids_"+id).val();
+        $.ajax({
+            url:"GetUserDetails",
+            method:"POST",
+            data:{
+                "student_id":id,
+                "product_ids":prd_ids
+            },
+            success:function(data){
+                var parsedData = $.parseJSON(data);
+                if(parsedData["status"] == true){
+                    var img = '';
+                    var str = "";
+                    var parentsList = [];
+                    $.each(parsedData["data"], function (){
+                        parentsList.push(this.id);
+                        img = '../static/bootstrap/dist/img/user2-160x160.jpg';
+                        str += '<tr class="parent_box"><td><img src="'+img+'" class="img-circle custom-logo-on-table"></td>';
+                        str += '<td>'+this.name+' - '+this.product_id+'<br>'+this.address+'<br>'+this.contact_no+'</td></tr>';
+                    });
+                    $("#parent_of_"+id).val(parentsList.toString());
+                    $("#parent_table_"+id).html(str);
+                    $("#send_btn_"+id).show();
+                    $("#erase_btn_"+id).show();
+                    $("#error_msg_"+id).html("");
+                }else{
+                    $("#error_msg_"+id).html("<font color='red'>"+parsedData["message"]+"</font>");
+                }
+            },
+            error:function(data){
+                alert("Error : "+data.responseText);
+            }
+        });
+    }
+
+    function sendParentRequest(id){
+        var parents = $("#parent_of_"+id).val();
+        var organization_id = $("#organization_id").val();
+        var selected_role = $("#selected_role").val();
+        $.ajax({
+            url : "SaveAssignedRole",
+            method : "POST",
+            data : {
+              "student_id" : id,
+              "ids" : parents,
+              "organization_id":organization_id,
+              "selected_role":selected_role
+            },success : function(data){
+                var parsedData = $.parseJSON(data);
+                if(parsedData["status"] == true){
+                    $("#error_msg_"+id).html("<font color='green'>Role Raised Successfully</font>");
+                    $("#send_btn_"+id).hide();
+                    $("#close_btn_"+id).show();
+                }else{
+                    $("#send_btn_"+id).hide();
+                    $("#error_msg_"+id).html("<font color='red'>"+parsedData["message"]+"</font>");
+                }
+            },error : function (data){
+                $("#error_msg_"+id).html("<font color='red'>"+data.responseText+"</font>");
+            }
+        });
+    }
+
+    function eraseClick(id){
+        $("#parent_of_"+id).val("0");
+        $("#parent_table_"+id).html("");
+        $("#send_btn_"+id).hide();
+        $("#erase_btn_"+id).hide();
+        $("#close_btn_"+id).hide();
+        $("#error_msg_"+id).html("");
+    }
+
+    function close_tab(id){
+        $("#tab_"+id).hide();
+    }
+
+    </script>
+{% endblock %}
+
+
+MY90000014,MY90000015,MY90000016,MY90000017
