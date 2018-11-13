@@ -1,3 +1,4 @@
+from apps.roles.models import EN_UserRoles
 from apps.users.models import EN_Users
 from properties.session_properties import SessionProperties
 
@@ -40,17 +41,21 @@ class UIDataHelper:
     '''
     def __rolesOnName(self):
         retList = []
-        retDict = {
-            "role_id": 1,
-            "name"        : "School Admin",
-            "code"        : "school_admin",
-            "type"        : "organization",
-            "description" : "School Admin",
-            "product_id"  : "MY123443",
-            "image"       : None,
-            "place"       : None
-        }
-        retList.append(retDict)
+        user_id = self.request.session[SessionProperties.USER_ID_KEY]
+        user_roles = EN_UserRoles.objects.filter(approved=True,user_id=user_id)
+
+        for role in user_roles:
+            retDict = {
+                "role_id": role.id,
+                "name"        : "School Admin",
+                "code"        : "school_admin",
+                "type"        : "organization",
+                "description" : "School Admin",
+                "product_id"  : "MY123443",
+                "image"       : None,
+                "place"       : None
+            }
+            retList.append(retDict)
         return retList
 
 
