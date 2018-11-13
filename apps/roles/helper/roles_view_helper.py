@@ -1,16 +1,14 @@
 from apps.roles.models import EN_UserRoles, TL_Roles
 from apps.users.models import EN_Users
-from properties.roles import Roles
-
+from properties.app_roles import Roles
 
 class RolesViewHelper:
-
 
     def __init__(self, user):
         self.user = EN_Users.objects.get(id=user) if type(user) == int else user
 
     ''''
-       # Returns the list of all roles [approved and pending] to display on UI
+    # Returns the list of all roles [approved and pending] to display on UI
     '''
     def getRolesToDisplayOnRolesScreen(self):
         roles = []

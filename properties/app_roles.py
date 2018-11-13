@@ -1,4 +1,4 @@
-class Roles():
+class Roles:
 
     SITE_ADMIN              = "site_admin"
 
