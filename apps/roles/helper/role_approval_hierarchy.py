@@ -1,4 +1,4 @@
-from properties.roles import Roles
+from properties.app_roles import Roles
 
 class RoleApprovalHierarchy():
 

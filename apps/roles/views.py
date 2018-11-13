@@ -13,7 +13,7 @@ from apps.roles.models import EN_UserRoles, TL_Roles
 from apps.users.models import EN_Users, EN_AddressBook
 from apps.utilities.helper.ui_data_helper import UIDataHelper
 from displaykey.display_key import DisplayKey
-from properties.roles import Roles
+from properties.app_roles import Roles
 from properties.session_properties import SessionProperties
 from .forms import FORM_UserRoleAssignment
 from .helper.role_approval_hierarchy import RoleApprovalHierarchy

@@ -15,7 +15,7 @@ from apps.utilities.entities.sequenceutil import EN_SequenceUtil
 from apps.utilities.entities.zipcode import EN_Zipcode
 from apps.utilities.helper.ui_data_helper import UIDataHelper
 from displaykey.display_key import DisplayKey
-from properties.roles import Roles
+from properties.app_roles import Roles
 from properties.activity_patterns import ActivityPattern
 from properties.session_properties import SessionProperties
 
