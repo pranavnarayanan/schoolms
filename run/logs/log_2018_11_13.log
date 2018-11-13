@@ -17,3 +17,81 @@ Traceback (most recent call last):
   File "C:/sms/schoolms\apps\logout\views.py", line 6, in index
     if SessionProperties.USER_ID_KEY in request.sessions:
 AttributeError: 'WSGIRequest' object has no attribute 'sessions'
+19:31:48,366 root ERROR Middleware Authentication Denied User ID None To Access App Organization 
+22:28:50,475 root ERROR Middleware Authentication Denied User ID None To Access App Home 
+22:50:33,320 django.request ERROR Internal Server Error: /Home/
+Traceback (most recent call last):
+  File "C:\Program Files (x86)\Python37-32\lib\site-packages\django-2.1b1-py3.7.egg\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Program Files (x86)\Python37-32\lib\site-packages\django-2.1b1-py3.7.egg\django\core\handlers\base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Program Files (x86)\Python37-32\lib\site-packages\django-2.1b1-py3.7.egg\django\core\handlers\base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:/schoolms\apps\home\views.py", line 7, in index
+    data = UIDataHelper(request).getData(page="is_home")
+  File "D:/schoolms\apps\utilities\helper\ui_data_helper.py", line 28, in getData
+    "current_role" : self.__getActiveRoleData()
+  File "D:/schoolms\apps\utilities\helper\ui_data_helper.py", line 102, in __getActiveRoleData
+    active_roles = EN_UserRoles.objects.filter(approved=True, user_id=user_id, active_role=True)
+  File "C:\Program Files (x86)\Python37-32\lib\site-packages\django-2.1b1-py3.7.egg\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Program Files (x86)\Python37-32\lib\site-packages\django-2.1b1-py3.7.egg\django\db\models\query.py", line 841, in filter
+    return self._filter_or_exclude(False, *args, **kwargs)
+  File "C:\Program Files (x86)\Python37-32\lib\site-packages\django-2.1b1-py3.7.egg\django\db\models\query.py", line 859, in _filter_or_exclude
+    clone.query.add_q(Q(*args, **kwargs))
+  File "C:\Program Files (x86)\Python37-32\lib\site-packages\django-2.1b1-py3.7.egg\django\db\models\sql\query.py", line 1263, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "C:\Program Files (x86)\Python37-32\lib\site-packages\django-2.1b1-py3.7.egg\django\db\models\sql\query.py", line 1287, in _add_q
+    split_subq=split_subq,
+  File "C:\Program Files (x86)\Python37-32\lib\site-packages\django-2.1b1-py3.7.egg\django\db\models\sql\query.py", line 1164, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg)
+  File "C:\Program Files (x86)\Python37-32\lib\site-packages\django-2.1b1-py3.7.egg\django\db\models\sql\query.py", line 1028, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+  File "C:\Program Files (x86)\Python37-32\lib\site-packages\django-2.1b1-py3.7.egg\django\db\models\sql\query.py", line 1389, in names_to_path
+    "Choices are: %s" % (name, ", ".join(available)))
+django.core.exceptions.FieldError: Cannot resolve keyword 'active_role' into field. Choices are: approved, en_user_roles, id, is_selected_role, related_organization, related_organization_group, related_organization_group_id, related_organization_id, related_user, related_user_id, request_approved_by, request_approved_by_id, request_approved_on, request_raised_by, request_raised_by_id, request_raised_on, role, role_id, user, user_id
+22:53:01,676 django.request ERROR Internal Server Error: /Home/
+Traceback (most recent call last):
+  File "C:\Program Files (x86)\Python37-32\lib\site-packages\django-2.1b1-py3.7.egg\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Program Files (x86)\Python37-32\lib\site-packages\django-2.1b1-py3.7.egg\django\core\handlers\base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Program Files (x86)\Python37-32\lib\site-packages\django-2.1b1-py3.7.egg\django\core\handlers\base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:/schoolms\apps\home\views.py", line 7, in index
+    data = UIDataHelper(request).getData(page="is_home")
+  File "D:/schoolms\apps\utilities\helper\ui_data_helper.py", line 28, in getData
+    "current_role" : self.__getActiveRoleData()
+  File "D:/schoolms\apps\utilities\helper\ui_data_helper.py", line 112, in __getActiveRoleData
+    type = "organization_group" if active_role.related_organization_group != None else "parent" if active_role.related_user != None else "organization"
+AttributeError: 'NoneType' object has no attribute 'related_organization_group'
+22:54:08,157 django.request ERROR Internal Server Error: /Home/
+Traceback (most recent call last):
+  File "C:\Program Files (x86)\Python37-32\lib\site-packages\django-2.1b1-py3.7.egg\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Program Files (x86)\Python37-32\lib\site-packages\django-2.1b1-py3.7.egg\django\core\handlers\base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Program Files (x86)\Python37-32\lib\site-packages\django-2.1b1-py3.7.egg\django\core\handlers\base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:/schoolms\apps\home\views.py", line 7, in index
+    data = UIDataHelper(request).getData(page="is_home")
+  File "D:/schoolms\apps\utilities\helper\ui_data_helper.py", line 28, in getData
+    "current_role" : self.__getActiveRoleData()
+  File "D:/schoolms\apps\utilities\helper\ui_data_helper.py", line 124, in __getActiveRoleData
+    product_id = active_role.related_user.product_id
+AttributeError: 'NoneType' object has no attribute 'related_user'
+22:54:37,720 django.request ERROR Internal Server Error: /Home/
+Traceback (most recent call last):
+  File "C:\Program Files (x86)\Python37-32\lib\site-packages\django-2.1b1-py3.7.egg\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Program Files (x86)\Python37-32\lib\site-packages\django-2.1b1-py3.7.egg\django\core\handlers\base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Program Files (x86)\Python37-32\lib\site-packages\django-2.1b1-py3.7.egg\django\core\handlers\base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:/schoolms\apps\home\views.py", line 7, in index
+    data = UIDataHelper(request).getData(page="is_home")
+  File "D:/schoolms\apps\utilities\helper\ui_data_helper.py", line 28, in getData
+    "current_role" : self.__getActiveRoleData()
+  File "D:/schoolms\apps\utilities\helper\ui_data_helper.py", line 124, in __getActiveRoleData
+    product_id = " " if active_role != None else active_role.related_user.product_id
+AttributeError: 'NoneType' object has no attribute 'related_user'

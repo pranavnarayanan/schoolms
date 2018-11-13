@@ -269,7 +269,7 @@
             <small>[{{ ui_data.current_role.name }}, &nbsp;{{ ui_data.current_role.address }}]</small>
         {% endif %}
         {% if ui_data.current_role.type == "organization_group" %}
-            <small>[{{ ui_data.current_role.name }}]</small>
+            <small>[{{ ui_data.current_role.name }}, {{ ui_data.current_role.address }}]</small>
         {% endif %}
         {% if ui_data.current_role.type == "user" %}
             <small>[{{ ui_data.current_role.name }}, &nbsp;{{ ui_data.current_role.address }}]</small>
@@ -353,7 +353,7 @@
                  <i class="fa fa-home" style="color: greenyellow"> &nbsp; </i>Home</button>
                  <h4 class="modal-title">Roles <font size="2"> [{{ ui_data.user_roles | length }} active]</font>
                  </h4>
-                 <small style="color:#00ca6d">Current Role : {{ ui_data.current_role.role }} - {{ ui_data.current_role.name }}, {{ ui_data.current_role.address }}</small>
+                 <small style="color:#00ca6d">Current Role : {{ ui_data.current_role.role }} , {{ ui_data.current_role.address }}</small>
               </div>
                 <div class="col-xs-12" style="cursor: pointer">
                     <div class="box-body table-responsive no-padding">

@@ -11,6 +11,7 @@ class UIDataHelper:
     # Function returns the dict of user data which needs to be displayed on the UI
     '''
     def getData(self, page="home"):
+
         return {
             "ui_data" : {
                 "header": {
@@ -24,14 +25,7 @@ class UIDataHelper:
                 },
                 "is_online"  : self.__getDataFromSession(SessionProperties.USER_ONLINE_KEY),
                 "user_roles" : self.__rolesOnName(),
-                "current_role" : {
-                    "role"       : "school_admin",
-                    "address"    : "Some Address",
-                    "image"      : None,
-                    "name"       : "Gafoor KA",
-                    "product_id" : "MY1202344",
-                    "type"       : "user"
-                }
+                "current_role" : self.__getActiveRoleData()
             },
             page : "active"
         }
@@ -45,15 +39,29 @@ class UIDataHelper:
         user_roles = EN_UserRoles.objects.filter(approved=True,user_id=user_id)
 
         for role in user_roles:
+            type = "organization_group" if role.related_organization_group != None else "parent" if role.related_user != None else "organization"
+
+            if type == "organization":
+                organization_details = role.related_organization.school_name
+                place = "[ "+role.related_organization.street+" ]"
+                product_id = role.related_organization.product_id
+            elif type == "organization_group":
+                organization_details = role.related_organization_group.group_name
+                place = "[ Group ]"
+                product_id = role.related_organization_group.product_id
+            else:
+                organization_details = " "
+                place = " "
+                product_id = role.related_user.product_id
             retDict = {
                 "role_id": role.id,
-                "name"        : "School Admin",
-                "code"        : "school_admin",
-                "type"        : "organization",
-                "description" : "School Admin",
-                "product_id"  : "MY123443",
-                "image"       : None,
-                "place"       : None
+                "name"        : role.role.name,
+                "code"        : role.role.code,
+                "type"        : type,
+                "description" : organization_details,
+                "product_id"  : product_id,
+                "image"       : role.related_user.display_picture if type=="parent" else "#",
+                "place"       : place
             }
             retList.append(retDict)
         return retList
@@ -86,18 +94,44 @@ class UIDataHelper:
         return self.request.session[session_key]
 
 
+    '''
+    # Returns active role of user
+    '''
+    def __getActiveRoleData(self):
+        user_id = self.request.session[SessionProperties.USER_ID_KEY]
+        active_roles = EN_UserRoles.objects.filter(approved=True, user_id=user_id, is_selected_role=True)
+        active_role = None
+        if active_roles.exists():
+            if active_roles.__len__() > 1:
+                for role in EN_UserRoles.objects.filter(user_id=user_id):
+                    role.approved = False
+                    role.save()
+            else:
+                active_role = active_roles.first()
 
+        type = "Home" if active_role == None else "organization_group" if active_role.related_organization_group != None else "parent" if active_role.related_user != None else "organization"
+        if type == "organization":
+            organization_details = active_role.related_organization.school_name
+            place = active_role.related_organization.street
+            product_id = active_role.related_organization.product_id
+        elif type == "organization_group":
+            organization_details = active_role.related_organization_group.group_name
+            place = " "
+            product_id = active_role.related_organization_group.product_id
+        elif type == "parent":
+            organization_details = " "
+            place = " "
+            product_id = active_role.related_user.product_id
+        else:
+            organization_details = " "
+            place = " "
+            product_id = " "
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+        return {
+            "role": active_role.role.name if active_role != None else "Home",
+            "address": (organization_details+", "+place) if type == "organization" else organization_details,
+            "image": None,
+            "name": active_role.role.name if active_role != None else "Home",
+            "product_id": product_id,
+            "type": type
+        }

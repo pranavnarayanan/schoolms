@@ -385,9 +385,8 @@ def changeRole(request):
             if ur.is_selected_role:
                 messages.warning(request, DisplayKey.get("already_on_the_same_role"))
             else:
-                EN_UserRoles.objects.filter(user_id=user_id, is_selected_role=True).update(is_selected_role=False)
+                EN_UserRoles.objects.filter(user_id=user_id).update(is_selected_role=False)
                 ur.is_selected_role = True
-                ur.validate_unique()
                 ur.save()
                 messages.success(request, DisplayKey.get("role_changes_successfully"))
         except:
