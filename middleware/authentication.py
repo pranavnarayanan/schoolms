@@ -14,6 +14,7 @@ class MW_Authentication():
     excluded_apps = [
         "SignUp",
         "Login",
+        "Logout"
     ]
 
     def __init__(self, get_response):

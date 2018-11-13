@@ -8,6 +8,7 @@ class MW_PostLoginCommon():
     excluded_apps = [
         "UserRegistration",
         "Login",
+        "Logout",
     ]
 
     def __init__(self, get_response):

@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'apps.utilities',
     'apps.sign_up',
+    'apps.logout',
     'apps.login',
     'apps.roles',
     'apps.activity',
