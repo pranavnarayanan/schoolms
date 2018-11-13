@@ -17,7 +17,6 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost'
 ]
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -29,10 +28,12 @@ INSTALLED_APPS = [
     'apps.utilities',
     'apps.sign_up',
     'apps.login',
+    'apps.activity',
     'apps.users',
     'apps.home',
     'apps.organization',
 ]
+
 
 
 MIDDLEWARE = [
@@ -60,6 +61,7 @@ TEMPLATES = [
             os.path.join(BASE_DIR, 'apps/login/templates'),
             os.path.join(BASE_DIR, 'apps/home/templates'),
             os.path.join(BASE_DIR, 'apps/organization/templates'),
+            os.path.join(BASE_DIR, 'apps/activity/templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {

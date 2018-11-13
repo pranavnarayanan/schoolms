@@ -1,0 +1,2 @@
+10:23:06,868 root ERROR Middleware Authentication Denied User ID None To Access App Activity 
+10:23:18,100 django.request WARNING Not Found: /favicon.ico
