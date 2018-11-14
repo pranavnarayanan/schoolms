@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from apps.login.forms import FORM_ResetPassword, FORM_LoginDetails
 from apps.login.helper import LoginHelper
+from apps.roles.helper.user_roles_helper import UserRolesHelper
 from displaykey.display_key import DisplayKey
 from properties.session_properties import SessionProperties
 
@@ -39,6 +40,7 @@ def validateLogin(request):
                 lh.updateOnlineStatusAndLoggedInTime()
                 lh.setStaticUIData()
                 lh.setActiveRole()
+                UserRolesHelper(request).updateRolesOnSession()
                 return HttpResponseRedirect("../../Home")
         else:
             return index(request)

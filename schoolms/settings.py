@@ -34,10 +34,11 @@ INSTALLED_APPS = [
     'apps.users',
     'apps.home',
     'apps.organization',
-    'apps.books',
-    'apps.messaging',
     'apps.settings',
     'apps.tasks',
+    #'apps.books',
+    #'apps.messaging',
+
 ]
 
 
@@ -69,7 +70,7 @@ TEMPLATES = [
             os.path.join(BASE_DIR, 'apps/organization/templates'),
             os.path.join(BASE_DIR, 'apps/roles/templates'),
             os.path.join(BASE_DIR, 'apps/activity/templates'),
-            os.path.join(BASE_DIR, 'apps/books/templates'),
+           # os.path.join(BASE_DIR, 'apps/books/templates'),
             os.path.join(BASE_DIR, 'apps/messaging/templates'),
             os.path.join(BASE_DIR, 'apps/settings/templates'),
             os.path.join(BASE_DIR, 'apps/tasks/templates'),

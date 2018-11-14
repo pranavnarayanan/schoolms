@@ -1,10 +1,11 @@
 from apps.login.models import EN_LoginCredentials
+from apps.roles.models import EN_UserRoles
 from properties.session_properties import SessionProperties
 
 '''
     # Login Helper Class 
 '''
-class LoginHelper():
+class LoginHelper:
 
     def __init__(self,request):
         self.request =  request
@@ -36,8 +37,8 @@ class LoginHelper():
     # Set Active Role Of User
     '''
     def setActiveRole(self):
-        self.request.session[SessionProperties.USER_ACTIVE_ROLE_KEY] = None
-
+        active_role = EN_UserRoles.objects.filter(user=self.user, approved=True, is_selected_role=True)
+        self.request.session[SessionProperties.USER_ACTIVE_ROLE_KEY] = active_role.first().role.code if active_role.exists() else "home"
 
     '''    
     # Update Online Status and logged in time

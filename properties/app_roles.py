@@ -19,6 +19,7 @@ class Roles:
     SECURITY                = "security"
 
 class RoleType:
+    MYSHISHYA_USER     = "myshishya"
     ORGANIZATION       = "organization"
     ORGANIZATION_GROUP = "organization_group"
     PARENT             = "parent"

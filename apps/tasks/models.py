@@ -1,7 +1,5 @@
 from django.db import models
-
 from apps.users.models import EN_Users
-
 
 class EN_Tasks(models.Model):
     created_date  = models.DateTimeField(null=False, auto_now_add=True)
