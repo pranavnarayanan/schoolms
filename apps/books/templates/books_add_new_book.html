@@ -1,0 +1,96 @@
+{% extends "base/post_login.html" %}
+{% block page_title %} Add Book {% endblock %}
+{% block page_heading %} Add Book {% endblock %}
+
+{% block breadcrumb %}
+    <li><a><i class="fa fa-dashboard"></i> Home</a></li>
+    <li><a><i class="fa fa-dashboard"></i> Add Book </a></li>
+{% endblock %}
+
+{% block content %}
+    <form method="post" action="SaveBookDetails">
+    {% csrf_token %}
+    {% load widget_tweaks %}
+
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Add New Book</h3>
+                    <div class="pull-right">
+                            <button type="submit" class="btn btn-flat btn-info">Submit and Save</button>
+                            <button type="reset" class="btn btn-flat btn-warning">Reset Form</button>
+                        </div>
+                </div>
+                <div class="box-body">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Book Name</label>
+                            {% render_field form.book_name class="form-control" %}
+                            <span class="help-block" style="color: red;">{{ form.book_name.errors }}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Book Code</label>
+                            {% render_field form.book_code class="form-control" %}
+                            <span class="help-block" style="color: red;">{{ form.book_code.errors }}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Volume</label>
+                            {% render_field form.book_volume class="form-control" %}
+                            <span class="help-block" style="color: red;">{{ form.book_volume.errors }}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Author</label>
+                            {% render_field form.book_author class="form-control" %}
+                            <span class="help-block" style="color: red;">{{ form.book_author.errors }}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Publisher</label>
+                            {% render_field form.book_publisher class="form-control" %}
+                            <span class="help-block" style="color: red;">{{ form.book_publisher.errors }}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Published Year</label>
+                            {% render_field form.book_year class="form-control" %}
+                            <span class="help-block" style="color: red;">{{ form.book_year.errors }}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Category</label>
+                            {% render_field form.book_category class="form-control" %}
+                            <span class="help-block" style="color: red;">{{ form.book_category.errors }}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Sub Category</label>
+                            {% render_field form.book_sub_category class="form-control" %}
+                            <span class="help-block" style="color: red;">{{ form.book_sub_category.errors }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
+{% endblock %}
+
+
+
+{% block page_specific_css %}
+{% endblock %}
+
+{% block page_specific_js  %}
+{% endblock %}
