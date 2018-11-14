@@ -1,6 +1,9 @@
 from apps.roles.models import EN_UserRoles
 from apps.users.models import EN_Users
+from properties.image_properties import ImageType
 from properties.session_properties import SessionProperties
+from utils.image_helper import ImageHelper
+
 
 class UIDataHelper:
 
@@ -45,14 +48,18 @@ class UIDataHelper:
                 organization_details = role.related_organization.school_name
                 place = "[ "+role.related_organization.street+" ]"
                 product_id = role.related_organization.product_id
+                img_type = ImageType.ORGANIZATION_GROUP
+
             elif type == "organization_group":
                 organization_details = role.related_organization_group.group_name
                 place = "[ Group ]"
                 product_id = role.related_organization_group.product_id
+                img_type = ImageType.ORGANIZATION
             else:
                 organization_details = " "
                 place = " "
                 product_id = role.related_user.product_id
+                img_type = ImageType.USER
             retDict = {
                 "role_id": role.id,
                 "name"        : role.role.name,
@@ -60,7 +67,7 @@ class UIDataHelper:
                 "type"        : type,
                 "description" : organization_details,
                 "product_id"  : product_id,
-                "image"       : role.related_user.display_picture if type=="parent" else "#",
+                "image"       : ImageHelper(img_type).getFullPath(),
                 "place"       : place
             }
             retList.append(retDict)

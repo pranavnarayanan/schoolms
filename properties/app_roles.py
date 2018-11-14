@@ -17,3 +17,9 @@ class Roles:
 
     ENQUIRY_ASSISTANT       = "enquiry_assistant"
     SECURITY                = "security"
+
+class RoleType:
+    ORGANIZATION       = "organization"
+    ORGANIZATION_GROUP = "organization_group"
+    PARENT             = "parent"
+    HOME               = "home"
