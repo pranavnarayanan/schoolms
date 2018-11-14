@@ -25,6 +25,10 @@ urlpatterns = [
     path('Roles/', include("apps.roles.urls")),
     path('Home/', include("apps.home.urls")),
     path('Organization/', include("apps.organization.urls")),
+    path(r'Books/', include("apps.books.urls")),
+    path(r'Messages/', include("apps.messaging.urls")),
+    path(r'Settings/', include("apps.settings.urls")),
+    path(r'Tasks/', include("apps.tasks.urls")),
 
 ]
 
