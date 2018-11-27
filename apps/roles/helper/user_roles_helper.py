@@ -1,5 +1,6 @@
 import json
 from apps.roles.models import EN_UserRoles
+from apps.users.models import EN_Users
 from properties.app_roles import RoleType
 from properties.image_properties import ImageType
 from properties.session_properties import SessionProperties
@@ -75,13 +76,14 @@ class UserRolesHelper:
                 product_id = role.related_organization.product_id
                 image = role.related_organization.display_picture
                 img_type = ImageType.USER
-            else: # Myshisya User
+            else:  # Myshishya User - Site admin
+                user = EN_Users.objects.get(id=self.user_id)
                 type = RoleType.MYSHISHYA_USER
                 organization_details = "Site Admin"
                 place = " "
-                product_id = " "
-                image = " "
-                img_type = " "
+                product_id = user.product_id
+                image = user.display_picture
+                img_type = ImageType.USER
             retDict = {
                 "role_id": role.id,
                 "name": role.role.name,
@@ -119,12 +121,20 @@ class UserRolesHelper:
                 product_id = role.related_user.product_id
                 image = role.related_user.display_picture
                 img_type = ImageType.ORGANIZATION
-            else:
+            elif role.related_organization != None:
                 type = RoleType.ORGANIZATION
                 organization_details = role.related_organization.school_name
                 place = "[ " + role.related_organization.street + " ]"
                 product_id = role.related_organization.product_id
                 image = role.related_organization.display_picture
+                img_type = ImageType.USER
+            else:#Myshishya User - Site admin
+                user = EN_Users.objects.get(id=self.user_id)
+                type = RoleType.MYSHISHYA_USER
+                organization_details = "Site Admin"
+                place = " "
+                product_id = user.product_id
+                image = user.display_picture
                 img_type = ImageType.USER
         else:
             role = None
@@ -137,7 +147,7 @@ class UserRolesHelper:
 
         return {
             "role_id": role.id if role != None else " ",
-            "role": role.role.name if role != None else "Home",
+            "role": role.role.code if role != None else "Home",
             "name": role.role.name if role != None else "Home",
             "code": role.role.code if role != None else "home",
             "type": type,

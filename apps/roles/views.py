@@ -9,6 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from math import ceil
 from apps.organization.models import EN_Organization
 from apps.roles.helper.roles_view_helper import RolesViewHelper
+from apps.roles.helper.user_roles_helper import UserRolesHelper
 from apps.roles.models import EN_UserRoles, TL_Roles
 from apps.users.models import EN_Users, EN_AddressBook
 from apps.utilities.helper.ui_data_helper import UIDataHelper
@@ -378,7 +379,12 @@ def changeRole(request):
     user_role_id = 0 if not "user_role_id" in request.POST else int(request.POST["user_role_id"])
     if user_role_id == 0:
         EN_UserRoles.objects.filter(user_id = user_id, is_selected_role=True).update(is_selected_role = False)
+        request.session[SessionProperties.USER_ACTIVE_ROLE_KEY] = "home"
+        UserRolesHelper(request).updateRolesOnSession()
         messages.success(request, DisplayKey.get("role_changes_successfully"))
+    elif user_id == 1: #Myshishya User
+        EN_UserRoles.objects.filter(user_id=user_id).update(is_selected_role = True)
+        messages.warning(request, DisplayKey.get("no_role_change_permitted_for_site_admin"))
     else:
         try:
             ur = EN_UserRoles.objects.get(id=user_role_id, approved=True,user_id=user_id)
@@ -388,6 +394,8 @@ def changeRole(request):
                 EN_UserRoles.objects.filter(user_id=user_id).update(is_selected_role=False)
                 ur.is_selected_role = True
                 ur.save()
+                request.session[SessionProperties.USER_ACTIVE_ROLE_KEY] = ur.role.code
+                UserRolesHelper(request).updateRolesOnSession()
                 messages.success(request, DisplayKey.get("role_changes_successfully"))
         except:
             messages.error(request, DisplayKey.get("no_such_role_for_user"))

@@ -17,7 +17,6 @@ INSERT INTO en_organization (id,product_id,school_name,started_date,display_pict
 (10,'MYOR900010','SSM Central School','1967-05-01',null,1,'9447010019','9447010020','2271019','2271020','ssm_kottayam@ssm.com','www.ssm.com',1,'Kesavadasapuram','REG-10010',2,4,65722,1,1);
 
 INSERT INTO en_contacts(id, mobile_number, secondary_number, is_landline_number, email_id, website, publish_your_site, mobile_country_code_id) values
-(1,'0000000000','0000000',1,'su@myshishya.com','www.myshishya.com',0,1),
 (2,'9449001111','2271111',1,'jayakumar@gmail.com',null,1,1),
 (3,'9449002222','2272222',1,'chinmayandanswami@gmail.com','www.chinmayanadaswami.com',1,1),
 (4,'9449003333','2273333',1,'Maryktty@yahoo.com',null,1,1),
@@ -50,7 +49,6 @@ INSERT INTO en_contacts(id, mobile_number, secondary_number, is_landline_number,
 (31,'9449004427','2274427',1,'shalini@gmail.com','www.shalini.com',1,1);
 
 INSERT INTO en_users (id, product_id, name, date_of_birth, display_picture, account_status_id, contact_id, gender_id, newsletter_subscribe) VALUES
-(1,'MY90000001','Myshishya Site Admin','2000-01-01','site_admin.png',2,1,1,1),
 (2,'MY90000002','V K Jayakumar','1970-05-05',null,2,2,1,1),
 (3,'MY90000003','Chimnayanada Saraswaty','1960-06-05',null,2,3,1,1),
 (4,'MY90000004','Mary Kutty','1978-02-11',null,2,4,2,0),
@@ -85,7 +83,6 @@ INSERT INTO en_users (id, product_id, name, date_of_birth, display_picture, acco
 
 
 INSERT INTO en_address_book(id,house_name,street,landmark,is_current_address,is_permanent_address,user_id,zipcode_id) VALUES
-(1,'Myshishya','HAL','Near PWC',1,1,1,65785),
 (2,'Jayakumar House','Alencherry','Near Postoffice',1,1,2,65785),
 (3,'Chinmayanada Madam','Ashrama maidanam','Near Kollam Beach',1,1,3,65788),
 (4,'Mary Villah','takaraparamu','Near Stadium',1,1,4,65789),
@@ -118,7 +115,6 @@ INSERT INTO en_address_book(id,house_name,street,landmark,is_current_address,is_
 (31,'Shalini House','Shalini - Test Street','Shalini - Test Landmark',1,1,31,65778);
 
 INSERT INTO en_login_credentials (id, username, password, password_history, current_logged_in_time, last_logged_in_time, user_id, is_online) VALUES
-(1,'myshishya','myshishya',NULL, '2018-08-28', '2018-08-28',1,1),
 (2,'jayakumar','jayakumar',NULL,'2018-08-28', '2018-08-28',2,1),
 (3,'chinmayanada','chinmayanada',NULL,'2018-08-28', '2018-08-28',3,1),
 (4,'marykutty','marykutty',NULL,'2018-08-28', '2018-08-28',4,1),
@@ -151,7 +147,6 @@ INSERT INTO en_login_credentials (id, username, password, password_history, curr
 (31,'shalini','shalini',NULL,'2018-08-28', '2018-08-28',31,1);
 
 INSERT INTO en_user_roles (id, user_id , role_id, related_organization_group_id,related_organization_id,related_user_id,approved, is_selected_role,request_approved_by_id,request_raised_by_id,request_approved_on,request_raised_on) VALUES
-(1,1,1,null,null,null,1,0,1,1,'2018-09-25 07:38:00.539153','2018-09-25 07:38:00.539153'),
 (2,2,2,1,null,null,1,0,2,2,'2018-09-25 07:38:00.539153','2018-09-25 07:38:00.539153'),
 (3,3,2,2,null,null,1,0,3,3,'2018-09-25 07:38:00.539153','2018-09-25 07:38:00.539153'),
 (4,4,2,3,null,null,1,0,4,4,'2018-09-25 07:38:00.539153','2018-09-25 07:38:00.539153'),

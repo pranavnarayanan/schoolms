@@ -106,4 +106,5 @@ class English_DK:
         "success_added_subject": "Successfully Added Subject details",
         "current_role_cannot_perform_this_action": "Permission denied for this role",
         "no_organization_associated_to_this_role": "No Organization associated to this role",
+        "no_role_change_permitted_for_site_admin": "No role change allowed for SITE ADMIN",
     }

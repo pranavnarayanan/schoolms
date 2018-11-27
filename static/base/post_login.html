@@ -31,12 +31,14 @@
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
 
+         {% if ui_data.current_role.code != "site_admin"%}
           <li class="dropdown messages-menu">
             <a href="#" class="dropdown-toggle" data-toggle="modal" data-target="#modal-role-change">
-              {{ ui_data.current_role.role }} &nbsp;&nbsp; <i class="fa fa-user-o">&nbsp;</i>
+              {{ ui_data.current_role.name }} &nbsp;&nbsp; <i class="fa fa-user-o">&nbsp;</i>
               <span class="label label-success">{{ ui_data.user_roles | length }}</span>
             </a>
           </li>
+         {% endif %}
 
           <li class="dropdown messages-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -264,6 +266,9 @@
         {% block page_heading %} {% endblock %}
         {% if ui_data.current_role.type == "home" %}
             <small>User Home</small>
+        {% endif %}
+        {% if ui_data.current_role.code == "site_admin" %}
+            <small>Myshishya Site Admin</small>
         {% endif %}
         {% if ui_data.current_role.type == "organization" %}
             <small>[{{ ui_data.current_role.name }}, &nbsp;{{ ui_data.current_role.address }}]</small>
