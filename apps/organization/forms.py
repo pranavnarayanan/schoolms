@@ -8,16 +8,21 @@ from apps.utilities.entities.zipcode import EN_Zipcode
 # Organization Group
 '''
 class FORM_NewOrganizationGroup(forms.Form):
-    groupname  = forms.CharField( min_length=1 )
-    website    = forms.CharField( min_length=1 )
+    groupname  = forms.CharField( min_length=3 )
+    website    = forms.CharField( min_length=7 )
     createpage = forms.BooleanField(required=False )
+    organization_su_prd_id = forms.CharField( required=True, min_length=10)
 
     def clean(self):
         data = self.cleaned_data
         if data["groupname"] == None:
             self.add_error("groupname", "Group Name is required")
         if data["website"] == None:
-            self.add_error("Website", "Website is required")
+            self.add_error("website", "Website is required")
+        elif EN_OrganizationGroup.objects.filter(website=data["website"]).exists():
+            self.add_error("website", "Website already exists")
+        if not EN_Users.objects.filter(product_id=data["organization_su_prd_id"]).exists():
+            self.add_error("organization_su_prd_id", "Invalid Product ID")
         return data
 
 
@@ -27,7 +32,6 @@ class FORM_NewOrganizationGroup(forms.Form):
 class FORM_NewOrganization(forms.Form):
     org_group_product_id    = forms.CharField(required=True)
     school_name             = forms.CharField(required=True)
-    organization_su_prd_id  = forms.CharField(min_length=10,max_length=12,required=True)
     org_start_date          = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}),required=True)
     affiliation             = forms.ChoiceField(choices = Choice.AffiliationAsChoice(), required = True)
     institution_type        = forms.ChoiceField(choices = Choice.InstitutionTypeAsChoice(),required = True)
@@ -45,10 +49,10 @@ class FORM_NewOrganization(forms.Form):
 
     def clean(self):
         data = self.cleaned_data
-        if not EN_OrganizationGroup.objects.filter(product_id=data["org_group_product_id"]):
-            self.add_error("org_group_product_id", "Ïnvalid Myshisya ID entered for Organization Group")
-        if not EN_Zipcode.objects.filter(pincode=data["zipcode"]):
+        if not EN_Zipcode.objects.filter(pincode=data["zipcode"]).exists():
             self.add_error("zipcode", "Invalid Zip Code Entered")
+        if not EN_OrganizationGroup.objects.filter(product_id=data["org_group_product_id"]).exists():
+            self.add_error("org_group_product_id", "Invalid Product ID")
         if data["school_name"] == None:
             self.add_error("school_name", "School Name is mandatory")
         if data["org_start_date"] == None:
@@ -69,6 +73,4 @@ class FORM_NewOrganization(forms.Form):
             self.add_error("affiliation", "Invalid Affiliation")
         if not TL_InstitutionType.objects.filter(code=data["institution_type"]).exists():
             self.add_error("institution_type", "Invalid Institution Type")
-        if not EN_Users.objects.filter(product_id=data["organization_su_prd_id"]).exists():
-            self.add_error("organization_su_prd_id", "Invalid Super User ID")
         return data

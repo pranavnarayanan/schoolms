@@ -116,11 +116,45 @@ def saveGroupDetails(request):
             orgGrp.account_status    = TL_AccountStatus.objects.get(code="active")
             try:
                 orgGrp.save()
+
+                # --Roles---------------
+                inst_super_user = EN_Users.objects.get(product_id=formData.get("organization_su_prd_id"))
+                userRole = EN_UserRoles()
+                userRole.user = inst_super_user
+                userRole.role = TL_Roles.objects.get(code=Roles.INSTITUTION_SUPER_USER)
+                userRole.approved = True
+                userRole.request_raised_by_id = 1
+                userRole.request_raised_on = datetime.datetime.now()
+                userRole.related_organization_group = orgGrp
+                userRole.related_organization = None
+                userRole.related_user = None
+                userRole.request_approved_by_id = 1
+                userRole.request_approved_on = datetime.datetime.now()
+                try:
+                    userRole.save()
+                except Exception as e:
+                    orgGrp.delete()
+                    messages.error(request, "Failed to assign role : {}".format(e.__context__))
+                    return HttpResponseRedirect("../Organization/RegisterOrganization")
+
+                pattern = ActivityPattern.ROLE_REQUEST_APPROVED
+                user_id = request.session[SessionProperties.USER_ID_KEY]
+                act = ActivityHelper(user_id)
+                try:
+                    act.createActivity(pattern=pattern, created_to=inst_super_user, table=userRole)
+                except Exception as e:
+                    orgGrp.delete()
+                    userRole.delete()
+                    messages.error(request, "Failed to create activity : {}".format(e.__context__))
+                    return HttpResponseRedirect("../Organization/RegisterOrganization")
+                # ---------------------
+
+
                 messages.success(request, DisplayKey.get("org_group_created_successfully"))
                 messages.info(request, "Myshishya ID For Organization {} is {}".format(orgGrp.group_name,orgGrp.product_id))
                 return HttpResponseRedirect("../Organization/OrganizationGroups")
             except Exception as e:
-                messages.success(request, e.__context__)
+                messages.warning(request, e.__context__)
                 return registerOrgGroup(request)
         else:
             return registerOrgGroup(request)
@@ -170,38 +204,6 @@ def saveOrganizationDetails(request):
             except Exception as e:
                 messages.error(request,"Failed To Save Organization : {}".format(e.__context__))
                 return HttpResponseRedirect("../Organization/RegisterOrganization")
-
-            #--Roles---------------
-            inst_super_user = EN_Users.objects.get(product_id=formData.get("organization_su_prd_id"))
-            userRole = EN_UserRoles()
-            userRole.user = inst_super_user
-            userRole.role = TL_Roles.objects.get(code=Roles.INSTITUTION_SUPER_USER)
-            userRole.approved = True
-            userRole.request_raised_by_id = 1
-            userRole.request_raised_on = datetime.datetime.now()
-            userRole.related_organization_group = None
-            userRole.related_organization = orgDetails
-            userRole.related_user = None
-            userRole.request_approved_by_id = 1
-            userRole.request_approved_on = datetime.datetime.now()
-            try:
-                userRole.save()
-            except Exception as e:
-                orgDetails.delete()
-                messages.error(request, "Failed to assign role : {}".format(e.__context__))
-                return HttpResponseRedirect("../Organization/RegisterOrganization")
-
-            pattern = ActivityPattern.ROLE_REQUEST_APPROVED
-            user_id = request.session[SessionProperties.USER_ID_KEY]
-            act = ActivityHelper(user_id)
-            try:
-                act.createActivity(pattern=pattern, created_to=inst_super_user, table=userRole)
-            except Exception as e:
-                orgDetails.delete()
-                userRole.delete()
-                messages.error(request, "Failed to create activity : {}".format(e.__context__))
-                return HttpResponseRedirect("../Organization/RegisterOrganization")
-            #---------------------
 
             messages.success(request, DisplayKey.get("organization_registration_success"))
             messages.info(request, "Myshishya ID For Organization {} is {}".format(orgDetails.school_name,orgDetails.product_id))

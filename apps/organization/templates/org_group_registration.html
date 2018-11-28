@@ -8,63 +8,53 @@
 {% endblock %}
 
 {% block content %}
-    <form action="SaveOrganizationGroup" method="post">
-        {% csrf_token %}
-        {% load widget_tweaks %}
+<form action="SaveOrganizationGroup" method="post">
+    {% csrf_token %}
+    {% load widget_tweaks %}
+    <div class="box box-default">
+    <div class="box-header with-border">
+      <h3 class="box-title">Organization Group Registration</h3>
+    </div>
 
-        <div class="row">
-            <div class="col-md-6">
-                <div class="box box-primary">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Organization Group</h3>
-                    </div>
-                    <div class="box-body">
-                        <div class="form-group">
-                            <label >Group Name</label>
-                            {% render_field form.groupname class="form-control" placeholder="Example: Sabarigiri Group Of Institutions"%}
-                        </div>
-                        <div class="form-group">
-                            <label >Website</label>
-                            {% render_field form.website class="form-control" placeholder="Example: www.sabarigirigroup.com"%}
-                        </div>
-                        <div class="form-group">
-                            {% render_field form.createpage %}
-                            <label>
-                                Create myshishya page for your group
-                            </label>
-                        </div>
-                    </div>
-                </div>
+     <div class="box-body">
+      <div class="row">
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label >Group Name</label>
+                {% render_field form.groupname class="form-control" placeholder="Madhavan Pillai Group Of Instutions"%}
+                <span class="help-block" style="color: red;">{% render_field form.groupname.errors %} </span>
             </div>
-            <div class="col-md-6">
-                <div class="box box-primary">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Organization Logo</h3>
-                    </div>
-                    <div class="box-body">
-                        <div class="form-group">
-                            <label for="exampleInputFile">File input</label>
-                            <input type="file" id="exampleInputFile">
-                        </div>
-                    </div>
-                </div>
+            <div class="form-group">
+                <label >Website</label>
+                {% render_field form.website class="form-control" placeholder="www.madhavanpillai.com"%}
+                <span class="help-block" style="color: red;">{% render_field form.website.errors %} </span>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-12">
-                <div class="box box-primary">
-                    <div class="box-footer">
-                        <button type="submit" class="btn btn-info">Cancel</button>
-                        <button type="reset" class="btn btn-warning">Reset</button>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
-                </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <br>
+                {% render_field form.createpage checked=true style="width: 25px!important; height: 25px!important;" %}
+                &nbsp;&nbsp; Create myshishya page for your group
             </div>
+            <div class="form-group">
+                <label>Organization Super User Product ID</label>
+                {% render_field form.organization_su_prd_id class="form-control" placeholder="MY000000001" %}
+                <span class="help-block" style="color: red;">{% render_field form.organization_su_prd_id.errors %} </span>
+            </div>
+
         </div>
 
-    </form>
-
+      </div>
+    </div>
+    <div class="box-footer">
+        <button type="submit" class="btn btn-info">Cancel</button>
+        <button type="reset" class="btn btn-warning">Reset</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+    </div>
+</form>
 {% endblock %}
 
 
