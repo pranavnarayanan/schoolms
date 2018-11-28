@@ -11,17 +11,6 @@ insert into tl_institution_levels(id,code, name, description) VALUES
 (8,'research','Research Studies','Research Studies');
 
 
-INSERT INTO tl_books_category(id,code, name, description) VALUES
-(1,'science','Science','Science'),
-(2,'mathematics','Mathematics','Mathematics'),
-(3,'fiction','Fiction','Fiction'),
-(4,'literature','Literature','Literature');
-
-INSERT INTO tl_books_sub_category(id,code, name, category_id, description) VALUES
-(1,'physics','Physics',1,'Physics'),
-(2,'chemistry','Chemistry',1,'Chemistry'),
-(3,'biology','Biology',1,'Biology');
-
 
 
 

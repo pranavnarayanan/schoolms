@@ -172,7 +172,7 @@ def validateAssignedRole(request):
             data.__setitem__("user_list", retList)
 
             template = "roles_parent_role_page.html" if selected_role.code == Roles.PARENT else "roles_user_list_page.html"
-            template = loader.get_template("templates/" + template)
+            template = loader.get_template(template)
             return HttpResponse(template.render(data, request))
         else:
             return loadRoleSettingPage(request)
