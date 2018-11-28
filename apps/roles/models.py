@@ -50,3 +50,23 @@ class EN_UserRoles(models.Model):
         elif self.related_organization != None  and self.related_user != None :
             if this.filter(related_organization=self.related_organization,related_user=self.related_user, related_organization_group__isnull=True).exists():
                 raise ValidationError("{}, ({}) is already a parent of this student".format(self.user.name,self.user.product_id))
+
+
+'''
+    Table       : Retired User Roles
+    Description : All retired/deleted user roles will be moved to this table
+'''
+class EN_RetiredUserRoles(models.Model):
+    user_role_id = models.IntegerField(null=False,unique=True)
+    user = models.ForeignKey(EN_Users, null=False, on_delete=models.PROTECT)
+    role = models.ForeignKey(TL_Roles, null=False, on_delete=models.PROTECT)
+    related_organization = models.ForeignKey(EN_Organization, default=None, null=True, on_delete=models.CASCADE)
+    related_organization_group = models.ForeignKey(EN_OrganizationGroup, default=None, null=True,on_delete=models.CASCADE)
+    related_user = models.ForeignKey(EN_Users, default=None, null=True, on_delete=models.CASCADE,related_name='r_related_user')
+    request_raised_by = models.ForeignKey(EN_Users, null=False, on_delete=models.DO_NOTHING,related_name='r_request_raised_by')
+    request_approved_by = models.ForeignKey(EN_Users, null=True, on_delete=models.DO_NOTHING,related_name='r_request_approved_by')
+    request_approved_on = models.DateTimeField(null=True,default=None)
+    request_raised_on = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        db_table = "en_retired_user_roles"
