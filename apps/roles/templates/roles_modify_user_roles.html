@@ -1,0 +1,81 @@
+{% extends "base/post_login.html" %}
+
+{% block page_title %} Modify Roles {% endblock %}
+{% block page_heading %} Modify Roles {% endblock %}
+
+
+{% block breadcrumb %}
+    <li><a href="../Home"><i class="fa fa-dashboard"></i> Home</a></li>
+    <li class="active"><a> Modify Role</a></li>
+{% endblock %}
+
+
+{% block content %}
+    <form action="FilterUser" method="post">
+        {% csrf_token %}
+        {% load widget_tweaks %}
+
+        <div class="row">
+
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <div class="box-body pull-right">
+                        <table>
+                            <tr>
+                                <td style="padding-top: 10px!important;">
+                                    <span style="color: red; ">{{ form.product_id.errors }}</span>
+                                </td>
+                                <td style="padding-left : 20px!important;">{% render_field form.product_id class="form-control" placeholder="Product ID"%}</td>
+                                <td><input type=text" class="form-control" placeholder="Name"></td>
+                                <td>
+                                    {% render_field form.roles class="form-control" %}
+                                    <!--
+                                    <select class="form-control">
+                                        <option value="0">Select Role</option>
+                                        {% for role in roles %}
+                                            <option value="{{ role.code }}">{{ role.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    -->
+                                </td>
+                                <td><button class="btn btn-flat btn-info"><i class="fa fa-search"></i></button></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="box-body">
+                        <table class="table table-hover">
+                            <thead>
+                              <tr>
+                                  <th>#</th>
+                                  <th>Book Name / ID</th>
+                                  <th>Author / Publisher</th>
+                                  <th>Category</th>
+                                  <th>Action</th>
+                             </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Thermodynamics</td>
+                                <td>Author : Sasikumar <br> Publisher : Sasi Publications <br> Published Year : 2016</td>
+                                <td>Cat : Science <br> Sub : Physics</td>
+                                <td><button class="btn btn-flat btn-info"><i class="fa fa-pencil"></i></button></td>
+                            </tr>
+                            </tbody>
+                          </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </form>
+{% endblock %}
+
+
+{% block page_specific_css %}
+{% endblock %}
+
+{% block page_specific_js  %}
+{% endblock %}

@@ -1,4 +1,6 @@
 from django.urls import path
+
+from apps.roles import views_modify_roles
 from . import views
 
 urlpatterns = [
@@ -23,4 +25,9 @@ urlpatterns = [
     #Role Approval List
     path(r'RoleRequestsReceived', views.roleRequestsReceived,name="Get Roles Received For This User"),
     path(r'GetRoleRequestsReceived', views.getRoleRequestsReceived,name="Get Roles Received For This User| AJAX"),
+
+    #User Roles Modification
+    path(r'ModifyUserRoles', views_modify_roles.modifyUserRoles, name="Renders User Role Modification Page "),
+    path(r'FilterUser', views_modify_roles.filterUser, name="Filter user using the filter conditions"),
+
 ]

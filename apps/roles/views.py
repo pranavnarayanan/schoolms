@@ -603,7 +603,7 @@ def getRoleRequestsReceived(request):
             jsonResponse = json.dumps(ret)
             return HttpResponse(jsonResponse)
         else:
-            # no permitted /  active role
+            # no permitted/active role
             # return error message
             pass
     else:
