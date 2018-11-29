@@ -34,7 +34,7 @@ class EN_Contacts(models.Model):
 '''
 class EN_Users(models.Model):
     product_id           = models.CharField(max_length=15, unique=True, null=False)
-    name                 = models.CharField(max_length=12, null=False)
+    name                 = models.CharField(max_length=100, null=False)
     date_of_birth        = models.DateField(null=False)
     gender               = models.ForeignKey(TL_Gender, null=False, on_delete=models.PROTECT)
     display_picture      = models.CharField(max_length=100, null=True)

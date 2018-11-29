@@ -14,7 +14,7 @@ class EN_UserRegistration(models.Model):
     website              = models.CharField(max_length=100, null=True)
     publish_your_site    = models.BooleanField(default=False)
 
-    name                 = models.CharField(max_length=12, null=True)
+    name                 = models.CharField(max_length=100, null=True)
     date_of_birth        = models.DateField(null=True)
     gender               = models.ForeignKey(TL_Gender, null=True, on_delete=models.CASCADE)
     display_picture      = models.CharField(max_length=100, null=True)

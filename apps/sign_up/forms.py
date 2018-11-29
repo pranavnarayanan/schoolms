@@ -49,7 +49,6 @@ class FORM_AddressDetails(forms.Form):
             if len(self.data) > 0:
                 self.fields['area'].choices = Choice.getZipcodeAreas(self.data["zipcode"])
         except Exception as e:
-            Logger.error(e.__str__())
             pass
 
     house_name         = forms.CharField(min_length=2,max_length=100,required=False)

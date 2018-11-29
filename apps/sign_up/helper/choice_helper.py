@@ -33,6 +33,6 @@ class Choice:
         for row in EN_Zipcode.objects.filter(pincode=pincode):
             chList = []
             chList.append(row.id)
-            chList.append(row.city + ", " + row.name)
+            chList.append(row.city + ", " + row.district)
             chMainList.append(tuple(chList))
         return tuple(chMainList)
