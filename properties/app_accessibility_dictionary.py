@@ -5,8 +5,7 @@ class AppAccessibilityDictionary():
     # Apps which can be accessed by all roles
     APPS_WITH_FULL_ACCESS_TO_ALL_USERS = [
         "admin", "SignUp", "Logout", "Login", "Notification","Roles","Home", "Messages", "Settings","Tasks",
-        "Books","Users","Subjects"
-
+        "Books","Users","Subjects","Documents"
     ]
 
     # Apps with user role permissions
