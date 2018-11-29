@@ -109,12 +109,16 @@
             </div>
             <div class="form-group">
                 <label>Zipcode</label>
-                {% render_field form.zipcode class="form-control" %}
+                {% render_field form.zipcode class="form-control" id="pincode" onChange="loadArea()" %}
                 <span class="help-block" style="color: red;">{% render_field form.zipcode.errors %} </span>
             </div>
             <div class="form-group">
                 <label>Street</label>
-                {% render_field form.street class="form-control" %}
+                <!--{ % render_field form.street class="form-control" %}-->
+                <select class="form-control">
+                    <option>Anchal</option>
+                    <option>Punalur</option>
+                </select>
                 <span class="help-block" style="color: red;">{% render_field form.street.errors %} </span>
             </div>
             <div class="form-group">
@@ -143,4 +147,20 @@
 {% endblock %}
 
 {% block page_specific_js  %}
+    <script type="text/javascript">
+        function loadArea(){
+            var pincode = $("#pincode").val();
+            $.ajax({
+                url    : "LoadAreaFromZipcode",
+                method : "POST",
+                data   : { "pincode" : pincode },
+                success: function(data){
+                    alert(data);
+                },
+                error: function(data){
+                    $(".box-footer").html(data.responseText);
+                }
+            });
+        }
+    </script>
 {% endblock %}

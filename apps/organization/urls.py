@@ -13,6 +13,7 @@ urlpatterns = [
     path(r'GetOrganizations', views.getOrganizations, name="AJAX - List All Organization"),
     path(r'RegisterOrganization', views.registerOrganization, name="Save Organization Details"),
     path(r'SaveOrganization', views.saveOrganizationDetails, name="Save Organization Details"),
+    path(r'LoadAreaFromZipcode', views.ajaxLoadAreaFromZipcode, name="Load Area From Zipcode Entered"),
 
     path(r'Organization', views.getOrganization, name="Get Organization Details"),
     path(r'OrganizationGroup', views.getOrganizationGroup, name="Get Organization Group Details")

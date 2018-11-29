@@ -292,3 +292,20 @@ def getOrganizationGroup(request):
         return index(request)
 
     return HttpResponse("Show Individual Org Group Details")
+
+'''
+    Loads area list from zipcode entered
+'''
+@csrf_exempt
+def ajaxLoadAreaFromZipcode(request):
+    pincode = request.POST.get("pincode","0")
+    retList = []
+    for area in EN_Zipcode.objects.filter(pincode=pincode):
+        retDict = {
+            "id":area.id,
+            "city":area.city,
+            "district":area.district,
+        }
+        retList.append(retDict)
+    return HttpResponse(json.dumps(retList))
+
