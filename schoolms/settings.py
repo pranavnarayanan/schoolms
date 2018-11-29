@@ -120,6 +120,14 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
+# Email Configuration
+EMAIL_USE_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'aravind.ramachandran.pillai@gmail.com'
+EMAIL_HOST_PASSWORD = 'KingMaker#1992'
+EMAIL_PORT = 587
+
 #ARAVIND : Delete this on production - Placed to disable caching of files
 CACHES = {
     'default': {

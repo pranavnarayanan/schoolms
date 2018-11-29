@@ -50,3 +50,8 @@ ___Notes_________________________________________________________________
 Add new App:
 
 python manage.py startapp <appname>
+
+__GOOGLE EMAIL LESS SECURE ______________________________________________
+
+https://myaccount.google.com/lesssecureapps
+
