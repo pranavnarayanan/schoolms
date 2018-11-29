@@ -45,7 +45,6 @@ class FORM_NewOrganization(forms.Form):
     zipcode                 = forms.CharField(required=True,min_length=6,max_length=6)
     createpage              = forms.BooleanField(required=False)
     school_registration_id  = forms.CharField(required=True)
-    street                  = forms.CharField(required=True)
 
     def clean(self):
         data = self.cleaned_data
@@ -67,8 +66,6 @@ class FORM_NewOrganization(forms.Form):
             self.add_error("email_id", "Email Id is mandatory")
         if data["school_registration_id"] == None:
             self.add_error("school_registration_id", "School Registration Id is mandatory")
-        if data["street"] == None:
-            self.add_error("street", "Street is mandatory")
         if not TL_Affiliation.objects.filter(code=data["affiliation"]).exists():
             self.add_error("affiliation", "Invalid Affiliation")
         if not TL_InstitutionType.objects.filter(code=data["institution_type"]).exists():

@@ -196,7 +196,7 @@ def saveOrganizationDetails(request):
             orgDetails.website             = formData.get("website")
             orgDetails.publish_your_site   = formData.get("createpage")
             orgDetails.account_status      = TL_AccountStatus.objects.get(code="inactive")
-            orgDetails.zipcode             = EN_Zipcode.objects.get(id=2) # TODO : formData.get("zipcode")
+            orgDetails.zipcode             = EN_Zipcode.objects.get(id=int(request.POST.get("area")))
             orgDetails.street              = formData.get("street")
             orgDetails.registration_id     = formData.get("school_registration_id")
             try:

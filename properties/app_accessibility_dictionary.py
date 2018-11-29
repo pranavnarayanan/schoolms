@@ -1,11 +1,10 @@
-from properties.Roles import Roles
-
+from properties.app_roles import Roles
 
 class AppAccessibilityDictionary():
 
     # Apps which can be accessed by all roles
     APPS_WITH_FULL_ACCESS_TO_ALL_USERS = [
-        "admin", "Redirect", "UserRegistration", "Login", "Home", "Tasks", "Notification", "Messages", "Settings",
+        "admin", "SignUp", "Logout", "Login", "Notification","Roles","Home", "Messages", "Settings",
         "Books","Users","Subjects"
 
     ]
@@ -22,8 +21,9 @@ class AppAccessibilityDictionary():
             "SaveOrganizationGroup" : [Roles.SITE_ADMIN],
             "RegisterOrganization"  : [Roles.SITE_ADMIN],
             "SaveOrganization"      : [Roles.SITE_ADMIN],
-            "Organization"          : ["all"],
-            "OrganizationGroup"     : ["all"],
+            "LoadAreaFromZipcode"   : [Roles.SITE_ADMIN],
+            "Organization"          : [Roles.SITE_ADMIN],
+            "OrganizationGroup"     : [Roles.SITE_ADMIN],
         },
         "Roles":{
             "Index"                   : ["all"],
@@ -45,10 +45,10 @@ class AppAccessibilityDictionary():
             "SubmitSchoolTimings" : [Roles.SCHOOL_ADMIN],
         },
         "Classes":{
-            "Index"        : [Roles.SCHOOL_ADMIN, Roles.PRINCIPAL],
-            "AddNewClass"  : [Roles.SCHOOL_ADMIN],
-            "SaveClass"  : [Roles.SCHOOL_ADMIN],
-            "AddSubjectToClass"  : [Roles.SCHOOL_ADMIN],
+            "Index"               : [Roles.SCHOOL_ADMIN, Roles.PRINCIPAL],
+            "AddNewClass"         : [Roles.SCHOOL_ADMIN],
+            "SaveClass"           : [Roles.SCHOOL_ADMIN],
+            "AddSubjectToClass"   : [Roles.SCHOOL_ADMIN],
             "SaveSubjectToClass"  : [Roles.SCHOOL_ADMIN]
         }
     }

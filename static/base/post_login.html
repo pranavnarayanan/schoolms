@@ -356,7 +356,7 @@
               <div class="modal-header">
                  <button type="submit" value="0" class="pull-right btn btn-info">
                  <i class="fa fa-home" style="color: greenyellow"> &nbsp; </i>Home</button>
-                 <h4 class="modal-title">Roles <font size="2"> [{{ ui_data.user_roles | length }} active]</font>
+                 <h4 class="modal-title">Roles <font size="2"> [You have {{ ui_data.user_roles | length }} approved role(s)]</font>
                  </h4>
                  <small style="color:#00ca6d">Current Role : {{ ui_data.current_role.role }} , {{ ui_data.current_role.address }}</small>
               </div>
@@ -379,7 +379,11 @@
                             <i class="fa fa-user" style="color: #00caff"></i>
                           {% endif %}
                          {{ role.product_id }}]</td>
-                          <td><button type="submit" name="user_role_id" value="{{ role.role_id }}" class="btn btn-info"><i class="fa fa-save"></i></button></td>
+                         {% if role.is_selected_role  %}
+                            <td><button type="button" class="btn btn-success"><i class="fa fa-check"></i></button></td>
+                         {% else %}
+                            <td><button type="submit" name="user_role_id" value="{{ role.role_id }}" class="btn btn-info"><i class="fa fa-save"></i></button></td>
+                         {% endif %}
                          </tr>
                         {% endfor %}
                       </table>
