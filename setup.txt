@@ -55,3 +55,17 @@ __GOOGLE EMAIL LESS SECURE ______________________________________________
 
 https://myaccount.google.com/lesssecureapps
 
+__MYSQL_CONFIGURATION____________________________________________________
+{
+    'ENGINE': 'django.db.backends.mysql',
+    'exit'
+    'NAME': 'schoolms',
+    'USER': 'root',
+    'PASSWORD': '',
+    'HOST': 'localhost',
+    'PORT': '',
+    'OPTIONS': {
+        'sql_mode': 'traditional',
+    }
+}
+
