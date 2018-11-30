@@ -69,3 +69,18 @@ __MYSQL_CONFIGURATION____________________________________________________
     }
 }
 
+
+__Accounts____________________________________________________________
+
+Gmail:
+Username : mail4myshishya@gmail.com
+Password : Shapetheworld#123
+
+GIT:
+Username : aravindrpillai1992@gmail.com
+Password : ****************
+
+
+AWS:
+
+

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>School Timings Settings</title>
+</head>
+<body>
+<form class="w-100" method="post" action="SubmitSchoolTimings">
+    {% csrf_token %}
+    {% load widget_tweaks %}
+
+    <div class="content-wrapper">
+    <section class="content-header">
+      <h1>
+        {% block page_heading %} {% endblock %}
+        <small>{% block page_description %} {% endblock %}</small>
+      </h1>
+      <ol class="breadcrumb">
+        {% block breadcrumb %} {% endblock %}
+      </ol>
+    </section>
+
+    <section class="content">
+        <div class="box-body">
+
+        {% if messages %}
+            {% for msg in messages %}
+
+                {% if msg.level_tag == "success" %}
+                    <div class="alert alert-success alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <i class="fa fa-check"></i> &nbsp; <b>Success</b> : {{ msg.message }}
+                    </div>
+                {% endif %}
+
+                {% if msg.level_tag == "warning" %}
+                    <div class="alert alert-warning alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <i class="fa fa-warning"></i> &nbsp; <b>Warning</b> : {{ msg.message }}
+                    </div>
+                {% endif %}
+
+                {% if msg.level_tag == "info" %}
+                    <div class="alert alert-info alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <i class="fa fa-info"></i> &nbsp; <b>Info</b> : {{ msg.message }}
+                    </div>
+                {% endif %}
+
+                {% if msg.level_tag == "error" %}
+                    <div class="alert alert-error alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <i class="fa fa-close"></i> &nbsp; <b>Error</b> : {{ msg.message }}
+                    </div>
+                {% endif %}
+
+            {% endfor %}
+        {% endif %}
+
+          {% block content %} {% endblock %}
+        </div>
+    </section>
+  </div>
+
+
+    <label>School Starting time</label>
+    {% render_field form.school_start_time class="form-control" %}
+    <br>
+    <label>School Closing time</label>
+    {% render_field form.school_closing_time class="form-control" %}
+    <br>
+    <label>Breakfast Starting time</label>
+    {% render_field form.breakfast_start_time class="form-control" %}
+    <br>
+    <label>Breakfast Ending time</label>
+    {% render_field form.breakfast_end_time class="form-control" %}
+    <br>
+    <label>Lunch Starting time</label>
+    {% render_field form.lunch_starting_time class="form-control" %}
+    <br>
+    <label>Lunch Ending time</label>
+    {% render_field form.lunch_ending_time class="form-control" %}
+    <br>
+    <label>Dinner Starting time</label>
+    {% render_field form.dinner_starting_time class="form-control" %}
+    <br>
+    <label>Dinner End time</label>
+    {% render_field form.dinner_end_time class="form-control" %}
+    <br>
+    <label>Total Number of Periods</label>
+    {% render_field form.total_periods class="form-control" %}
+    <br>
+    <label>Number of Intervals</label>
+    {% render_field form.number_of_intervals class="form-control" %}
+    <br>
+    <label>Interval Duration in minutes</label>
+    {% render_field form.interval_duration class="form-control" %}
+    <br>
+    <label>Assembly on Days</label>
+    {% render_field form.assembly_on_days class="form-control" %}
+    <br>
+    <label>Morning Assembly Duration in Minutes</label>
+    {% render_field form.morning_assembly_duration class="form-control" %}
+    <br>
+    <label>School Off Days</label>
+    {% render_field form.school_off_days class="form-control" %}
+    <br>
+    <button type="submit" value="next" class="btn_next waves-effect blue accent-2">Submit Details</button>
+
+
+
+</form>
+</body>
+</html>

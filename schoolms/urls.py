@@ -29,6 +29,7 @@ urlpatterns = [
     path(r'Messages/', include("apps.messaging.urls")),
     path(r'Settings/', include("apps.settings.urls")),
     path(r'Tasks/', include("apps.tasks.urls")),
+    path(r'SchoolTimings/', include("apps.school_timings.urls")),
     path(r'Documents/', include("apps.documents.urls")),
 
 ]

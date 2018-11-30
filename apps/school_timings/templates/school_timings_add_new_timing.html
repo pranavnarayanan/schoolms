@@ -1,0 +1,101 @@
+{% extends "base/post_login.html" %}
+{% block page_title %} Add School Timings {% endblock %}
+{% block page_heading %} Add School Timings {% endblock %}
+
+{% block breadcrumb %}
+    <li><a><i class="fa fa-dashboard"></i> Home</a></li>
+    <li><a><i class="fa fa-dashboard"></i> Add School Timings </a></li>
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+        <div class="col-xs-4">
+          <div class="box">
+                <div class="box box-primary">
+                <div class="box-body">
+                    <div class="form-group">
+                        <label>Timing Name</label>
+                        <input type="text" class="form-control">
+                        <span class="help-block" style="color: red;"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Class Starting Time</label>
+                        <input type="time" class="form-control">
+                        <span class="help-block" style="color: red;"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Class Ending Time</label>
+                        <input type="time" readonly class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Off Days</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Assembly On Days</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <button class="btn btn-info"><i class="fa fa-save"></i> Save</button>
+                </div>
+
+            </div>
+          </div>
+        </div>
+
+      <div class="col-xs-8">
+          <div class="box">
+            <div class="box-body table-responsive no-padding">
+              <table class="table table-hover">
+                <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Type</th>
+                      <th>Duration</th>
+                      <th>Time</th>
+                    </tr>
+                </thead>
+
+                <tbody id="periods">
+                </tbody>
+
+                <tbody>
+                     <tr style="cursor: pointer">
+                      <td onclick="addPeriod()"></td>
+                      <td onclick="addPeriod()"></td>
+                      <td onclick="addPeriod()"><i class="fa fa-plus-circle"></i> Add New Row</td>
+                      <td onclick="removePeriod()"><i class="fa fa-trash"></i> Remove Last</td>
+                    </tr>
+                </tbody>
+
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+{% endblock %}
+
+
+
+{% block page_specific_css %}
+{% endblock %}
+
+{% block page_specific_js  %}
+    <script>
+        var count = 0;
+        function addPeriod() {
+            count += 1;
+            var tr = '<tr id="tr_'+count+'">';
+                tr += '<td>'+count+'</td>';
+                tr += '<td><select class="form-control"><option>Period</option><option>Break</option><option>Assembly</option></select></td>';
+                tr += '<td><input type="number" class="form-control"></td>';
+                tr += '<td><input type="text" readonly value="8:00am - 8:50am" class="form-control"></td>';
+                tr += '</tr>';
+            $("#periods").append(tr);
+        }
+
+        function removePeriod(){
+            $("#tr_"+count).remove();
+            count-=1;
+        }
+    </script>
+{% endblock %}

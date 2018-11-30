@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'apps.tasks',
     'apps.messaging',
     'apps.books',
+    'apps.school_timings',
     'apps.documents',
 ]
 
@@ -74,6 +75,7 @@ TEMPLATES = [
             os.path.join(BASE_DIR, 'apps/messaging/templates'),
             os.path.join(BASE_DIR, 'apps/settings/templates'),
             os.path.join(BASE_DIR, 'apps/tasks/templates'),
+            os.path.join(BASE_DIR, 'apps/school_timings/templates'),
             os.path.join(BASE_DIR, 'apps/documents/templates'),
         ],
         'APP_DIRS': True,

@@ -1,0 +1,77 @@
+{% extends "base/post_login.html" %}
+
+{% block page_title %} School Timings {% endblock %}
+{% block page_heading %} School Timings {% endblock %}
+
+{% block breadcrumb %}
+    <li><a href="../Home"><i class="fa fa-dashboard"></i> Home</a></li>
+    <li class="active"><a> School Timings </a></li>
+{% endblock %}
+
+
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12">
+          <div class="box box-body">
+          <table id="datatable" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                  <th>Timing Name</th>
+                  <th>Class Time</th>
+                  <th>Class Duration</th>
+                  <th>Off Days</th>
+                  <th>Intervals</th>
+                  <th>Food Breaks</th>
+                  <th>Assembly Days</th>
+                  <th>Classes Following</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Class 10 to 12 Timing</td>
+                <td>9:00 am to 3:00 pm</td>
+                <td>45 Mins</td>
+                <td>Saturday, Sunday</td>
+                <td>1. 10:15 am to 10:30 am <br>2. 02:15 pm to 02:30 pm  </td>
+                <td>Breakfast : 10:40 am to 11:10 am <br>Lunch. 12:15 pm to 01:00 pm  </td>
+                <td>Monday, Wednesday, Friday</td>
+                <td>10A, 10B, 11A, 11B, 11C, 12A, 12B</td>
+            </tr>
+            </tbody>
+          </table>
+          </div>
+        </div>
+      </div>
+
+{% endblock %}
+
+
+{% block page_specific_css %}
+    <link rel="stylesheet" href="../static/bootstrap/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="../static/bootstrap/custom/css/image.css">
+    <link rel="stylesheet" href="../static/bootstrap/bower_components/select2/dist/css/select2.min.css">
+{% endblock %}
+
+{% block page_specific_js  %}
+    <script src="../static/bootstrap/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="../static/bootstrap/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="../static/bootstrap/bower_components/fastclick/lib/fastclick.js"></script>
+    <script src="../static/bootstrap/bower_components/select2/dist/js/select2.full.min.js"></script>
+
+    <script>
+      $(function () {
+        $('#datatable').DataTable({
+          'paging'      : true,
+          'lengthChange': false,
+          'searching'   : true,
+          'ordering'    : true,
+          'info'        : true,
+          'autoWidth'   : true
+        })
+      });
+
+      $(function () {
+        $('.select2').select2();
+      });
+    </script>
+{% endblock %}
