@@ -16,7 +16,5 @@ class MW_UserRegistration():
         appName = AppUtil.getAppName(request)
         if appName in self.permitted_apps:
             request.session.set_expiry(6000)
-            response = self.get_response(request)
-            return response
-        else:
-            return self.get_response(request)
+
+        return self.get_response(request)

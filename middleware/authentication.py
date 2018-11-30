@@ -1,6 +1,5 @@
 from django.contrib import messages
 from django.http import HttpResponseRedirect
-
 from utils.app_util import AppUtil
 from utils.logger import Logger
 from displaykey.display_key import DisplayKey
@@ -28,8 +27,6 @@ class MW_Authentication():
                 Logger.error("Middleware Authentication Denied User ID {} To Access App {} ".format(user_id,appName))
                 messages.warning(request,DisplayKey.get("error_session_time_out"))
                 return HttpResponseRedirect('../Login')
-            response = self.get_response(request)
-            return response
-        else:
-            return self.get_response(request)
+
+        return self.get_response(request)
 

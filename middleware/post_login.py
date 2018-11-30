@@ -6,7 +6,7 @@ from utils.app_util import AppUtil
 class MW_PostLoginCommon():
 
     excluded_apps = [
-        "UserRegistration",
+        "SignUp",
         "Login",
         "Logout",
     ]
@@ -18,7 +18,5 @@ class MW_PostLoginCommon():
         appName = AppUtil.getAppName(request)
         if appName not in self.excluded_apps:
             request.session.set_expiry(1200)
-            response = self.get_response(request)
-            return response
-        else:
-            return self.get_response(request)
+
+        return self.get_response(request)
