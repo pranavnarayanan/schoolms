@@ -1,4 +1,4 @@
-from apps.organization.models import TL_Affiliation, TL_InstitutionType
+from apps.organization.models import TL_Affiliation, TL_InstitutionType, TL_InstitutionLevels
 from apps.utilities.entities.country import EN_Country
 
 class Choice:
@@ -18,6 +18,16 @@ class Choice:
     def InstitutionTypeAsChoice():
         chMainList = []
         for row in TL_InstitutionType.objects.all():
+            chList = []
+            chList.append(row.code)
+            chList.append(row.name)
+            chMainList.append(tuple(chList))
+        return tuple(chMainList)
+
+    @staticmethod
+    def InstitutionLevelAsChoice():
+        chMainList = []
+        for row in TL_InstitutionLevels.objects.all():
             chList = []
             chList.append(row.code)
             chList.append(row.name)

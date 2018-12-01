@@ -31,6 +31,7 @@ urlpatterns = [
     path(r'Tasks/', include("apps.tasks.urls")),
     path(r'SchoolTimings/', include("apps.school_timings.urls")),
     path(r'Documents/', include("apps.documents.urls")),
+    path(r'Classes/', include("apps.classes.urls")),
 
 ]
 

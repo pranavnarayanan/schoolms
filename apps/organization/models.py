@@ -16,6 +16,19 @@ class TL_InstitutionType(models.Model):
 
 
 '''
+    Table   : Institution Levels
+    Content : KG, LP, UP, UG, PG
+'''
+class TL_InstitutionLevels(models.Model):
+    code        = models.CharField(max_length=40, unique=True,  null=False)
+    name        = models.CharField(max_length=40, unique=False, null=False)
+    description = models.TextField(null=True)
+
+    class Meta:
+        db_table = "tl_institution_levels"
+
+
+'''
     Table   : Syllabus
     Content : CBSE, ICES, kerala-state, abdual kalam, cusat, mg
 '''
