@@ -238,9 +238,15 @@
                   </ul>
                 </li>
 
+
+                {% if ui_data.sidebar.role != "site_admin" %}
                 <li class="{{ is_list_my_documents }}">
                     <a href="../Documents/"><i class="fa fa-file"></i> <span>Documents</span></a>
                 </li>
+                <li class="{{ is_list_my_notifications }}">
+                    <a href="../Notification/"><i class="fa fa-bell-o"></i> <span>Notifications</span></a>
+                </li>
+                {% endif %}
 
 
 
