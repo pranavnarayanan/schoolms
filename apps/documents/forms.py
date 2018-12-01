@@ -1,4 +1,5 @@
 from django import forms
-from apps.documents.models import EN_Documents
-class documentform(forms.Form):
-    file=forms.FileField()
+
+class FORM_Document(forms.Form):
+
+    file = forms.FileField(required=True)
