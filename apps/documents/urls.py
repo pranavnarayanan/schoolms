@@ -4,6 +4,7 @@ from . import views
 urlpatterns = [
 
     path(r'',views.index, name="List all files uploaded by user "),
-    path(r'Upload', views.uploadNewFile, name="Upload New Document"),
+    path(r'upload', views.upload, name="Upload New Document"),
+    path(r'uploaddocument',views.uploaddocument, name="ddd")
 
 ]

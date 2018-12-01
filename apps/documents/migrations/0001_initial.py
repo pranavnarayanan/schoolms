@@ -17,15 +17,14 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='EN_Documents',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('file_name', models.CharField(max_length=30)),
+        ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('file_name', models.FileField(upload_to='documents/')),
                 ('unique_name', models.CharField(max_length=100, unique=True)),
                 ('file_description', models.CharField(max_length=300, null=True)),
                 ('tag', models.CharField(max_length=50, null=True)),
-                ('type', models.CharField(max_length=30, unique=True)),
+                ('type', models.CharField(max_length=30, null=True)),
                 ('uploaded_on', models.DateTimeField(default=django.utils.timezone.now)),
                 ('no_of_days_to_keep_file', models.IntegerField(null=True)),
-                ('uploaded_by', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='users.EN_Users')),
             ],
             options={
                 'db_table': 'en_documents',

@@ -1,21 +1,11 @@
-{% extends "base/post_login.html" %}
+{% extends "base/Documents.html" %}
+{% block tittle%}upload {% endblock %}
+{% block page_body %}
 
-{% block page_title %} Documents {% endblock %}
-{% block page_heading %} Documents {% endblock %}
-
-{% block breadcrumb %}
-    <li><a><i class="fa fa-dashboard"></i> Home</a></li>
-    <li>Documents</li>
-{% endblock %}
-
-{% block content %}
-    Documents Page
-{% endblock %}
-
-
-
-{% block page_specific_css %}
-{% endblock %}
-
-{% block page_specific_js  %}
+    <form method="post" action="uploaddocument" enctype="multipart/form-data" >
+    {% csrf_token %}
+    {% load widget_tweaks %}
+    {% render_field form.file %}
+    <input type="submit" name="submit"/>
+    </form>
 {% endblock %}
