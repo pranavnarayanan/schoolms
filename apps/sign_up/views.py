@@ -1,3 +1,4 @@
+from apps.activity.helper import ActivityHelper
 from apps.sign_up.forms import *
 from django.template import loader
 from django.contrib import messages
@@ -9,6 +10,7 @@ from apps.utilities.entities.zipcode import EN_Zipcode
 from apps.sign_up.helper.data_commit import SaveRecord
 from django.http import HttpResponse, HttpResponseRedirect
 from apps.sign_up.helper.session_helper import UserRegistrationSessions
+from properties.activity_patterns import ActivityPattern
 
 ''''
     Function  : Loads the primary page
@@ -253,7 +255,7 @@ def saveCredentialPageDetails(request):
                         messages.error(request,e.__str__())
                         return loadCredentialsPage(request)
 
-                    #Todo : Do Activity logging here
+                    ActivityHelper(request).createActivity(pattern=ActivityPattern.PRODUCT_WELCOME_MESSAGE)
                     return HttpResponseRedirect("../Login")
                 except Exception as e:
                     messages.error(request,e.__str__())

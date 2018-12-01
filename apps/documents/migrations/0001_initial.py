@@ -3,6 +3,7 @@
 from django.db import migrations, models
 import django.db.models.deletion
 import django.utils.timezone
+from apps.users.models import EN_Users
 
 
 class Migration(migrations.Migration):
@@ -25,6 +26,7 @@ class Migration(migrations.Migration):
                 ('type', models.CharField(max_length=30, null=True)),
                 ('uploaded_on', models.DateTimeField(default=django.utils.timezone.now)),
                 ('no_of_days_to_keep_file', models.IntegerField(null=True)),
+                ('uploaded_by',models.ForeignKey(EN_Users, null=False, on_delete=models.CASCADE))
             ],
             options={
                 'db_table': 'en_documents',

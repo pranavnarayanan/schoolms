@@ -137,11 +137,12 @@ def saveGroupDetails(request):
                     messages.error(request, "Failed to assign role : {}".format(e.__context__))
                     return HttpResponseRedirect("../Organization/RegisterOrganization")
 
-                pattern = ActivityPattern.ROLE_REQUEST_APPROVED
-                user_id = request.session[SessionProperties.USER_ID_KEY]
-                act = ActivityHelper(user_id)
                 try:
-                    act.createActivity(pattern=pattern, created_to=inst_super_user, table=userRole)
+                    ActivityHelper(request).createActivity(
+                        pattern=ActivityPattern.ROLE_REQUEST_APPROVED,
+                        created_to=inst_super_user,
+                        table=userRole
+                    )
                 except Exception as e:
                     orgGrp.delete()
                     userRole.delete()

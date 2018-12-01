@@ -1,0 +1,84 @@
+{% extends "base/post_login.html" %}
+{% block page_title %} Add New Class{% endblock %}
+{% block page_heading %} Add New Class {% endblock %}
+
+{% block breadcrumb %}
+    <li><a><i class="fa fa-dashboard"></i> Home</a></li>
+    <li><a><i class="fa fa-dashboard"></i> Add New Class</a></li>
+{% endblock %}
+
+{% block content %}
+    <form method="post" action="SaveClass">
+    {% csrf_token %}
+    {% load widget_tweaks %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Class Name</label>
+                            {% render_field form.class_name class="form-control" %}
+                            <span class="help-block" style="color: red;"> Error if any </span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Class Nick Name</label>
+                            {% render_field form.class_nickname class="form-control" %}
+                            <span class="help-block" style="color: red;"> Error if any </span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Class Starting Date</label>
+                            {% render_field form.class_start_date class="form-control" %}
+                            <span class="help-block" style="color: red;"> Error if any </span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Class Ending Date</label>
+                            {% render_field form.class_end_date class="form-control" %}
+                            <span class="help-block" style="color: red;"> Error if any </span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Class Level</label>
+                            {% render_field form.institution_levels class="form-control" %}
+                            <span class="help-block" style="color: red;"> Error if any </span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Timing Pattern</label>
+                            {% render_field form.class_time_pattern class="form-control" %}
+                            <span class="help-block" style="color: red;"> Error if any </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+                <button type="submit" class="btn btn-info">Cancel</button>
+                <button type="reset" class="btn btn-warning">Reset</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+            </div>
+        </div>
+    </div>
+    </form>
+{% endblock %}
+
+
+
+{% block page_specific_css %}
+{% endblock %}
+
+{% block page_specific_js  %}
+{% endblock %}

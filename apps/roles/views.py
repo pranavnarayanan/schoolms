@@ -202,7 +202,7 @@ def saveAssignedRole(request):
                 active_role = active_role.first()
                 approved = (active_role.role.code in [Roles.INSTITUTION_SUPER_USER, Roles.SCHOOL_ADMIN])
                 idList = [int(s) for s in (ids.strip()).split(',')]
-                activity = ActivityHelper(user_id)
+                activity = ActivityHelper(request)
                 for user in EN_Users.objects.filter(id__in=idList):
                     userRole = EN_UserRoles()
                     userRole.user = user
