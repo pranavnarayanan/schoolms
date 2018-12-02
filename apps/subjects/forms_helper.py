@@ -1,7 +1,6 @@
 from apps.classes.models import EN_Classes
 
-
-class SubjectFormsHelper():
+class SubjectFormsHelper:
 
     def getClasses(self):
         allClassList = []
