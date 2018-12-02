@@ -9,7 +9,6 @@ from apps.roles.models import EN_UserRoles
 from apps.school_timings.models import EN_SchoolTimings
 from apps.utilities.helper.ui_data_helper import UIDataHelper
 from displaykey.display_key import DisplayKey
-from properties.properties import Properties
 from properties.session_properties import SessionProperties
 
 

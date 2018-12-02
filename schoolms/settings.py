@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'apps.school_timings',
     'apps.documents',
     'apps.classes',
+    'apps.subjects',
 ]
 
 
@@ -79,6 +80,7 @@ TEMPLATES = [
             os.path.join(BASE_DIR, 'apps/school_timings/templates'),
             os.path.join(BASE_DIR, 'apps/documents/templates'),
             os.path.join(BASE_DIR, 'apps/classes/templates'),
+            os.path.join(BASE_DIR, 'apps/subjects/templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
