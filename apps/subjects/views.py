@@ -17,14 +17,14 @@ def index(request):
 
 def addSubject(request):
     data = UIDataHelper(request).getData(page="is_add_subjects")
-    data.__setitem__("form", FORM_SubjectDetails(request.POST) if request.method == "POST" else FORM_SubjectDetails())
+    data.__setitem__("form", FORM_SubjectDetails(request.POST, request=request) if request.method == "POST" else FORM_SubjectDetails(request=request))
     template = loader.get_template("sub_add_new_subject.html")
     return HttpResponse(template.render(data, request))
 
 
 def saveSubject(request):
     if request.method == 'POST':
-        form_data = FORM_SubjectDetails(request.POST)
+        form_data = FORM_SubjectDetails(request.POST, request=request)
         if (form_data.is_valid()):
             subjectName = form_data.cleaned_data.get("subject_name")
             subjectDuration = form_data.cleaned_data.get("subject_duration")
