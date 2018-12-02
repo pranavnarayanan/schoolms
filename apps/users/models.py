@@ -38,6 +38,7 @@ class EN_Users(models.Model):
     date_of_birth        = models.DateField(null=False)
     gender               = models.ForeignKey(TL_Gender, null=False, on_delete=models.PROTECT)
     display_picture      = models.CharField(max_length=100, null=True)
+    activation_token     = models.CharField(max_length=200, null=True)
     account_status       = models.ForeignKey(TL_AccountStatus, null=False, on_delete=models.PROTECT)
     contact              = models.OneToOneField(EN_Contacts,on_delete=models.CASCADE)
     newsletter_subscribe = models.BooleanField(default=True)

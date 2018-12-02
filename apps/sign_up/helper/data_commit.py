@@ -1,4 +1,6 @@
 import datetime
+from uuid import uuid4
+
 from apps.users.models import EN_AddressBook
 from apps.users.models import EN_Contacts
 from apps.login.models import EN_LoginCredentials
@@ -28,6 +30,7 @@ class SaveRecord():
         enUser.date_of_birth = user_reg_instance.date_of_birth
         enUser.gender = user_reg_instance.gender
         enUser.display_picture = None
+        enUser.activation_token = uuid4()
         enUser.account_status = TL_AccountStatus.objects.get(code="inactive")
         enUser.contact = enContact
         enUser.newsletter_subscribe = user_reg_instance.subscribe_for_news_letter
@@ -63,3 +66,5 @@ class SaveRecord():
             enPermanentAddress.is_permanent_address = False
             enCurrentAddress.user = enUser
             enCurrentAddress.save()
+
+        return enUser

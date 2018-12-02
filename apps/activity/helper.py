@@ -10,8 +10,16 @@ from properties.session_properties import SessionProperties
 '''
 class ActivityHelper:
 
-    def __init__(self,request):
-        self.CreatedBy = request.session[SessionProperties.USER_ID_KEY]
+    def __init__(self,request, user_id=None):
+        if SessionProperties.USER_ID_KEY in request.session:
+            self.CreatedBy = request.session[SessionProperties.USER_ID_KEY]
+        elif user_id != None:
+            if EN_Users.objects.filter(id=user_id).exists():
+                self.CreatedBy = user_id
+            raise Exception("Invalid User id provided for activity creation")
+        else:
+            raise Exception("User Id not available for activity creation")
+
 
     # Desc :
     # Creates an activity based on pattern

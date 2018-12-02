@@ -11,6 +11,8 @@ from apps.sign_up.helper.data_commit import SaveRecord
 from django.http import HttpResponse, HttpResponseRedirect
 from apps.sign_up.helper.session_helper import UserRegistrationSessions
 from properties.activity_patterns import ActivityPattern
+from properties.email_templates import EmailTemplates
+from utils.email_util import Email
 
 ''''
     Function  : Loads the primary page
@@ -247,7 +249,7 @@ def saveCredentialPageDetails(request):
                     ur.save()
 
                     try:
-                        SaveRecord().save(ur)
+                        user = SaveRecord().save(ur)
                         del request.session[Constants.SESSION_TOKEN]
                         ur.delete()
                         messages.success(request, DisplayKey.get("user_successfully_registered"))
@@ -255,7 +257,19 @@ def saveCredentialPageDetails(request):
                         messages.error(request,e.__str__())
                         return loadCredentialsPage(request)
 
-                    ActivityHelper(request).createActivity(pattern=ActivityPattern.PRODUCT_WELCOME_MESSAGE)
+                    template_data = {
+                        "name": user.name,
+                        "token": user.activation_token,
+                        "product_id": user.product_id,
+                    }
+
+                    Email().sendEmail(
+                        template=EmailTemplates.ACCOUNT_ACTIVATION_EMAIL,
+                        subject="Activate Myshishya Account",
+                        recipient_list=[user.contact.email_id],
+                        template_data=template_data
+                    )
+                    ActivityHelper(request,user.id).createActivity(pattern=ActivityPattern.PRODUCT_WELCOME_MESSAGE)
                     return HttpResponseRedirect("../Login")
                 except Exception as e:
                     messages.error(request,e.__str__())
