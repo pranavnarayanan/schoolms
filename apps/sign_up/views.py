@@ -299,9 +299,9 @@ def saveCredentialPageDetails(request):
 
 
 def activateAccount(request):
-    if request.method == "POST":
-        token = request.POST.get("token",0)
-        product_id = request.POST.get("product_id",0)
+    if request.method == "GET":
+        token = request.GET.get("token",0)
+        product_id = request.GET.get("product_id",0)
         try:
             user = EN_Users.objects.get(activation_token=token,product_id=product_id)
             user.activation_token = uuid4()
@@ -311,5 +311,5 @@ def activateAccount(request):
         except Exception as e:
             messages.warning(request,"Invalid token / product_id")
     else:
-        messages.warning(request,"Direct access denied")
+        messages.warning(request,"Access denied - Invalid Request Method")
     return HttpResponseRedirect("../Login")

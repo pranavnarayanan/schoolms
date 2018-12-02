@@ -127,18 +127,11 @@
                                                                     <br>
                                                                     Your account is currently inactivate..
                                                                     <br>
-                                                                    Activate your account by clicking on the below button.
                                                                     <br>
                                                                     <br>
+                                                                    <a href="http://{{ url }}?product_id={{ product_id }};token={{ token }}">Click  on this link to activate your account</a>
                                                                     <br>
-                                                                    <form action="{{ url }}" method="POST">
-                                                                        {{ csrf_token }}
-                                                                        <input type="hidden" name="product_id" value="{{ product_id }}">
-                                                                        <input type="hidden" name="token" value="{{ token }}">
-                                                                        <button type="submit" style="font-family:'Yu Gothic'; width:100%; height:45px; border:0px; background-color: cornflowerblue">
-                                                                            Activate Account.
-                                                                        </button>
-                                                                    </form>
+                                                                    <br>
                                                                 </p>
 
                                                             </div>
