@@ -1,8 +1,11 @@
+from uuid import uuid4
+
 from apps.activity.helper import ActivityHelper
 from apps.sign_up.forms import *
 from django.template import loader
 from django.contrib import messages
-from apps.users.models import TL_Gender
+from apps.users.models import TL_Gender, EN_Users
+from apps.utilities.entities.account_status import TL_AccountStatus
 from displaykey.display_key import DisplayKey
 from apps.sign_up.helper.constants import Constants
 from apps.utilities.entities.country import EN_Country
@@ -258,6 +261,7 @@ def saveCredentialPageDetails(request):
                         return loadCredentialsPage(request)
 
                     template_data = {
+                        "url": "{}/SignUp/ActivateAccount".format(request.get_host()),
                         "name": user.name,
                         "token": user.activation_token,
                         "product_id": user.product_id,
@@ -291,3 +295,21 @@ def saveCredentialPageDetails(request):
                 return loadCredentialsPage(request)
     else:
         return HttpResponseRedirect("LoadCredentialsPage")
+
+
+
+def activateAccount(request):
+    if request.method == "POST":
+        token = request.POST.get("token",0)
+        product_id = request.POST.get("product_id",0)
+        try:
+            user = EN_Users.objects.get(activation_token=token,product_id=product_id)
+            user.activation_token = uuid4()
+            user.account_status = TL_AccountStatus.objects.get(code="active")
+            user.save()
+            messages.success(request, "Account activated successfuly.")
+        except Exception as e:
+            messages.warning(request,"Invalid token / product_id")
+    else:
+        messages.warning(request,"Direct access denied")
+    return HttpResponseRedirect("../Login")

@@ -1,11 +1,16 @@
+from uuid import uuid4
+
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from apps.login.forms import FORM_ResetPassword, FORM_LoginDetails
 from apps.login.helper import LoginHelper
 from apps.roles.helper.user_roles_helper import UserRolesHelper
+from apps.users.models import EN_Users
 from displaykey.display_key import DisplayKey
+from properties.email_templates import EmailTemplates
 from properties.session_properties import SessionProperties
+from utils.email_util import Email
 
 ''''
     Function  : Loads the Login Page
@@ -36,12 +41,34 @@ def validateLogin(request):
                 messages.error(request,DisplayKey.get("invalid_credentials"))
                 return index(request)
             else:
-                request.session[SessionProperties.USER_ID_KEY] = userId
-                lh.updateOnlineStatusAndLoggedInTime()
-                lh.setStaticUIData()
-                lh.setActiveRole()
-                UserRolesHelper(request).updateRolesOnSession()
-                return HttpResponseRedirect("../../Home")
+                user = EN_Users.objects.get(id=userId)
+                if user.account_status.code == "active":
+                    request.session[SessionProperties.USER_ID_KEY] = userId
+                    lh.updateOnlineStatusAndLoggedInTime()
+                    lh.setStaticUIData()
+                    lh.setActiveRole()
+                    UserRolesHelper(request).updateRolesOnSession()
+                    return HttpResponseRedirect("../../Home")
+                else:
+                    if user.account_status.code == "inactive":
+                        user.activation_token = uuid4()
+                        user.save()
+                        template_data = {
+                            "url": "{}/SignUp/ActivateAccount".format(request.get_host()),
+                            "name": user.name,
+                            "token": user.activation_token,
+                            "product_id": user.product_id,
+                        }
+                        Email().sendEmail(
+                            template=EmailTemplates.ACCOUNT_ACTIVATION_EMAIL,
+                            subject="Activate Myshishya Account",
+                            recipient_list=[user.contact.email_id],
+                            template_data=template_data
+                        )
+                        messages.warning(request, "Your account inactive. Click on the activation link send to you")
+                    else:
+                        messages.warning(request,"Your account status is {}. Please reach out to myshishya support team.".format(user.account_status.name))
+                    return HttpResponseRedirect("../Login")
         else:
             return index(request)
     else:

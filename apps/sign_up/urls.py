@@ -16,4 +16,6 @@ urlpatterns = [
 
     path(r'LoadCredentialsPage',views.loadCredentialsPage, name="Load Credentials Page"),
     path(r'SaveCredentialPageDetails',views.saveCredentialPageDetails, name="Save Credential Page Details"),
+    
+    path(r'ActivateAccount',views.activateAccount, name="Activates account | Called from email send to user"),
 ]
