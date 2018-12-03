@@ -12,7 +12,8 @@ DEBUG = True
 #172.31.25.126   --> RDP ip address
 #13.126.211.101  --> AWS EC2 instance public ip address
 ALLOWED_HOSTS = [
-    '172.31.25.126',
+    '172.31.19.246',
+    '13.233.196.178',
     '13.126.211.101',
     '127.0.0.1',
     'localhost'
