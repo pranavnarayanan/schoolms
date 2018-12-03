@@ -29,33 +29,21 @@ def submitSchoolDetails(request):
         if form_data.is_valid():
             user_id = request.session[SessionProperties.USER_ID_KEY]
 
-            timing_name                   = form_data["timing_name"].value()
-            school_start_time             = form_data["school_start_time"].value()
-            school_closing_time           = form_data["school_closing_time"].value()
-            total_periods                 = form_data["total_periods"].value()
-            school_off_days               = form_data["school_off_days"].value()
-            interval_1_starting_time      = form_data["interval_1_starting_time"].value()
-            interval_1_ending_time        = form_data["interval_1_ending_time"].value()
-            interval_2_starting_time      = form_data["interval_2_starting_time"].value()
-            interval_2_ending_time        = form_data["interval_2_ending_time"].value()
-            interval_3_starting_time      = form_data["interval_3_starting_time"].value()
-            interval_3_ending_time        = form_data["interval_3_ending_time"].value()
-            interval_4_starting_time      = form_data["interval_4_starting_time"].value()
-            interval_4_ending_time        = form_data["interval_4_ending_time"].value()
-            breakfast_break_starting_time = form_data["breakfast_break_starting_time"].value()
-            breakfast_break_ending_time   = form_data["breakfast_break_ending_time"].value()
-            lunch_break_starting_time     = form_data["lunch_break_starting_time"].value()
-            lunch_break_ending_time       = form_data["lunch_break_ending_time"].value()
-            dinner_break_starting_time    = form_data["dinner_break_starting_time"].value()
-            dinner_break_ending_time      = form_data["dinner_break_ending_time"].value()
-            assembly_starting_time        = form_data["assembly_starting_time"].value()
-            assembly_ending_time          = form_data["assembly_ending_time"].value()
-            assembly_on_days              = form_data["assembly_on_days"].value()
-
             user_role = EN_UserRoles.objects.filter(approved=True,user_id=user_id,is_selected_role=True, role__code=Roles.SCHOOL_ADMIN)
             if user_role.exists():
+
+                timing_name = form_data["timing_name"].value()
+                school_start_time = form_data["school_start_time"].value()
+                school_closing_time = form_data["school_closing_time"].value()
+                total_periods = form_data["total_periods"].value()
+                school_off_days = form_data["school_off_days"].value()
+                assembly_on_days = form_data["assembly_on_days"].value()
+                assembly_duration = form_data["assembly_duration"].value()
+
                 user_role = user_role.first()
                 if(user_role.related_organization != None):
+
+
 
                     try:
                         st = EN_SchoolTimings()

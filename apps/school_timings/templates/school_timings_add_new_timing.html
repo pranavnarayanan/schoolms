@@ -8,38 +8,55 @@
 {% endblock %}
 
 {% block content %}
+
   <div class="row">
         <div class="col-xs-4">
-          <div class="box">
-                <div class="box box-primary">
-                <div class="box-body">
-                    <div class="form-group">
-                        <label>Timing Name</label>
-                        <input type="text" class="form-control">
-                        <span class="help-block" style="color: red;"></span>
+            <form action="#" method="post">
+              {% csrf_token %}
+              {% load widget_tweaks %}
+              <div class="box">
+                    <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label>Timing Name</label>
+                            {% render_field form.timing_name class="form-control" %}
+                            <span class="help-block" style="color: red;">{{ form.timing_name.errors }}</span>
+                        </div>
+                        <div class="form-group">
+                            <label>Class Starting Time</label>
+                            {% render_field form.school_start_time class="form-control" %}
+                            <span class="help-block" style="color: red;">{{ form.school_start_time.errors }}</span>
+                        </div>
+                        <div class="form-group">
+                            {% render_field form.school_closing_time class="form-control" %}
+                            <span class="help-block" style="color: red;">{{ form.school_closing_time.errors }}</span>
+                        </div>
+                        <div class="form-group">
+                            <label>Off Days</label>
+                            {% render_field form.school_off_days class="form-control" %}
+                            <span class="help-block" style="color: red;">{{ form.school_off_days.errors }}</span>
+                        </div>
+                        <div class="form-group">
+                            <label>Assembly On Days</label>
+                            {% render_field form.assembly_on_days class="form-control" %}
+                            <span class="help-block" style="color: red;">{{ form.assembly_on_days.errors }}</span>
+                        </div>
+                        <div class="form-group">
+                            <label>Assembly Duration</label>
+                            {% render_field form.assembly_duration class="form-control" %}
+                            <span class="help-block" style="color: red;">{{ form.assembly_duration.errors }}</span>
+                        </div>
+                        <div class="form-group">
+                            <label>No Of Periods</label>
+                            {% render_field form.total_periods class="form-control" %}
+                            <span class="help-block" style="color: red;">{{ form.total_periods.errors }}</span>
+                        </div>
+                        <button class="btn btn-info"><i class="fa fa-save"></i> Save</button>
                     </div>
-                    <div class="form-group">
-                        <label>Class Starting Time</label>
-                        <input type="time" class="form-control">
-                        <span class="help-block" style="color: red;"></span>
-                    </div>
-                    <div class="form-group">
-                        <label>Class Ending Time</label>
-                        <input type="time" readonly class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>Off Days</label>
-                        <input type="text" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>Assembly On Days</label>
-                        <input type="text" class="form-control">
-                    </div>
-                    <button class="btn btn-info"><i class="fa fa-save"></i> Save</button>
-                </div>
 
-            </div>
-          </div>
+                </div>
+              </div>
+            </form>
         </div>
 
       <div class="col-xs-8">
