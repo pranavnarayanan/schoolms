@@ -14,7 +14,6 @@ DEBUG = True
 ALLOWED_HOSTS = [
     '172.31.19.246',
     '13.233.196.178',
-    '13.126.211.101',
     '127.0.0.1',
     'localhost'
 ]
@@ -135,8 +134,8 @@ MEDIA_URL = '/media/'
 EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'aravind.ramachandran.pillai@gmail.com'
-EMAIL_HOST_PASSWORD = 'KingMaker#1992'
+EMAIL_HOST_USER = 'mail4myshishya@gmail.com'
+EMAIL_HOST_PASSWORD = 'Shapetheworld#123'
 EMAIL_PORT = 587
 
 #ARAVIND : Delete this on production - Placed to disable caching of files
