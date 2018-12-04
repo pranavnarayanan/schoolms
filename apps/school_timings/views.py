@@ -19,8 +19,10 @@ def index(request):
 
 def addSchoolTimings_Page1(request):
     data = UIDataHelper(request).getData(page="is_add_school_timings")
-    data.__setitem__("form",FORM_AddModifySchoolTiming_Page1(request.POST, request=request) if request.method == "POST" else FORM_AddModifySchoolTiming_Page1(request=request))
+    form = FORM_AddModifySchoolTiming_Page1(request.POST, request=request) if request.method == "POST" else FORM_AddModifySchoolTiming_Page1(request=request)
     template = loader.get_template("school_timings_page_1.html")
+
+    data.__setitem__("form", form)
     messages.info(request,"You can create a new timing or modify an existing timing")
     return HttpResponse(template.render(data, request))
 
@@ -34,7 +36,7 @@ def addSchoolTimings_Page1_Submit(request):
                 return HttpResponseRedirect("../SchoolTimings")
             else:
                 request.session["PAGE_1_DATA"] = json.dumps({
-                    "school_timing_name" : form_data["timing_name"].value(),
+                    "school_timing_name" : form_data["school_timing_name"].value(),
                     "school_timing_id" : 0 if request.POST["type"] != "update" else int(form_data["available_timings"].value()),
                 })
                 return HttpResponseRedirect("TimingDetails")
@@ -58,43 +60,62 @@ def addSchoolTimings_Page2(request):
 
 
 def addSchoolTimings_Page2_Submit(request):
-    user_id = request.session[SessionProperties.USER_ID_KEY]
-    user_role = EN_UserRoles.objects.filter(approved=True,user_id=user_id,is_selected_role=True, role__code=Roles.SCHOOL_ADMIN)
-    if user_role.exists():
-        user_role = user_role.first()
-        if(user_role.related_organization != None):
-            '''
-            timing_name = form_data["timing_name"].value()
-            school_start_time = form_data["school_start_time"].value()
-            school_closing_time = form_data["school_closing_time"].value()
-            total_periods = form_data["total_periods"].value()
-            school_off_days = form_data["school_off_days"].value()
-            assembly_on_days = form_data["assembly_on_days"].value()
-            assembly_duration = form_data["assembly_duration"].value()
+    if request.POST["action"] == "forward":
+        if "PAGE_1_DATA" in request.session:
+            user_id = request.session[SessionProperties.USER_ID_KEY]
+            user_role = EN_UserRoles.objects.filter(approved=True,user_id=user_id,is_selected_role=True, role__code=Roles.SCHOOL_ADMIN)
+            if user_role.exists():
+                user_role = user_role.first()
+                if(user_role.related_organization != None):
+                    form_data = FORM_SchoolTiming(request.POST,request=request)
+                    if form_data.is_valid():
+                        pageData = json.loads(request.session["PAGE_1_DATA"])
+                        if pageData["school_timing_id"] == 0:
+                            st = EN_SchoolTimings()
+                        else:
+                            st = EN_SchoolTimings.objects.get(id=int(pageData["school_timing_id"]))
+                        try:
+                            st.organization = user_role.related_organization
+                            st.timing_name = form_data["school_timing_name"].value()
+                            st.school_starting_time = form_data["school_start_time"].value()
+                            st.school_closing_time  = form_data["school_closing_time"].value()
+                            st.no_of_periods        = int(form_data["assembly_duration"].value()) if form_data["total_periods"].value() != "" else 0
+                            st.assembly_duration    = int(form_data["assembly_duration"].value()) if form_data["assembly_duration"].value() != "" else None
 
-            try:
-                st = EN_SchoolTimings()
-                st.organization         = user_role.related_organization
-                st.timing_name          = timing_name
-                st.school_starting_time = school_start_time
-                st.school_closing_time  = school_closing_time
-                st.no_of_periods        = int(total_periods)
-                st.assembly_on_days     = assembly_on_days.__str__()
-                st.assembly_starting_time = school_start_time
-                st.assembly_ending_time  = (school_start_time + assembly_duration)
-                st.off_days             = school_off_days.__str__()
-                st.save()
-            except Exception as e:
-                messages.warning(request, str(e))
-                return addSchoolTimings_Page1(request)
-                '''
-            pass
-        else:
-            messages.warning(request, DisplayKey.get("no_organization_associated_to_this_role"))
+                            st.assembly_on_sunday    = form_data["assembly_on_sunday"].value()
+                            st.assembly_on_monday    = form_data["assembly_on_monday"].value()
+                            st.assembly_on_tuesday   = form_data["assembly_on_tuesday"].value()
+                            st.assembly_on_wednesday = form_data["assembly_on_wednesday"].value()
+                            st.assembly_on_thursday  = form_data["assembly_on_thursday"].value()
+                            st.assembly_on_friday    = form_data["assembly_on_friday"].value()
+                            st.assembly_on_saturday  = form_data["assembly_on_saturday"].value()
+
+                            st.class_on_sunday    = form_data["class_on_sunday"].value()
+                            st.class_on_monday    = form_data["class_on_monday"].value()
+                            st.class_on_tuesday   = form_data["class_on_tuesday"].value()
+                            st.class_on_wednesday = form_data["class_on_wednesday"].value()
+                            st.class_on_thursday  = form_data["class_on_thursday"].value()
+                            st.class_on_friday    = form_data["class_on_friday"].value()
+                            st.class_on_saturday  = form_data["class_on_saturday"].value()
+
+                            st.save()
+                            del(request.session["PAGE_1_DATA"])
+                        except Exception as e:
+                            messages.warning(request, e.__str__())
+                            return addSchoolTimings_Page2(request)
+                    else:
+                        return addSchoolTimings_Page2(request)
+                else:
+                    messages.warning(request, DisplayKey.get("no_organization_associated_to_this_role"))
+                    return HttpResponseRedirect("../SchoolTimings")
+            else:
+                messages.warning(request, DisplayKey.get("current_role_cannot_perform_this_action"))
+                return HttpResponseRedirect("../SchoolTimings")
+
             return HttpResponseRedirect("../SchoolTimings")
+        else:
+            messages.warning(request, DisplayKey.get("School Timing Session Expired"))
+            return HttpResponseRedirect("AddModifyTiming")
     else:
-        messages.warning(request, DisplayKey.get("current_role_cannot_perform_this_action"))
-        return HttpResponseRedirect("../SchoolTimings")
-
-    return HttpResponseRedirect("../SchoolTimings")
+        return HttpResponseRedirect("AddModifyTiming")
 

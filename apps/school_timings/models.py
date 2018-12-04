@@ -27,9 +27,6 @@ class EN_SchoolTimings(models.Model):
     assembly_on_saturday = models.BooleanField(null=False, default=False)
     assembly_duration = models.IntegerField(null=True)
 
-    #saturday,sunday
-    off_days = models.CharField(max_length=30, null=True)
-
     class Meta:
         db_table = "en_school_timings"
         unique_together = ('organization', 'timing_name')

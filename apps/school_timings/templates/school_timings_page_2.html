@@ -63,7 +63,7 @@
                             <span class="help-block" style="color: red;">{{ form.total_periods.errors }}</span>
                         </div>
                         <div class="form-group">
-                            <label>Assembly Duration <small>(in minutes)</small></label>
+                            <label>Assembly Duration <small>(in minutes | Leave blank if not required)</small></label>
                             {% render_field form.assembly_duration class="form-control" %}
                             <span class="help-block" style="color: red;">{{ form.assembly_duration.errors }}</span>
                         </div>
@@ -87,6 +87,7 @@
                                     <td>&nbsp; Saturday</td>
                                 </tr>
                             </table>
+                            <span class="help-block" style="color: red;">{{ form.assembly_error_field.errors }}</span>
                         </div>
                     </div>
 
@@ -104,13 +105,13 @@
                                   <label>Timing Name </label>
                               </td>
                               <td class="pull-left" style="padding-left: 20px;">
-                                  {% render_field form.timing_name class="form-control" %}
+                                  {% render_field form.school_timing_name class="form-control" %}
                               </td>
                               <td class="pull-right">
                                   <div class="pull-right">
-                                      <button type="submit" class="btn btn-flat btn-warning"><i class="fa fa-step-backward"></i>&nbsp;&nbsp;Back</button>
-                                      <button type="submit" class="btn btn-flat btn-danger"><i class="fa fa-refresh"></i>&nbsp;&nbsp;Reset</button>
-                                      <button type="submit" class="btn btn-flat btn-info"><i class="fa fa-save"></i>&nbsp;&nbsp;Save and Continue</button>
+                                      <button type="submit" name="action" value="backward" class="btn btn-flat btn-warning"><i class="fa fa-step-backward"></i>&nbsp;&nbsp;Back</button>
+                                      <button type="reset" class="btn btn-flat btn-danger"><i class="fa fa-refresh"></i>&nbsp;&nbsp;Reset</button>
+                                      <button type="submit" name="action" value="forward" class="btn btn-flat btn-info"><i class="fa fa-save"></i>&nbsp;&nbsp;Save and Continue</button>
                                   </div>
                               </td>
                           </tr>
@@ -120,9 +121,8 @@
                   </div>
               </div>
         </div>
-
-
     </div>
+{% render_field form.school_timing_id %}
 </form>
 {% endblock %}
 
