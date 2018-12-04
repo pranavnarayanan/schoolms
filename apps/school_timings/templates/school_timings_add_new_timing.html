@@ -11,7 +11,7 @@
 
   <div class="row">
         <div class="col-xs-4">
-            <form action="#" method="post">
+            <form action="SubmitSchoolTimings" method="post">
               {% csrf_token %}
               {% load widget_tweaks %}
               <div class="box">
@@ -28,6 +28,7 @@
                             <span class="help-block" style="color: red;">{{ form.school_start_time.errors }}</span>
                         </div>
                         <div class="form-group">
+                            <label>Class Closing Time</label>
                             {% render_field form.school_closing_time class="form-control" %}
                             <span class="help-block" style="color: red;">{{ form.school_closing_time.errors }}</span>
                         </div>
@@ -51,7 +52,7 @@
                             {% render_field form.total_periods class="form-control" %}
                             <span class="help-block" style="color: red;">{{ form.total_periods.errors }}</span>
                         </div>
-                        <button class="btn btn-info"><i class="fa fa-save"></i> Save</button>
+                        <button type="submit" class="btn btn-info"><i class="fa fa-save"></i> Save</button>
                     </div>
 
                 </div>
