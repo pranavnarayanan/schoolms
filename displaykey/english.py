@@ -13,6 +13,7 @@ class English_DK:
         "signout_success":"Successfully Signed out" ,
         "no_such_role_for_user":"You are not assigned with this role or the role is not approved " ,
         "role_changes_successfully":"Role changes successfully" ,
+        "invalid_school_timing_submit_type":"Invalid Submit Type" ,
         "no_privelege_to_access_app":"You dont have privelage to access this app | Change the role and try again" ,
         "org_group_created_successfully":"Successfully created new group" ,
         "unregistered_url":"Invalid URL | 404 : Page Not Found" ,

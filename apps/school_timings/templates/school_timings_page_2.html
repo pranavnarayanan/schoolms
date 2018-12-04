@@ -1,0 +1,135 @@
+{% extends "base/post_login.html" %}
+{% block page_title %} Add School Timings {% endblock %}
+{% block page_heading %} Add/Modify School Timings {% endblock %}
+
+{% block breadcrumb %}
+    <li><a><i class="fa fa-dashboard"></i> Home</a></li>
+    <li><a>School Timings </a></li>
+    <li><a>Timing Details</a></li>
+{% endblock %}
+
+{% block content %}
+<form action="TimingDetailsSubmit" method="post">
+    {% csrf_token %}
+    {% load widget_tweaks %}
+    <div class="row">
+        <div class="col-xs-6">
+              <div class="box">
+                    <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label>Class Starting Time</label>
+                            {% render_field form.school_start_time class="form-control" %}
+                            <span class="help-block" style="color: red;">{{ form.school_start_time.errors }}</span>
+                        </div>
+                        <div class="form-group">
+                            <label>Class Closing Time</label>
+                            {% render_field form.school_closing_time class="form-control" %}
+                            <span class="help-block" style="color: red;">{{ form.school_closing_time.errors }}</span>
+                        </div>
+                        <div class="form-group">
+                            <label>Off Days</label>
+                            <table>
+                                <tr>
+                                    <td>{% render_field form.class_on_sunday style="width: 20px; height: 20px" %}</td>
+                                    <td>&nbsp; Sunday &nbsp; </td>
+                                    <td>{% render_field form.class_on_monday style="width: 20px; height: 20px" %}</td>
+                                    <td>&nbsp; Monday &nbsp; </td>
+                                    <td>{% render_field form.class_on_tuesday style="width: 20px; height: 20px" %}</td>
+                                    <td>&nbsp; Tuesday &nbsp; </td>
+                                    <td>{% render_field form.class_on_wednesday style="width: 20px; height: 20px" %}</td>
+                                    <td>&nbsp; Wednesday &nbsp; </td>
+                                    <td>{% render_field form.class_on_thursday style="width: 20px; height: 20px" %}</td>
+                                    <td>&nbsp; Thursday &nbsp; </td>
+                                    <td>{% render_field form.class_on_friday style="width: 20px; height: 20px" %}</td>
+                                    <td>&nbsp; Friday &nbsp; </td>
+                                    <td>{% render_field form.class_on_saturday style="width: 20px; height: 20px" %}</td>
+                                    <td>&nbsp; Saturday</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+              </div>
+        </div>
+        <div class="col-xs-6">
+              <div class="box">
+                    <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label>No Of Periods</label>
+                            {% render_field form.total_periods class="form-control" %}
+                            <span class="help-block" style="color: red;">{{ form.total_periods.errors }}</span>
+                        </div>
+                        <div class="form-group">
+                            <label>Assembly Duration <small>(in minutes)</small></label>
+                            {% render_field form.assembly_duration class="form-control" %}
+                            <span class="help-block" style="color: red;">{{ form.assembly_duration.errors }}</span>
+                        </div>
+                        <div class="form-group">
+                            <label>Assembly On Days</label>
+                            <table>
+                                <tr>
+                                    <td>{% render_field form.assembly_on_sunday style="width: 20px; height: 20px" %}</td>
+                                    <td>&nbsp; Sunday &nbsp; </td>
+                                    <td>{% render_field form.assembly_on_monday style="width: 20px; height: 20px" %}</td>
+                                    <td>&nbsp; Monday &nbsp; </td>
+                                    <td>{% render_field form.assembly_on_tuesday style="width: 20px; height: 20px" %}</td>
+                                    <td>&nbsp; Tuesday &nbsp; </td>
+                                    <td>{% render_field form.assembly_on_wednesday style="width: 20px; height: 20px" %}</td>
+                                    <td>&nbsp; Wednesday &nbsp; </td>
+                                    <td>{% render_field form.assembly_on_thursday style="width: 20px; height: 20px" %}</td>
+                                    <td>&nbsp; Thursday &nbsp; </td>
+                                    <td>{% render_field form.assembly_on_friday style="width: 20px; height: 20px" %}</td>
+                                    <td>&nbsp; Friday &nbsp; </td>
+                                    <td>{% render_field form.assembly_on_saturday style="width: 20px; height: 20px" %}</td>
+                                    <td>&nbsp; Saturday</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+              </div>
+        </div>
+
+
+        <div class="col-xs-12">
+              <div class="box">
+                  <div class="box-body">
+                      <table style="width:100%">
+                          <tr style="width:100%">
+                              <td class="pull-left">
+                                  <label>Timing Name </label>
+                              </td>
+                              <td class="pull-left" style="padding-left: 20px;">
+                                  {% render_field form.timing_name class="form-control" %}
+                              </td>
+                              <td class="pull-right">
+                                  <div class="pull-right">
+                                      <button type="submit" class="btn btn-flat btn-warning"><i class="fa fa-step-backward"></i>&nbsp;&nbsp;Back</button>
+                                      <button type="submit" class="btn btn-flat btn-danger"><i class="fa fa-refresh"></i>&nbsp;&nbsp;Reset</button>
+                                      <button type="submit" class="btn btn-flat btn-info"><i class="fa fa-save"></i>&nbsp;&nbsp;Save and Continue</button>
+                                  </div>
+                              </td>
+                          </tr>
+                      </table>
+
+
+                  </div>
+              </div>
+        </div>
+
+
+    </div>
+</form>
+{% endblock %}
+
+
+
+{% block page_specific_css %}
+{% endblock %}
+
+{% block page_specific_js  %}
+{% endblock %}

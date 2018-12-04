@@ -5,7 +5,7 @@ class AppAccessibilityDictionary():
     # Apps which can be accessed by all roles
     APPS_WITH_FULL_ACCESS_TO_ALL_USERS = [
         "admin", "SignUp", "Logout", "Login", "Notification","Roles","Home", "Messages", "Settings","Tasks",
-        "Books","Users","Subjects","Documents"
+        "Books","Users","Subjects","Documents","SchoolTimings"
     ]
 
     # Apps with user role permissions
@@ -37,11 +37,6 @@ class AppAccessibilityDictionary():
             "GetRolesRaisedByMe"      : [Roles.INSTITUTION_SUPER_USER,Roles.SCHOOL_ADMIN,Roles.TEACHER],
             "RoleRequestsReceived"    : [Roles.INSTITUTION_SUPER_USER,Roles.SCHOOL_ADMIN],
             "GetRoleRequestsReceived" : [Roles.INSTITUTION_SUPER_USER,Roles.SCHOOL_ADMIN],
-        },
-        "SchoolTimings":{
-            "Index"               : [Roles.SCHOOL_ADMIN,Roles.PRINCIPAL, Roles.TEACHER],
-            "AddTiming"           : [Roles.SCHOOL_ADMIN],
-            "SubmitSchoolTimings" : [Roles.SCHOOL_ADMIN],
         },
         "Classes":{
             "Index"               : [Roles.SCHOOL_ADMIN, Roles.PRINCIPAL],
