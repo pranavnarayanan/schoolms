@@ -2,7 +2,6 @@ import json
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.views.decorators.csrf import csrf_exempt
-
 from apps.roles.models import EN_UserRoles
 from apps.school_timings.forms import FORM_SchoolTiming, FORM_AddModifySchoolTiming_Page1
 from apps.school_timings.models import EN_SchoolTimings, EN_SchoolTimingBreakup
@@ -180,24 +179,60 @@ def addSchoolTimings_Page3(request):
 
 @csrf_exempt
 def addSchoolTimings_loadBreakUpData(request):
-    user_id = request.session[SessionProperties.USER_ID_KEY]
-    user_role = EN_UserRoles.objects.filter(approved=True, user_id=user_id, is_selected_role=True,role__code=Roles.SCHOOL_ADMIN)
-    if user_role.exists():
-        user_role = user_role.first()
-        school_timing_id = int(request.POST["school_timing_id"])
-        st = EN_SchoolTimings.objects.filter(organization=user_role.related_organization,id=school_timing_id)
-        if st.exists():
-            st = st.first()
-            return HttpResponse(json.dumps([
-                {
-                    "is_period": timing_breakup.is_period,
-                    "is_break": timing_breakup.is_break,
-                    "duration": timing_breakup.duration,
-                    "description": timing_breakup.description
-                } for timing_breakup in EN_SchoolTimingBreakup.objects.filter(timing=st)]))
+    if request.is_ajax():
+        user_id = request.session[SessionProperties.USER_ID_KEY]
+        user_role = EN_UserRoles.objects.filter(approved=True, user_id=user_id, is_selected_role=True,role__code=Roles.SCHOOL_ADMIN)
+        if user_role.exists():
+            user_role = user_role.first()
+            school_timing_id = int(request.POST["school_timing_id"])
+            st = EN_SchoolTimings.objects.filter(organization=user_role.related_organization,id=school_timing_id)
+            if st.exists():
+                st = st.first()
+                return HttpResponse(json.dumps([
+                    {
+                        "is_period": timing_breakup.is_period,
+                        "is_break": timing_breakup.is_break,
+                        "duration": timing_breakup.duration,
+                        "description": timing_breakup.description
+                    } for timing_breakup in EN_SchoolTimingBreakup.objects.filter(timing=st)]))
+            else:
+                # No timing available
+                return HttpResponse(-1)
         else:
-            # No timing available
-            return HttpResponse(-1)
+            # No Permission
+            return HttpResponse(-2)
     else:
-        # No Permission
-        return HttpResponse(-2)
+        messages.warning(request,"Direct Access Denied")
+        return HttpResponseRedirect("../Home")
+
+
+@csrf_exempt
+def addSchoolTimings_saveBreakUpData(request):
+    if request.is_ajax():
+        user_id = request.session[SessionProperties.USER_ID_KEY]
+        user_role = EN_UserRoles.objects.filter(approved=True, user_id=user_id, is_selected_role=True,role__code=Roles.SCHOOL_ADMIN)
+        if user_role.exists():
+            user_role = user_role.first()
+            school_timing_id = int(request.POST["school_timing_id"])
+            timing_data = json.loads(request.POST["timing_data"])
+            st = EN_SchoolTimings.objects.filter(organization=user_role.related_organization,id=school_timing_id)
+            if st.exists():
+                st = st.first()
+                EN_SchoolTimingBreakup.objects.filter(timing=st).delete()
+                for timing in timing_data:
+                    stb = EN_SchoolTimingBreakup()
+                    stb.timing = st
+                    stb.is_period = True if (timing["type"] == "Period") else False
+                    stb.is_break = (not stb.is_period)
+                    stb.duration = int(timing["duration"])
+                    stb.save()
+                return HttpResponse(1)
+            else:
+                # No timing available
+                return HttpResponse(-1)
+        else:
+            # No Permission
+            return HttpResponse(-2)
+    else:
+        messages.warning(request,"Direct Access Denied")
+        return HttpResponseRedirect("../Home")

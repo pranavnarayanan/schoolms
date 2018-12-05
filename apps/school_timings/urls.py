@@ -12,6 +12,7 @@ urlpatterns = [
 
     path(r'TimingBreakup', views.addSchoolTimings_Page3, name="Timing Breakup Page"),
     path(r'LoadBreakUpData', views.addSchoolTimings_loadBreakUpData, name="AJAX | Load Break UpData based on timing selected"),
+    path(r'SaveBreakUpData', views.addSchoolTimings_saveBreakUpData, name="AJAX | Save Break UpData based on timing selected"),
 
 
 ]

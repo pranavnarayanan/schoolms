@@ -15,13 +15,21 @@
       <div class="box">
         <div class="box-header">
           <h3 class="box-title">
-              <select class="form-control" onchange="loadBreakUpData()" id="school_timing">
-                {% for st in school_timings %}
-                    <option value="{{ st.id }}">{{ st.name }}</option>
-                {%  endfor %}
-              </select>
+              <table>
+              <tr>
+              <td>
+                <select class="form-control" onchange="loadBreakUpData()" id="school_timing">
+                    {% for st in school_timings %}
+                        <option value="{{ st.id }}">{{ st.name }}</option>
+                    {%  endfor %}
+                </select>
+              </td>
+              <td style="width:60%; padding-left: 10%;">
+                  <label id="message"></label>
+              </td>
+              </tr>
+              </table>
           </h3>
-
           <div class="box-tools">
               <button class="btn btn-flat btn-warning edit_btn" onclick="enableEditingMode()"><i class="fa fa-pencil"></i>&nbsp;&nbsp;Edit</button>
               <button class="btn btn-flat btn-success save_btn" onclick="saveData()"><i class="fa fa-save"></i>&nbsp;&nbsp;Save</button>
@@ -34,7 +42,7 @@
               <tr>
                   <th>#</th>
                   <th>Type</th>
-                  <th>Duration</th>
+                  <th>Duration (in Mins)</th>
                   <th>Time</th>
               </tr>
             </thead>
@@ -156,10 +164,44 @@
         }
 
         function saveData(){
+
+            var dataList = [];
+            for(i=1; i<index; i++){
+                var dataDict = {};
+                dataDict["type"] = $("#type_"+i).val();
+                dataDict["duration"] = $("#duration_"+i).val();
+                dataList.push(dataDict)
+            }
+
+            $.ajax({
+                url:"SaveBreakUpData",
+                type:"POST",
+                data:{
+                    "timing_data": JSON.stringify(dataList),
+                    "school_timing_id":$("#school_timing").val()
+                },
+                success:function(data){
+                    if(data == 1){
+                      $("#message").html("<font color='green'>Data Saved Successfully</font>");
+                    }else if(data == -1){
+                      $("#message").html("<font color='red'>Failed : Invalid School Timing</font>");
+                    }else if(data == -2){
+                      $("#message").html("<font color='red'>Failed : User lacks permission</font>");
+                    }else{
+                      $("#message").html("<font color='red'>Failed to update data</font>");
+                    }
+                },
+                error:function(data){
+                    $(".context").html(data.responseText);
+                }
+            });
+
+
             $(".table_form_field").attr("disabled",true);
             $(".save_btn").hide();
             $(".edit_btn").show();
             $("#edit_panel_button").hide();
         }
+
     </script>
 {% endblock %}
