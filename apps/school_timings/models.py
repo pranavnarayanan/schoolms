@@ -8,15 +8,14 @@ class EN_SchoolTimings(models.Model):
 
     school_starting_time = models.TimeField(null=False)
     school_closing_time = models.TimeField(null=False)
-    no_of_periods = models.IntegerField(null=False)
 
-    class_on_sunday = models.BooleanField(null=False, default=False)
-    class_on_monday = models.BooleanField(null=False, default=True)
-    class_on_tuesday = models.BooleanField(null=False, default=True)
-    class_on_wednesday = models.BooleanField(null=False, default=True)
-    class_on_thursday = models.BooleanField(null=False, default=True)
-    class_on_friday = models.BooleanField(null=False, default=True)
-    class_on_saturday = models.BooleanField(null=False, default=False)
+    class_off_on_sunday = models.BooleanField(null=False, default=False)
+    class_off_on_monday = models.BooleanField(null=False, default=True)
+    class_off_on_tuesday = models.BooleanField(null=False, default=True)
+    class_off_on_wednesday = models.BooleanField(null=False, default=True)
+    class_off_on_thursday = models.BooleanField(null=False, default=True)
+    class_off_on_friday = models.BooleanField(null=False, default=True)
+    class_off_on_saturday = models.BooleanField(null=False, default=False)
 
     assembly_on_sunday = models.BooleanField(null=False, default=False)
     assembly_on_monday = models.BooleanField(null=False, default=False)

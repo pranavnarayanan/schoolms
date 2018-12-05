@@ -13,8 +13,45 @@ from django.contrib import messages
 
 def index(request):
     data = UIDataHelper(request).getData(page="is_list_school_timings")
-    template = loader.get_template("school_timings_list_all_timings.html")
-    return HttpResponse(template.render(data, request))
+
+    user_id = request.session[SessionProperties.USER_ID_KEY]
+    user_role = EN_UserRoles.objects.filter(approved=True, user_id=user_id, is_selected_role=True,role__code=Roles.SCHOOL_ADMIN)
+    if user_role.exists():
+        user_role = user_role.first()
+        timings = EN_SchoolTimings.objects.filter(organization=user_role.related_organization)
+        dataList = []
+        for timing in timings:
+            off_days = ""
+            if timing.class_off_on_sunday:
+                off_days += "Sunday, "
+            if timing.class_off_on_monday:
+                off_days += "Monday, "
+            if timing.class_off_on_tuesday:
+                off_days += "Tuesday, "
+            if timing.class_off_on_wednesday:
+                off_days += "Wednesday, "
+            if timing.class_off_on_thursday:
+                off_days += "Thursday, "
+            if timing.class_off_on_friday:
+                off_days += "Friday, "
+            if timing.class_off_on_saturday:
+                off_days += "Saturday, "
+            off_days = off_days.strip()
+            if off_days[-1] == ",":
+                off_days = off_days[:-1]
+
+            dataList.append({
+                "name" : timing.timing_name,
+                "timing":"{} to {} ".format(timing.school_starting_time,timing.school_closing_time),
+                "off_days":off_days,
+            })
+
+        data.__setitem__("timings",dataList)
+        template = loader.get_template("school_timings_list_all_timings.html")
+        return HttpResponse(template.render(data, request))
+    else:
+        messages.warning(request, DisplayKey.get("current_role_cannot_perform_this_action"))
+        return HttpResponseRedirect("../Home")
 
 
 def addSchoolTimings_Page1(request):
@@ -79,7 +116,6 @@ def addSchoolTimings_Page2_Submit(request):
                             st.timing_name = form_data["school_timing_name"].value()
                             st.school_starting_time = form_data["school_start_time"].value()
                             st.school_closing_time  = form_data["school_closing_time"].value()
-                            st.no_of_periods        = int(form_data["assembly_duration"].value()) if form_data["total_periods"].value() != "" else 0
                             st.assembly_duration    = int(form_data["assembly_duration"].value()) if form_data["assembly_duration"].value() != "" else None
 
                             st.assembly_on_sunday    = form_data["assembly_on_sunday"].value()
@@ -90,16 +126,17 @@ def addSchoolTimings_Page2_Submit(request):
                             st.assembly_on_friday    = form_data["assembly_on_friday"].value()
                             st.assembly_on_saturday  = form_data["assembly_on_saturday"].value()
 
-                            st.class_on_sunday    = form_data["class_on_sunday"].value()
-                            st.class_on_monday    = form_data["class_on_monday"].value()
-                            st.class_on_tuesday   = form_data["class_on_tuesday"].value()
-                            st.class_on_wednesday = form_data["class_on_wednesday"].value()
-                            st.class_on_thursday  = form_data["class_on_thursday"].value()
-                            st.class_on_friday    = form_data["class_on_friday"].value()
-                            st.class_on_saturday  = form_data["class_on_saturday"].value()
+                            st.class_off_on_sunday    = form_data["class_off_on_sunday"].value()
+                            st.class_off_on_monday    = form_data["class_off_on_monday"].value()
+                            st.class_off_on_tuesday   = form_data["class_off_on_tuesday"].value()
+                            st.class_off_on_wednesday = form_data["class_off_on_wednesday"].value()
+                            st.class_off_on_thursday  = form_data["class_off_on_thursday"].value()
+                            st.class_off_on_friday    = form_data["class_off_on_friday"].value()
+                            st.class_off_on_saturday  = form_data["class_off_on_saturday"].value()
 
                             st.save()
                             del(request.session["PAGE_1_DATA"])
+                            messages.success(request, "Successfully added/modified school timing")
                         except Exception as e:
                             messages.warning(request, e.__str__())
                             return addSchoolTimings_Page2(request)

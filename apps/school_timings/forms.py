@@ -53,16 +53,15 @@ class FORM_SchoolTiming(forms.Form) :
             self.fields['school_timing_name'].initial = st.timing_name
             self.fields['school_start_time'].initial = st.school_starting_time
             self.fields['school_closing_time'].initial = st.school_closing_time
-            self.fields['total_periods'].initial = st.no_of_periods
             self.fields['assembly_duration'].initial = st.assembly_duration
 
-            self.fields['class_on_sunday'].initial = st.class_on_sunday
-            self.fields['class_on_monday'].initial = st.class_on_monday
-            self.fields['class_on_tuesday'].initial = st.class_on_tuesday
-            self.fields['class_on_wednesday'].initial = st.class_on_wednesday
-            self.fields['class_on_thursday'].initial = st.class_on_thursday
-            self.fields['class_on_friday'].initial = st.class_on_friday
-            self.fields['class_on_saturday'].initial = st.class_on_saturday
+            self.fields['class_off_on_sunday'].initial = st.class_off_on_sunday
+            self.fields['class_off_on_monday'].initial = st.class_off_on_monday
+            self.fields['class_off_on_tuesday'].initial = st.class_off_on_tuesday
+            self.fields['class_off_on_wednesday'].initial = st.class_off_on_wednesday
+            self.fields['class_off_on_thursday'].initial = st.class_off_on_thursday
+            self.fields['class_off_on_friday'].initial = st.class_off_on_friday
+            self.fields['class_off_on_saturday'].initial = st.class_off_on_saturday
 
             self.fields['assembly_on_sunday'].initial = st.assembly_on_sunday
             self.fields['assembly_on_monday'].initial = st.assembly_on_monday
@@ -80,17 +79,16 @@ class FORM_SchoolTiming(forms.Form) :
     school_start_time   = forms.TimeField( required=False, widget=forms.TimeInput(attrs={"type":"time"}))
     school_closing_time = forms.TimeField( required=False, widget=forms.TimeInput(attrs={"type":"time"}))
     school_off_days     = forms.MultipleChoiceField(choices = DaysChoiceList, required = False)
-    total_periods       = forms.IntegerField(required=False)
     assembly_on_days    = forms.MultipleChoiceField(choices=DaysChoiceList,required=False)
     assembly_duration   = forms.IntegerField(required=False)
 
-    class_on_sunday = forms.BooleanField(required=False)
-    class_on_monday = forms.BooleanField(required=False)
-    class_on_tuesday = forms.BooleanField(required=False)
-    class_on_wednesday = forms.BooleanField(required=False)
-    class_on_thursday = forms.BooleanField(required=False)
-    class_on_friday = forms.BooleanField(required=False)
-    class_on_saturday = forms.BooleanField(required=False)
+    class_off_on_sunday = forms.BooleanField(required=False)
+    class_off_on_monday = forms.BooleanField(required=False)
+    class_off_on_tuesday = forms.BooleanField(required=False)
+    class_off_on_wednesday = forms.BooleanField(required=False)
+    class_off_on_thursday = forms.BooleanField(required=False)
+    class_off_on_friday = forms.BooleanField(required=False)
+    class_off_on_saturday = forms.BooleanField(required=False)
 
     assembly_on_sunday = forms.BooleanField(required=False)
     assembly_on_monday = forms.BooleanField(required=False)
@@ -104,22 +102,12 @@ class FORM_SchoolTiming(forms.Form) :
 
     def clean(self):
         data = self.cleaned_data
+        if data["school_timing_name"] == None or data["school_timing_name"] == "":
+            self.add_error("school_timing_name","School timing name is mandatory")
         if data["school_start_time"] == None or data["school_start_time"] == "":
             self.add_error("school_start_time","School starting time is mandatory")
         if data["school_closing_time"] == None or data["school_closing_time"] == "":
             self.add_error("school_closing_time","School closing time is mandatory")
-
-        if data["total_periods"] != None:
-            try:
-                if int(data["total_periods"]) < 1:
-                    self.add_error("total_periods","Atleast one period should be there.")
-                elif int(data["total_periods"]) > 12:
-                    self.add_error("total_periods","Max 12 periods are permitted")
-            except:
-                self.add_error("total_periods", "Expecting a number value")
-        else:
-            self.add_error("total_periods", "Expecting a value between 1 and 12")
-
 
         if data["assembly_duration"] != None:
             try:
@@ -136,19 +124,19 @@ class FORM_SchoolTiming(forms.Form) :
                 self.add_error("assembly_duration", "Expecting a value when assembly dates are specified")
 
 
-        if data["assembly_on_sunday"] and not data["class_on_sunday"]:
+        if data["assembly_on_sunday"] and data["class_off_on_sunday"]:
             self.add_error("assembly_error_field", "Sunday is a holiday")
-        if data["assembly_on_monday"] and not data["class_on_monday"]:
+        if data["assembly_on_monday"] and data["class_off_on_monday"]:
             self.add_error("assembly_error_field", "Monday is a holiday")
-        if data["assembly_on_tuesday"] and not data["class_on_tuesday"]:
+        if data["assembly_on_tuesday"] and data["class_off_on_tuesday"]:
             self.add_error("assembly_error_field", "Tuesday is a holiday")
-        if data["assembly_on_wednesday"] and not data["class_on_wednesday"]:
+        if data["assembly_on_wednesday"] and data["class_off_on_wednesday"]:
             self.add_error("assembly_error_field", "Wednesday is a holiday")
-        if data["assembly_on_thursday"] and not data["class_on_thursday"]:
+        if data["assembly_on_thursday"] and data["class_off_on_thursday"]:
             self.add_error("assembly_error_field", "Thursday is a holiday")
-        if data["assembly_on_friday"] and not data["class_on_friday"]:
+        if data["assembly_on_friday"] and data["class_off_on_friday"]:
             self.add_error("assembly_error_field", "Friday is a holiday")
-        if data["assembly_on_saturday"] and not data["class_on_saturday"]:
+        if data["assembly_on_saturday"] and data["class_off_on_saturday"]:
             self.add_error("assembly_error_field", "Saturday is a holiday")
 
         if (not data["assembly_on_sunday"] and not data["assembly_on_monday"] and not data["assembly_on_tuesday"] and not data[
