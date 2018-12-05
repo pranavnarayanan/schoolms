@@ -16,8 +16,9 @@
         <div class="box-header">
           <h3 class="box-title">
               <select class="form-control" onchange="loadBreakUpData()" id="school_timing">
-                <option value="1">Class 12 - A</option>
-                <option value="2">Class LKG UKG</option>
+                {% for st in school_timings %}
+                    <option value="{{ st.id }}">{{ st.name }}</option>
+                {%  endfor %}
               </select>
           </h3>
 
@@ -37,55 +38,20 @@
                   <th>Time</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                  <td>1</td>
-                  <td><select class="form-control table_form_field" disabled><option>Period</option><option>Break</option></select></td>
-                  <td><input type="number" value="30" class="form-control table_form_field" disabled></td>
-                  <td><input type="text" value="9:00 AM to 9:30" class="form-control always_disabled" disabled></td>
-              </tr>
-              <tr>
-                  <td>2</td>
-                  <td><select class="form-control table_form_field"><option>Period</option><option>Break</option></select></td>
-                  <td><input type="number" value="30" class="form-control table_form_field"></td>
-                  <td><input type="text" value="9:00 AM to 9:30" class="form-control always_disabled" disabled></td>
-              </tr>
+            <tbody id="table_body">
+            </tbody>
+            <tbody id="edit_panel_button">
+               <tr style="cursor: pointer">
+                  <td onclick="addPeriod()"></td>
+                  <td onclick="addPeriod()"></td>
+                  <td onclick="addPeriod()"><i class="fa fa-plus-circle"></i> Add New Row</td>
+                  <td onclick="removePeriod()"><i class="fa fa-trash"></i> Remove Last</td>
+                </tr>
             </tbody>
           </table>
         </div>
       </div>
     </div>
-
-
-      <div class="col-xs-12">
-          <div class="box">
-            <div class="box-body table-responsive no-padding">
-              <table class="table table-hover">
-                <thead>
-                    <tr>
-                      <th>#</th>
-                      <th>Type</th>
-                      <th>Duration</th>
-                      <th>Time</th>
-                    </tr>
-                </thead>
-
-                <tbody id="periods">
-                </tbody>
-
-                <tbody>
-                     <tr style="cursor: pointer">
-                      <td onclick="addPeriod()"></td>
-                      <td onclick="addPeriod()"></td>
-                      <td onclick="addPeriod()"><i class="fa fa-plus-circle"></i> Add New Row</td>
-                      <td onclick="removePeriod()"><i class="fa fa-trash"></i> Remove Last</td>
-                    </tr>
-                </tbody>
-
-              </table>
-            </div>
-          </div>
-        </div>
       </div>
 {% endblock %}
 
@@ -108,24 +74,26 @@
 
 {% block page_specific_js  %}
     <script>
-        var count = 0;
+        var index = 1;
         function addPeriod() {
-            count += 1;
-            var tr = '<tr id="tr_'+count+'">';
-                tr += '<td>'+count+'</td>';
-                tr += '<td><select class="form-control"><option>Period</option><option>Break</option></select></td>';
-                tr += '<td><input type="number" class="form-control"></td>';
-                tr += '<td><input type="text" readonly value="8:00am - 8:50am" class="form-control"></td>';
-                tr += '</tr>';
-            $("#periods").append(tr);
+            var tr  = '<tr id="tr_'+index+'">';
+                tr += '<td>'+index+'</td>';
+                tr += '<td><select id="type_'+index+'" class="form-control table_form_field"><option>Period</option><option>Break</option></select></td>';
+                tr += '<td><input id="duration_'+index+'" onChange="refreshTimings()" type="number" class="form-control table_form_field"></td>';
+                tr += '<td><input id="time_'+index+'" type="text" class="form-control always_disabled" disabled></td>';
+                tr += "</tr>";
+            index += 1;
+            $("#table_body").append(tr);
         }
 
         function removePeriod(){
-            $("#tr_"+count).remove();
-            count-=1;
+            index-=1;
+            $("#tr_"+index).remove();
         }
 
+        loadBreakUpData();
         function loadBreakUpData(){
+            index = 1;
             $.ajax({
                 url:"LoadBreakUpData",
                 type:"POST",
@@ -138,7 +106,21 @@
                     }else if(data == -2){
                         alert("permission denied")
                     }else{
-                        alert(data)
+                        var parsedData = $.parseJSON(data);
+                        var records = '';
+                        $.each(parsedData, function () {
+                            var is_period = this.is_period ? "selected" : "#";
+                            var is_break = this.is_break ? "selected" : "#";
+                            records += '<tr id="tr_'+index+'">';
+                            records += '<td>'+index+'</td>';
+                            records += '<td><select id="type_'+index+'" class="form-control table_form_field" disabled><option '+is_period+'>Period</option><option '+is_break+'>Break</option></select></td>';
+                            records += '<td><input id="duration_'+index+'" onChange="refreshTimings()" type="number" value="'+this.duration+'" class="form-control table_form_field" disabled></td>';
+                            records += '<td><input id="time_'+index+'" type="text" value="9 AM to 9:30 AM" class="form-control always_disabled" disabled></td>';
+                            records += "</tr>";
+                            index += 1;
+                        });
+                        $("#table_body").html(records);
+                        refreshTimings();
                     }
                 },
                 error:function (data) {
@@ -147,18 +129,37 @@
             });
         }
 
+        var school_starting_minute = 540;
+        function refreshTimings() {
+            var start_time = school_starting_minute;
+            var end_time = school_starting_minute;
+            for(i=1; i<=index; i++){
+                start_time = parseInt(end_time);
+                end_time += parseInt($("#duration_"+i).val());
+                $("#time_"+i).val(convertMinToHour(start_time)+" to "+convertMinToHour(end_time));
+            }
+        }
+
+        function convertMinToHour(min){
+            return Math.floor(parseInt(min)/60)+":"+(parseInt(min)%60);
+
+        }
+
         $(".save_btn").hide();
         $(".edit_btn").show();
+        $("#edit_panel_button").hide();
         function enableEditingMode(){
             $(".table_form_field").removeAttr("disabled");
             $(".edit_btn").hide();
             $(".save_btn").show();
+            $("#edit_panel_button").show();
         }
 
         function saveData(){
             $(".table_form_field").attr("disabled",true);
             $(".save_btn").hide();
             $(".edit_btn").show();
+            $("#edit_panel_button").hide();
         }
     </script>
 {% endblock %}

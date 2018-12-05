@@ -174,4 +174,13 @@ INSERT INTO en_school_timing_breakup (is_break, is_period, duration, description
   (1,0,50,'Lunch Break',1),
   (0,1,30,'Period - 5',1),
   (1,0,10,'Interval - 2',1),
-  (0,1,30,'Period - 6',1);
+  (0,1,30,'Period - 6',1),
+  (0,1,40,'Period - 1',2),
+  (0,1,45,'Period - 2',2),
+  (1,0,15,'Interval - 1',2),
+  (0,1,40,'Period - 3',2),
+  (0,1,40,'Period - 4',2),
+  (1,0,60,'Lunch Break',2),
+  (0,1,20,'Period - 5',2),
+  (1,0,60,'Period - 1',3),
+  (1,0,50,'Period - 2',3);

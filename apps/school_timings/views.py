@@ -161,8 +161,21 @@ def addSchoolTimings_Page2_Submit(request):
 
 def addSchoolTimings_Page3(request):
     data = UIDataHelper(request).getData(page="is_add_school_timings")
-    template = loader.get_template("school_timings_page_3.html")
-    return HttpResponse(template.render(data, request))
+    user_id = request.session[SessionProperties.USER_ID_KEY]
+    user_role = EN_UserRoles.objects.filter(approved=True, user_id=user_id, is_selected_role=True,role__code=Roles.SCHOOL_ADMIN)
+    if user_role.exists():
+        user_role = user_role.first()
+        data.__setitem__("school_timings",[{
+            "id":st.id,
+            "name":st.timing_name
+        }for st in EN_SchoolTimings.objects.filter(organization=user_role.related_organization)])
+
+        template = loader.get_template("school_timings_page_3.html")
+        return HttpResponse(template.render(data, request))
+    else:
+        messages.warning(request, DisplayKey.get("current_role_cannot_perform_this_action"))
+        return HttpResponseRedirect("../Home")
+
 
 
 @csrf_exempt
