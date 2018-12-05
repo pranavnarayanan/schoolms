@@ -174,10 +174,17 @@ def addSchoolTimings_loadBreakUpData(request):
         school_timing_id = int(request.POST["school_timing_id"])
         st = EN_SchoolTimings.objects.filter(organization=user_role.related_organization,id=school_timing_id)
         if st.exists():
-            for timing_breakup in EN_SchoolTimingBreakup.objects.filter(timing=st):
-                pass
+            st = st.first()
+            return HttpResponse(json.dumps([
+                {
+                    "is_period": timing_breakup.is_period,
+                    "is_break": timing_breakup.is_break,
+                    "duration": timing_breakup.duration,
+                    "description": timing_breakup.description
+                } for timing_breakup in EN_SchoolTimingBreakup.objects.filter(timing=st)]))
         else:
-            pass
+            # No timing available
+            return HttpResponse(-1)
     else:
-        pass
-    return HttpResponse("Hello")
+        # No Permission
+        return HttpResponse(-2)

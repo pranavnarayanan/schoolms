@@ -133,7 +133,13 @@
                     "school_timing_id":$("#school_timing").val()
                 },
                 success:function (data) {
-                    alert(data);
+                    if(data == -1){
+                        alert("No Data Available")
+                    }else if(data == -2){
+                        alert("permission denied")
+                    }else{
+                        alert(data)
+                    }
                 },
                 error:function (data) {
                     alert("Error : "+data.responseText);
