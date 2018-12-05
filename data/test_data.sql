@@ -159,4 +159,19 @@ INSERT INTO en_user_roles (id, user_id , role_id, related_organization_group_id,
 (11,6,7,null,1,null,1,0,6,6,'2018-09-25 07:38:00.539153','2018-09-25 07:38:00.539153');
 
 
+INSERT INTO en_school_timings (timing_name, school_starting_time, school_closing_time, organization_id, assembly_duration, assembly_on_friday, assembly_on_monday, assembly_on_saturday, assembly_on_sunday, assembly_on_thursday, assembly_on_tuesday, assembly_on_wednesday, class_off_on_friday, class_off_on_monday, class_off_on_saturday, class_off_on_sunday, class_off_on_thursday, class_off_on_tuesday, class_off_on_wednesday) VALUES
+('classes 10 - 11 - 12', '14:01:00', '01:00:00', 1, 30, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0),
+('LKG_UKG Timing', '02:01:00', '14:01:00', 1, 30, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1),
+('class 1 to 5', '09:00:00', '15:00:00', 1, 20, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 0),
+('class 6 7 8 timing', '09:00:00', '15:00:00', 1, 20, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0);
 
+INSERT INTO en_school_timing_breakup (is_break, is_period, duration, description, timing_id) VALUES
+  (0,1,30,'Period - 1',1),
+  (0,1,35,'Period - 2',1),
+  (1,0,10,'Interval - 1',1),
+  (0,1,40,'Period - 3',1),
+  (0,1,40,'Period - 4',1),
+  (1,0,50,'Lunch Break',1),
+  (0,1,30,'Period - 5',1),
+  (1,0,10,'Interval - 2',1),
+  (0,1,30,'Period - 6',1);

@@ -1,9 +1,11 @@
 import json
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
+from django.views.decorators.csrf import csrf_exempt
+
 from apps.roles.models import EN_UserRoles
 from apps.school_timings.forms import FORM_SchoolTiming, FORM_AddModifySchoolTiming_Page1
-from apps.school_timings.models import EN_SchoolTimings
+from apps.school_timings.models import EN_SchoolTimings, EN_SchoolTimingBreakup
 from apps.utilities.helper.ui_data_helper import UIDataHelper
 from displaykey.display_key import DisplayKey
 from properties.app_roles import Roles
@@ -156,3 +158,26 @@ def addSchoolTimings_Page2_Submit(request):
     else:
         return HttpResponseRedirect("AddModifyTiming")
 
+
+def addSchoolTimings_Page3(request):
+    data = UIDataHelper(request).getData(page="is_add_school_timings")
+    template = loader.get_template("school_timings_page_3.html")
+    return HttpResponse(template.render(data, request))
+
+
+@csrf_exempt
+def addSchoolTimings_loadBreakUpData(request):
+    user_id = request.session[SessionProperties.USER_ID_KEY]
+    user_role = EN_UserRoles.objects.filter(approved=True, user_id=user_id, is_selected_role=True,role__code=Roles.SCHOOL_ADMIN)
+    if user_role.exists():
+        user_role = user_role.first()
+        school_timing_id = int(request.POST["school_timing_id"])
+        st = EN_SchoolTimings.objects.filter(organization=user_role.related_organization,id=school_timing_id)
+        if st.exists():
+            for timing_breakup in EN_SchoolTimingBreakup.objects.filter(timing=st):
+                pass
+        else:
+            pass
+    else:
+        pass
+    return HttpResponse("Hello")
