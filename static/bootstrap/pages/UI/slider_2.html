@@ -1,0 +1,60 @@
+<link rel="stylesheet" href="../../plugins/nouislider/nouislider.min.css">
+<link rel="stylesheet" href="../../plugins/nouislider/main.min.css">
+
+<br><br><br><br><br><br><br><br><br>
+
+<div class="nouislider-wrapper">
+  <div id="slider-color-2"></div>
+</div>
+<br>
+<div id="disp"></div>
+
+
+<style>
+	.c-1-color { background: red; }
+	.c-2-color { background: yellow; }
+	.c-3-color { background: green; }
+	.c-4-color { background: blue; }
+	.c-5-color { background: purple; }
+</style>
+
+<script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+<script src="../../plugins/nouislider/nouislider.min.js"></script>
+<script>
+	var multirange = document.getElementById('slider-color-2');
+
+	noUiSlider.create(multirange, {
+	  start: [ 100, 320, 450, 680, 950 ],
+	  connect: [true, true, true, true, true, true],
+	  tooltips: [true, false, false, false, false],
+	  step:5,
+	  behaviour: 'drag',
+	  range: {
+		'min': [  0 ],
+		'max': [ 1440 ]
+	  },
+	  format: {
+        to: function disp1(value) {
+            return "From "+value+" to 9:30";
+        },
+        from: function disp2(value) {
+            return value.replace(',-', '');
+        }
+    }
+	});
+
+	var connect = multirange.querySelectorAll('.noUi-connect');
+	var classes = ['c-1-color', 'c-2-color', 'c-3-color', 'c-4-color', 'c-5-color'];
+
+	connect[1].classList.add(classes[1]);
+	connect[2].classList.add(classes[2]);
+	connect[3].classList.add(classes[3]);
+	connect[4].classList.add(classes[4]);
+	connect[5].classList.add(classes[5]);
+
+
+	multirange.noUiSlider.on('update', function () {
+	 var valuesarr = multirange.noUiSlider.get();
+	 $("#disp").html(valuesarr[0]+" - "+valuesarr[1]+" - "+valuesarr[2]+" - "+valuesarr[3]+" - "+valuesarr[4]);
+	});
+</script>
