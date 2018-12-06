@@ -1,0 +1,170 @@
+
+.nouislider-wrapper{
+    margin-bottom:1.25rem
+}
+
+.noUi-handle{
+    padding:0;
+    display:inline-block;
+    background-color:#fff;
+    color:#fff;
+    border:4px solid #346cb0;
+    vertical-align:middle;
+    border-radius:1.25rem;
+    line-height:1;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+    white-space:normal;
+    -webkit-transform-origin:center center;
+    transform-origin:center center;
+    -webkit-transition:-webkit-box-shadow .15s;
+    transition:-webkit-box-shadow .15s;
+    outline:0
+}
+.noUi-handle:after,.noUi-handle:before{
+    display:none
+}
+.noUi-handle:active,.noUi-handle:focus,.noUi-handle:hover{
+    -webkit-box-shadow:0 0 0 4px rgba(52,108,176,.26);
+    box-shadow:0 0 0 4px rgba(52,108,176,.26)
+}
+.noUi-horizontal{
+    height:4px
+}
+.noUi-horizontal .noUi-handle{
+    width:1.25rem;
+    height:1.25rem;
+    left:-12px;
+    top:-8px
+}
+html:not([dir=rtl]) .noUi-horizontal .noUi-handle{
+    right:-.625rem
+}
+.noUi-vertical{
+    width:4px
+}
+.noUi-vertical .noUi-handle{
+    width:1.25rem;
+    height:1.25rem;
+    left:-8px;
+    top:-12px
+}
+.noUi-target{
+    background-color:#e9eaeb;
+    border:0
+}
+.noUi-connect,.noUi-target{
+    -webkit-box-shadow:none;
+    box-shadow:none
+}
+.noUi-connect{
+    background-color:#346cb0
+}
+.noUi-active,.noUi-handle{
+    -webkit-box-shadow:none;
+    box-shadow:none
+}
+.noUi-pips{
+    color:#686f76;
+    font-size:.875rem
+}
+.noUi-pips-horizontal{
+    padding:6px 0;
+    height:55px
+}
+.noUi-pips-vertical{
+    padding:0 6px;
+    width:55px
+}
+.noUi-marker,.noUi-marker-large,.noUi-marker-sub{
+    background-color:#e9eaeb
+}
+.noUi-value-horizontal{
+    margin-top:4px
+}
+.noUi-value-vertical{
+    margin-left:4px
+}
+.noUi-tooltip{
+    font-size:.875rem;
+    color:#fff;
+    border-color:transparent;
+    background-color:#131d28;
+    opacity:.9;
+    border-radius:.25rem
+}
+.noUi-horizontal .noUi-tooltip{
+    bottom:200%
+}
+.noUi-vertical .noUi-tooltip{
+    right:200%
+}
+.noUi-primary .noUi-connect{
+    background-color:#346cb0
+}
+.noUi-primary .noUi-handle{
+    border-color:#346cb0
+}
+.noUi-primary .noUi-handle:active,.noUi-primary .noUi-handle:focus,.noUi-primary .noUi-handle:hover{
+    -webkit-box-shadow:0 0 0 4px rgba(52,108,176,.26);
+    box-shadow:0 0 0 4px rgba(52,108,176,.26)
+}
+.noUi-success .noUi-connect{
+    background-color:#00a28a
+}
+.noUi-success .noUi-handle{
+    border-color:#00a28a
+}
+.noUi-success .noUi-handle:active,.noUi-success .noUi-handle:focus,.noUi-success .noUi-handle:hover{
+    -webkit-box-shadow:0 0 0 4px rgba(0,162,138,.26);
+    box-shadow:0 0 0 4px rgba(0,162,138,.26)
+}
+.noUi-info .noUi-connect{
+    background-color:#0179a8
+}
+.noUi-info .noUi-handle{
+    border-color:#0179a8
+}
+.noUi-info .noUi-handle:active,.noUi-info .noUi-handle:focus,.noUi-info .noUi-handle:hover{
+    -webkit-box-shadow:0 0 0 4px rgba(1,121,168,.26);
+    box-shadow:0 0 0 4px rgba(1,121,168,.26)
+}
+.noUi-warning .noUi-connect{
+    background-color:#f7c46c
+}
+.noUi-warning .noUi-handle{
+    border-color:#f7c46c
+}
+.noUi-warning .noUi-handle:active,.noUi-warning .noUi-handle:focus,.noUi-warning .noUi-handle:hover{
+    -webkit-box-shadow:0 0 0 4px hsla(38,90%,70%,.26);
+    box-shadow:0 0 0 4px hsla(38,90%,70%,.26)
+}
+.noUi-danger .noUi-connect{
+    background-color:#b76ba3
+}
+.noUi-danger .noUi-handle{
+    border-color:#b76ba3
+}
+.noUi-danger .noUi-handle:active,.noUi-danger .noUi-handle:focus,.noUi-danger .noUi-handle:hover{
+    -webkit-box-shadow:0 0 0 4px rgba(183,107,163,.26);
+    box-shadow:0 0 0 4px rgba(183,107,163,.26)
+}
+.noUi-dark .noUi-connect{
+    background-color:#3d464f
+}
+.noUi-dark .noUi-handle{
+    border-color:#3d464f
+}
+.noUi-dark .noUi-handle:active,.noUi-dark .noUi-handle:focus,.noUi-dark .noUi-handle:hover{
+    -webkit-box-shadow:0 0 0 4px rgba(61,70,79,.26);
+    box-shadow:0 0 0 4px rgba(61,70,79,.26)
+}
+.noUi-target[disabled] .noUi-connect{
+    background-color:#e9eaeb
+}
+.noUi-origin[disabled] .noUi-handle,.noUi-target[disabled] .noUi-handle{
+    border-color:#e9eaeb;
+    background-color:#f5f5f5
+}

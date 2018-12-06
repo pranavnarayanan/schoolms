@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="../../plugins/nouislider/nouislider.min.css">
-<link rel="stylesheet" href="../../plugins/nouislider/main.min.css">
+<link rel="stylesheet" href="../../plugins/nouislider/main_min_custom.css">
 
 <br><br><br><br><br><br><br><br><br>
 
@@ -9,16 +9,21 @@
 <br>
 
 <table border="2px" style="width: 100%">
-    <tr>
+    <tr style="width: 100%">
         <td id="td_1">Period 1</td>
         <td id="td_2">Period 2</td>
         <td id="td_3">Period 3</td>
         <td id="td_4">Period 4</td>
         <td id="td_5">Period 5</td>
+        <td id="td_6">Period 6</td>
     </tr>
 </table>
 
 <div id="disp"></div>
+<br>
+<hr>
+<br>
+<div id="disp_percentage"></div>
 
 
 
@@ -37,24 +42,19 @@
 <script>
 	var multirange = document.getElementById('slider-color-2');
 
+	var starting_val = 0;
+	var ending_val = 1440;
+
 	noUiSlider.create(multirange, {
 	  start: [ 100, 320, 450, 680, 950 ],
 	  connect: [true, true, true, true, true, true],
-	  tooltips: [true, false, false, false, false],
+	  tooltips: [false, false, false, false, false],
 	  step:5,
 	  behaviour: 'drag',
 	  range: {
-		'min': [  0 ],
-		'max': [ 1440 ]
-	  },
-	  format: {
-        to: function disp1(value) {
-            return "From "+value+" to 9:30";
-        },
-        from: function disp2(value) {
-            return value.replace(',-', '');
-        }
-    }
+		'min': [  starting_val ],
+		'max': [ ending_val ]
+	  }
 	});
 
 	var connect = multirange.querySelectorAll('.noUi-connect');
@@ -69,8 +69,45 @@
 
 	multirange.noUiSlider.on('update', function () {
 	 var valuesarr = multirange.noUiSlider.get();
-	 $("#disp").html(valuesarr[0]+" - "+valuesarr[1]+" - "+valuesarr[2]+" - "+valuesarr[3]+" - "+valuesarr[4]);
 
-	 $('#td_1').width(valuesarr[0]);
+	 var val1 = Math.floor(parseInt(valuesarr[0]));
+	 var val2 = Math.floor(parseInt(valuesarr[1]));
+	 var val3 = Math.floor(parseInt(valuesarr[2]));
+	 var val4 = Math.floor(parseInt(valuesarr[3]));
+	 var val5 = Math.floor(parseInt(valuesarr[4]));
+
+	 var time1 = "00:00 to "+Math.floor(val1/60) +":"+Math.floor(val1%60);
+	 var time2 = Math.floor(val1/60) +":"+Math.floor(val1%60)+" to "+Math.floor(val2/60)+":"+Math.floor(val2%60);
+	 var time3 = Math.floor(val2/60) +":"+Math.floor(val2%60)+" to "+Math.floor(val3/60)+":"+Math.floor(val2%60);
+	 var time4 = Math.floor(val3/60) +":"+Math.floor(val3%60)+" to "+Math.floor(val4/60)+":"+Math.floor(val2%60);
+	 var time5 = Math.floor(val4/60) +":"+Math.floor(val4%60)+" to "+Math.floor(val5/60)+":"+Math.floor(val2%60);
+	 var time6 = Math.floor(val5/60) +":"+Math.floor(val5%60)+" to "+Math.floor(ending_val/60)+":"+Math.floor(ending_val%60);
+
+
+	 $("#td_1").html(time1);
+	 $("#td_2").html(time2);
+	 $("#td_3").html(time3);
+	 $("#td_4").html(time4);
+	 $("#td_5").html(time5);
+	 $("#td_6").html(time6);
+
+	 $("#disp").html(val1+" - "+val2+" - "+val3+" - "+val4+" - "+val5);
+
+	 var width1 = Math.floor(((val1-starting_val)*100)/ending_val);
+	 var width2 = Math.floor(((val2-val1)*100)/ending_val);
+	 var width3 = Math.floor(((val3-val2)*100)/ending_val);
+	 var width4 = Math.floor(((val4-val3)*100)/ending_val);
+	 var width5 = Math.floor(((val5-val4)*100)/ending_val);
+	 var width6 = Math.floor(((1440-val5)*100)/ending_val);
+
+	 $("#disp_percentage").html(width1+" - "+width2+" - "+width3+" - "+width4+" - "+width5+" - "+width6);
+
+    $("#td_1").width(width1+"%");
+    $("#td_2").width(width2+"%");
+    $("#td_3").width(width3+"%");
+    $("#td_4").width(width4+"%");
+    $("#td_5").width(width5+"%");
+    $("#td_6").width(width6+"%");
+
 	});
 </script>

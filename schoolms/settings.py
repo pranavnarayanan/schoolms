@@ -81,6 +81,7 @@ TEMPLATES = [
             os.path.join(BASE_DIR, 'apps/documents/templates'),
             os.path.join(BASE_DIR, 'apps/classes/templates'),
             os.path.join(BASE_DIR, 'apps/subjects/templates'),
+            os.path.join(BASE_DIR, 'apps/timetable/templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {

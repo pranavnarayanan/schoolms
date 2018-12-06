@@ -33,6 +33,7 @@ urlpatterns = [
     path(r'Documents/', include("apps.documents.urls")),
     path(r'Classes/', include("apps.classes.urls")),
     path(r'Subjects/', include("apps.subjects.urls")),
+    path(r'Timetable/', include("apps.timetable.urls")),
 
 ]
 
