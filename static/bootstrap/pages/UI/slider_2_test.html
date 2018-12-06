@@ -7,7 +7,21 @@
   <div id="slider-color-2"></div>
 </div>
 <br>
+
+<table border="2px" style="width: 100%">
+    <tr>
+        <td id="td_1">Period 1</td>
+        <td id="td_2">Period 2</td>
+        <td id="td_3">Period 3</td>
+        <td id="td_4">Period 4</td>
+        <td id="td_5">Period 5</td>
+    </tr>
+</table>
+
 <div id="disp"></div>
+
+
+
 
 
 <style>
@@ -56,5 +70,7 @@
 	multirange.noUiSlider.on('update', function () {
 	 var valuesarr = multirange.noUiSlider.get();
 	 $("#disp").html(valuesarr[0]+" - "+valuesarr[1]+" - "+valuesarr[2]+" - "+valuesarr[3]+" - "+valuesarr[4]);
+
+	 $('#td_1').width(valuesarr[0]);
 	});
 </script>
