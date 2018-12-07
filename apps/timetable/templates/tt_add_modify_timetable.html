@@ -259,12 +259,10 @@
             starting_hr = Math.floor(initial_val/60);
             starting_min = Math.floor(initial_val%60);
             starting_time = (starting_hr < 12) ? (starting_hr+":"+starting_min+" AM"):((starting_hr-12)+":"+starting_min+" PM");
-            //starting_time = starting_hr+":"+starting_min;
 
             ending_hr = Math.floor(final_val/60);
             ending_min = Math.floor(final_val%60);
             ending_time = (ending_hr < 12) ? (ending_hr+":"+ending_min+" AM"):((ending_hr-12)+":"+ending_min+" PM");
-            //ending_time = ending_hr+":"+ending_min;
 
             percentage = Math.floor(((final_val-initial_val)/(ending_val-starting_val))*100);
             table_content += '<td id="' + day + '_td_'+i+'" width="'+percentage+'%">Period '+(i+1)+'<br>'+starting_time+" to "+ending_time+'</td>';

@@ -67,11 +67,6 @@
 
 {% block page_specific_css %}
     <style>
-        .always_disabled:disabled{
-            background-color: transparent;
-            cursor: auto;
-            border: none;
-        }
         .table_form_field:disabled{
             background-color: transparent;
             cursor: auto;
@@ -83,12 +78,14 @@
 {% block page_specific_js  %}
     <script>
         var index = 1;
+        var school_starting_minute = 540;
+
         function addPeriod() {
             var tr  = '<tr id="tr_'+index+'">';
                 tr += '<td>'+index+'</td>';
                 tr += '<td><select id="type_'+index+'" class="form-control table_form_field"><option>Period</option><option>Break</option></select></td>';
                 tr += '<td><input id="duration_'+index+'" onChange="refreshTimings()" type="number" class="form-control table_form_field"></td>';
-                tr += '<td><input id="time_'+index+'" type="text" class="form-control always_disabled" disabled></td>';
+                tr += '<td id="time_'+index+'"></td>';
                 tr += "</tr>";
             index += 1;
             $("#table_body").append(tr);
@@ -116,17 +113,18 @@
                     }else{
                         var parsedData = $.parseJSON(data);
                         var records = '';
-                        $.each(parsedData, function () {
+                        $.each(parsedData["data"], function () {
                             var is_period = this.is_period ? "selected" : "#";
                             var is_break = this.is_break ? "selected" : "#";
                             records += '<tr id="tr_'+index+'">';
                             records += '<td>'+index+'</td>';
                             records += '<td><select id="type_'+index+'" class="form-control table_form_field" disabled><option '+is_period+'>Period</option><option '+is_break+'>Break</option></select></td>';
                             records += '<td><input id="duration_'+index+'" onChange="refreshTimings()" type="number" value="'+this.duration+'" class="form-control table_form_field" disabled></td>';
-                            records += '<td><input id="time_'+index+'" type="text" value="9 AM to 9:30 AM" class="form-control always_disabled" disabled></td>';
+                            records += '<td id="time_'+index+'"></td>';
                             records += "</tr>";
                             index += 1;
                         });
+                        school_starting_minute = parsedData["school_starting_time"];
                         $("#table_body").html(records);
                         refreshTimings();
                     }
@@ -137,21 +135,28 @@
             });
         }
 
-        var school_starting_minute = 540;
+
         function refreshTimings() {
             var start_time = school_starting_minute;
             var end_time = school_starting_minute;
             for(i=1; i<=index; i++){
                 start_time = parseInt(end_time);
                 end_time += parseInt($("#duration_"+i).val());
-                $("#time_"+i).val(convertMinToHour(start_time)+" to "+convertMinToHour(end_time));
+
+                starting_hr = Math.floor(start_time/60);
+                starting_min = Math.floor(start_time%60);
+                starting_min = (starting_min < 10) ? "0"+starting_min : starting_min;
+                starting_time = (starting_hr < 13) ? (starting_hr+":"+starting_min+" am"):((starting_hr-12)+":"+starting_min+" pm");
+
+                ending_hr = Math.floor(end_time/60);
+                ending_min = Math.floor(end_time%60);
+                ending_min = (ending_min < 10) ? "0"+ending_min : ending_min;
+                ending_time = (ending_hr < 13) ? (ending_hr+":"+ending_min+" am"):((ending_hr-12)+":"+ending_min+" pm");
+
+                $("#time_"+i).html(starting_time+" - "+ending_time);
             }
         }
 
-        function convertMinToHour(min){
-            return Math.floor(parseInt(min)/60)+":"+(parseInt(min)%60);
-
-        }
 
         $(".save_btn").hide();
         $(".edit_btn").show();

@@ -34,7 +34,7 @@ class FORM_AddModifySchoolTiming_Page1(forms.Form) :
         data = self.cleaned_data
         if self.request.POST["type"] == "new" and data["school_timing_name"] == "":
             self.add_error("school_timing_name","School timing name is mandatory")
-        else:
+        elif self.request.POST["type"] == "update":
             if data["available_timings"] == "" or data["available_timings"] == None:
                 self.add_error("available_timings", "Modification can be done only after selecting a timing")
         return data
