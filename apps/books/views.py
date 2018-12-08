@@ -25,23 +25,15 @@ def saveBookDetails(request):
     if request.method == 'POST':
         form_data = FORM_BookDetails(request.POST)
         if (form_data.is_valid()):
-            book_name = form_data.cleaned_data.get("book_name")
-            book_code = form_data.cleaned_data.get("book_code")
-            book_volume = form_data.cleaned_data.get("book_volume")
-            book_author = form_data.cleaned_data.get("book_author")
-            book_publisher = form_data.cleaned_data.get("book_publisher")
-            book_category = form_data.cleaned_data.get("book_category")
-            book_sub_category = form_data.cleaned_data.get("book_sub_category")
-            book_year = form_data.cleaned_data.get("book_year")
             bookObj = EN_Books()
-            bookObj.name = book_name
-            bookObj.book_code = book_code
-            bookObj.published_year = book_year
-            bookObj.volume = book_volume
-            bookObj.author = book_author
-            bookObj.publisher = book_publisher
-            bookObj.category = TL_BooksCategory.objects.get(code=book_category)
-            bookObj.sub_category = TL_BooksSubCategory.objects.get(code=book_sub_category)
+            bookObj.name = form_data.cleaned_data.get("book_name")
+            bookObj.book_code = form_data.cleaned_data.get("book_code")
+            bookObj.published_year = form_data.cleaned_data.get("book_year")
+            bookObj.volume = form_data.cleaned_data.get("book_volume")
+            bookObj.author = form_data.cleaned_data.get("book_author")
+            bookObj.publisher = form_data.cleaned_data.get("book_publisher")
+            bookObj.category = TL_BooksCategory.objects.get(code=form_data.cleaned_data.get("book_category"))
+            bookObj.sub_category = TL_BooksSubCategory.objects.get(code=form_data.cleaned_data.get("book_sub_category"))
             bookObj.save()
             messages.success(request, DisplayKey.get("book_added_successfully"))
             return HttpResponseRedirect("../Books")
