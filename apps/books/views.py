@@ -1,6 +1,8 @@
+import json
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
+from django.views.decorators.csrf import csrf_exempt
 from apps.books.forms import FORM_BookDetails
 from apps.books.models import EN_Books, TL_BooksCategory, TL_BooksSubCategory
 from apps.utilities.helper.ui_data_helper import UIDataHelper
@@ -10,9 +12,24 @@ from displaykey.display_key import DisplayKey
 def index(request):
     data = UIDataHelper(request).getData(page="is_books")
     data.__setitem__("is_add_new_book", "active")
+    data.__setitem__("categories",[{
+     "code" : category.code,
+     "name" : category.name,
+    }for category in TL_BooksCategory.objects.all()])
     template = loader.get_template("books_search_book.html")
     return HttpResponse(template.render(data, request))
 
+@csrf_exempt
+def loadSubCategories(request):
+    if request.is_ajax():
+        data = [{
+            "code": sub_category.code,
+            "name": sub_category.name,
+        } for sub_category in TL_BooksSubCategory.objects.filter(category__code=request.POST["category"])]
+        return HttpResponse(json.dumps(data))
+    else:
+        messages.warning(request,"Direct Access Deneed")
+        return HttpResponseRedirect("../Home")
 
 def addBook(request):
     data = UIDataHelper(request).getData(page="is_books")
