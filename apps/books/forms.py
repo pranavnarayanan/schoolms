@@ -11,7 +11,9 @@ class FORM_BookDetails(forms.Form) :
     book_code = forms.CharField(
         max_length=100
     )
-    book_volume = forms.IntegerField()
+    book_volume = forms.IntegerField(
+        required=False
+    )
     book_author = forms.CharField(
         max_length=100,
         required=True,
@@ -24,14 +26,11 @@ class FORM_BookDetails(forms.Form) :
     )
     book_year = forms.IntegerField(
         max_value=datetime.now().year,
-        min_value=1455
+        min_value=1455,
+        required=False
     )
     book_category = forms.ChoiceField(
         choices = BookHelper().getBookCategoryList(),
-        required = True
-    )
-    book_sub_category = forms.ChoiceField(
-        choices = BookHelper().getBookCategorySubList(),
         required = True
     )
 

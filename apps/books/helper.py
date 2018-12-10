@@ -10,12 +10,3 @@ class BookHelper() :
             chList.append(row.name)
             chMailList.append(tuple(chList))
         return tuple(chMailList)
-
-    def getBookCategorySubList(self):
-        chMailList = []
-        for row in TL_BooksSubCategory.objects.all():
-            chList = []
-            chList.append(row.code)
-            chList.append(row.name)
-            chMailList.append(tuple(chList))
-        return tuple(chMailList)

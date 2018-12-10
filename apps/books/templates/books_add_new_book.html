@@ -69,15 +69,17 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Category</label>
-                            {% render_field form.book_category class="form-control" %}
+                            {% render_field form.book_category class="form-control" id="category" onChange="loadSubCategories()"%}
                             <span class="help-block" style="color: red;">{{ form.book_category.errors }}</span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Sub Category</label>
-                            {% render_field form.book_sub_category class="form-control" %}
-                            <span class="help-block" style="color: red;">{{ form.book_sub_category.errors }}</span>
+                            <select class="form-control" id="sub_category">
+                                <option value="None">None</option>
+                            </select>
+                            <span class="help-block" style="color: red;"></span>
                         </div>
                     </div>
                 </div>
@@ -93,4 +95,21 @@
 {% endblock %}
 
 {% block page_specific_js  %}
+    <script>
+        loadSubCategories();
+        function loadSubCategories() {
+            $.ajax({
+                url:"LoadSubCategories",
+                type:"POST",
+                data:{
+                    "category" : $("#category").val()
+                },success : function(data){
+                    $.each(parse);
+                    alert(data);
+                },error : function(data){
+                    alert(data.responseText);
+                }
+            });
+        }
+    </script>
 {% endblock %}
