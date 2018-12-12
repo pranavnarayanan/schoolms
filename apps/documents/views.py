@@ -1,5 +1,4 @@
 import os
-
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader

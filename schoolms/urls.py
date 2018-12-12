@@ -34,6 +34,7 @@ urlpatterns = [
     path(r'Classes/', include("apps.classes.urls")),
     path(r'Subjects/', include("apps.subjects.urls")),
     path(r'Timetable/', include("apps.timetable.urls")),
+    path(r'Attendance/', include("apps.attendance.urls")),
 
 ]
 
