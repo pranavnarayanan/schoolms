@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'apps.documents',
     'apps.classes',
     'apps.subjects',
+    'apps.attendance',
+    'apps.batch',
 ]
 
 
@@ -83,6 +85,7 @@ TEMPLATES = [
             os.path.join(BASE_DIR, 'apps/subjects/templates'),
             os.path.join(BASE_DIR, 'apps/timetable/templates'),
             os.path.join(BASE_DIR, 'apps/attendance/templates'),
+            os.path.join(BASE_DIR, 'apps/batch/templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {

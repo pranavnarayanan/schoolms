@@ -17,7 +17,7 @@ class EN_Attendance(models.Model):
     class Meta:
         db_table = "en_attendance"
 
-    
+
 class EN_ClassAbsentees(models.Model):
     attendance = models.ForeignKey(EN_Attendance, null=False, on_delete=models.CASCADE)
     student = models.ForeignKey(EN_Users, null=False, on_delete=models.DO_NOTHING)
