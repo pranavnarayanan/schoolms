@@ -1,22 +1,79 @@
 {% extends "base/post_login.html" %}
-{% block page_title %} List Classes {% endblock %}
-{% block page_heading %} List Classes {% endblock %}
+
+{% block page_title %} School Timings {% endblock %}
+{% block page_heading %} School Timings {% endblock %}
 
 {% block breadcrumb %}
-    <li><a><i class="fa fa-dashboard"></i> Home</a></li>
-    <li><a><i class="fa fa-dashboard"></i> List Classes </a></li>
+    <li><a href="../Home"><i class="fa fa-dashboard"></i> Home</a></li>
+    <li class="active"><a> Class Details </a></li>
 {% endblock %}
+
 
 {% block content %}
     <div class="row">
-        <h4> Helloooo Classes Are Listed Here</h4>
-    </div>
-{% endblock %}
+        <div class="col-xs-12">
+          <div class="box box-body">
+          <table id="datatable" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                  <th>Class Name</th>
+                  <th>Class Division</th>
+                  <th>Class NickName</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  <th>Batch</th>
+                  <th>Class Teacher</th>
+                  <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for class in classes %}
+            <tr>
+                <td>{{ class.name }}</td>
+                <td>{{ class.division }}</td>
+                <td>{{ class.nickname }}</td>
+                <td>{{ class.startDate }}</td>
+                <td>{{ class.endDate }}</td>
+                <td>{{ class.batch }}</td>
+                <td>{{ class.class_teacher }}</td>
+                <td><button class="btn btn-flat btn-info">See More</button></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+          </div>
+        </div>
+      </div>
 
+{% endblock %}
 
 
 {% block page_specific_css %}
+    <link rel="stylesheet" href="../static/bootstrap/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="../static/bootstrap/custom/css/image.css">
+    <link rel="stylesheet" href="../static/bootstrap/bower_components/select2/dist/css/select2.min.css">
 {% endblock %}
 
 {% block page_specific_js  %}
+    <script src="../static/bootstrap/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="../static/bootstrap/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="../static/bootstrap/bower_components/fastclick/lib/fastclick.js"></script>
+    <script src="../static/bootstrap/bower_components/select2/dist/js/select2.full.min.js"></script>
+
+    <script>
+      $(function () {
+        $('#datatable').DataTable({
+          'paging'      : true,
+          'lengthChange': false,
+          'searching'   : true,
+          'ordering'    : true,
+          'info'        : true,
+          'autoWidth'   : true
+        })
+      });
+
+      $(function () {
+        $('.select2').select2();
+      });
+    </script>
 {% endblock %}

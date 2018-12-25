@@ -1,5 +1,4 @@
 from apps.classes.models import EN_Classes
-from apps.organization.models import EN_Organization
 from apps.roles.models import EN_UserRoles
 
 
