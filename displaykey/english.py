@@ -90,7 +90,7 @@ class English_DK:
         "unable_to_find_the_selected_role": "Unable to find the selected role",
         "already_on_the_same_role": "You are already on the same role",
         "current_role_doesnot_have_permission_to_do_this_action": "Your current role doesnt have permission to perform this action",
-        "class_end_date_prior_to_start_date_error": "Class Start Date cannot be after Class End Date",
+        "class_end_date_prior_to_start_date_error": "Class end date should be after class start date",
         "book_added_successfully": "Successfully added the book",
         "invalid_table_for_activity_creation": "Invalid table for activity creation",
         "failed_to_read_role_code_or_product_id": "Failed to read role_code or product_id",

@@ -38,8 +38,9 @@ def index(request):
             if timing.class_off_on_saturday:
                 off_days += "Saturday, "
             off_days = off_days.strip()
-            if off_days[-1] == ",":
-                off_days = off_days[:-1]
+            if off_days.__len__() > 0:
+                if off_days[-1] == ",":
+                    off_days = off_days[:-1]
 
             dataList.append({
                 "name" : timing.timing_name,

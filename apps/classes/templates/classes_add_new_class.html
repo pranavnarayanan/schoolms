@@ -20,15 +20,18 @@
                         <div class="form-group">
                             <label>Class Name</label>
                             {% render_field form.class_name class="form-control" %}
-                            <span class="help-block" style="color: red;"> Error if any </span>
+                            <span class="help-block" style="color: red;">{{ form.class_name.errors }}</span>
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Class Division</label>
-                            {% render_field form.class_division class="form-control" %}
-                            <span class="help-block" style="color: red;"> Error if any </span>
+                            <label>Class Division</label>&nbsp;[<small>for multiple divisions use comma. Eg. A,B,C,D</small>]
+                            <div class="pull-right">
+                                {% render_field form.does_have_division id="does_have_division" onChange="doesHaveDivision()" style="width: 12px; height: 12px;" %}No Divisions
+                            </div>
+                            {% render_field form.class_division class="form-control" id="class_division" %}
+                            <span class="help-block" style="color: red;">{{ form.class_division.errors }}</span>
                         </div>
                     </div>
 
@@ -36,7 +39,7 @@
                         <div class="form-group">
                             <label>Class Nick Name</label>
                             {% render_field form.class_nickname class="form-control" %}
-                            <span class="help-block" style="color: red;"> Error if any </span>
+                            <span class="help-block" style="color: red;">{{ form.class_nickname.errors }}</span>
                         </div>
                     </div>
 
@@ -44,7 +47,7 @@
                         <div class="form-group">
                             <label>Class Starting Date</label>
                             {% render_field form.class_start_date class="form-control" %}
-                            <span class="help-block" style="color: red;"> Error if any </span>
+                            <span class="help-block" style="color: red;">{{ form.class_start_date.errors }}</span>
                         </div>
                     </div>
 
@@ -52,7 +55,7 @@
                         <div class="form-group">
                             <label>Class Ending Date</label>
                             {% render_field form.class_end_date class="form-control" %}
-                            <span class="help-block" style="color: red;"> Error if any </span>
+                            <span class="help-block" style="color: red;">{{ form.class_end_date.errors }}</span>
                         </div>
                     </div>
 
@@ -60,7 +63,7 @@
                         <div class="form-group">
                             <label>Class Level</label>
                             {% render_field form.institution_levels class="form-control" %}
-                            <span class="help-block" style="color: red;"> Error if any </span>
+                            <span class="help-block" style="color: red;">{{ form.institution_levels.errors }}</span>
                         </div>
                     </div>
 
@@ -68,7 +71,7 @@
                         <div class="form-group">
                             <label>Timing Pattern</label>
                             {% render_field form.class_time_pattern class="form-control" %}
-                            <span class="help-block" style="color: red;"> Error if any </span>
+                            <span class="help-block" style="color: red;">{{ form.class_time_pattern.errors }}</span>
                         </div>
                     </div>
 
@@ -76,7 +79,7 @@
                         <div class="form-group">
                             <label>Class Teacher</label>
                             {% render_field form.class_teacher class="form-control" %}
-                            <span class="help-block" style="color: red;"> Error if any </span>
+                            <span class="help-block" style="color: red;">{{ form.class_teacher.errors }}</span>
                         </div>
                     </div>
                 </div>
@@ -97,4 +100,14 @@
 {% endblock %}
 
 {% block page_specific_js  %}
+    <script>
+        doesHaveDivision();
+        function doesHaveDivision(){
+            if($("#does_have_division").is(":checked"))
+                $("#class_division").attr("disabled",true);
+            else
+                $("#class_division").attr("disabled",false);
+        }
+    </script>
+
 {% endblock %}

@@ -1,7 +1,7 @@
 {% extends "base/post_login.html" %}
 
-{% block page_title %} School Timings {% endblock %}
-{% block page_heading %} School Timings {% endblock %}
+{% block page_title %} Classes {% endblock %}
+{% block page_heading %} Classes {% endblock %}
 
 {% block breadcrumb %}
     <li><a href="../Home"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -10,70 +10,157 @@
 
 
 {% block content %}
-    <div class="row">
+  <div class="row">
         <div class="col-xs-12">
-          <div class="box box-body">
-          <table id="datatable" class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                  <th>Class Name</th>
-                  <th>Class Division</th>
-                  <th>Class NickName</th>
-                  <th>Start Date</th>
-                  <th>End Date</th>
-                  <th>Batch</th>
-                  <th>Class Teacher</th>
-                  <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for class in classes %}
-            <tr>
-                <td>{{ class.name }}</td>
-                <td>{{ class.division }}</td>
-                <td>{{ class.nickname }}</td>
-                <td>{{ class.startDate }}</td>
-                <td>{{ class.endDate }}</td>
-                <td>{{ class.batch }}</td>
-                <td>{{ class.class_teacher }}</td>
-                <td><button class="btn btn-flat btn-info">See More</button></td>
-            </tr>
-            {% endfor %}
-            </tbody>
-          </table>
+          <div class="box">
+
+
+            <div class="box-header">
+              <form action="" method="post">
+                  {% csrf_token %}
+                  {% load widget_tweaks %}
+                  {% render_field class_names.class_names class="form-control pull-left" style="width: 25%;" %}
+                  <button class="btn btn-info btn-flat">
+                    <i class="fa fa-filter"></i> &nbsp; Filter
+                  </button>
+
+                  <button type="button" class="btn btn-success btn-flat pull-right" data-toggle="modal" data-target="#modal-add-class"><i class="fa fa-plus"></i> &nbsp;Add Class</button>
+              </form>
+            </div>
+
+            <div class="box-body table-responsive no-padding">
+              <table class="table table-hover">
+                <thead>
+                    <tr>
+                      <th>Class</th>
+                      <th>Start/End Date</th>
+                      <th>Class Teacher</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for class in classes %}
+                    <tr>
+                        <td>{{ class.name }} - {{ class.division }}<br> {{ class.nickname }}</td>
+                        <td>{{ class.start_date }} to {{ class.end_date }}</td>
+                        <td>{{ class.class_teacher }}</td></tr>
+                {% endfor %}
+                </tbody>
+              </table>
+            </div>
+
           </div>
         </div>
       </div>
+
+     <div class="modal fade" id="modal-add-class">
+        <form action="SaveClass" method="post">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                 <h4 class="modal-title">Add Class</h4>
+              </div>
+                <div class="col-xs-12" style="cursor: pointer">
+                    {% csrf_token %}
+                    {% load widget_tweaks %}
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box-body">
+                                <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Class Name</label>
+                                            {% render_field form.class_name class="form-control" %}
+                                            <span class="help-block" style="color: red;">{{ form.class_name.errors }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Class Nick Name</label>
+                                            {% render_field form.class_nickname class="form-control" %}
+                                            <span class="help-block" style="color: red;">{{ form.class_nickname.errors }}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Class Division</label>&nbsp;[<small>for multiple divisions use comma. Eg. A,B,C,D</small>]
+                                            <div class="pull-right">
+                                                {% render_field form.does_have_division id="does_have_division" onChange="doesHaveDivision()" style="width: 12px; height: 12px;" %}No Divisions
+                                            </div>
+                                            {% render_field form.class_division class="form-control" id="class_division" %}
+                                            <span class="help-block" style="color: red;">{{ form.class_division.errors }}</span>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Class Starting Date</label>
+                                            {% render_field form.class_start_date class="form-control" %}
+                                            <span class="help-block" style="color: red;">{{ form.class_start_date.errors }}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Class Ending Date</label>
+                                            {% render_field form.class_end_date class="form-control" %}
+                                            <span class="help-block" style="color: red;">{{ form.class_end_date.errors }}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Class Level</label>
+                                            {% render_field form.institution_levels class="form-control" %}
+                                            <span class="help-block" style="color: red;">{{ form.institution_levels.errors }}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Timing Pattern</label>
+                                            {% render_field form.class_time_pattern class="form-control" %}
+                                            <span class="help-block" style="color: red;">{{ form.class_time_pattern.errors }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                   <button type="button" class="btn btn-info pull-left" data-dismiss="modal">Close</button>
+                   <button type="submit" class="btn btn-success pull-right">Save</button>
+                </div>
+            </div>
+          </div>
+        </form>
+    </div>
+
 
 {% endblock %}
 
 
 {% block page_specific_css %}
-    <link rel="stylesheet" href="../static/bootstrap/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
-    <link rel="stylesheet" href="../static/bootstrap/custom/css/image.css">
-    <link rel="stylesheet" href="../static/bootstrap/bower_components/select2/dist/css/select2.min.css">
 {% endblock %}
 
 {% block page_specific_js  %}
-    <script src="../static/bootstrap/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-    <script src="../static/bootstrap/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-    <script src="../static/bootstrap/bower_components/fastclick/lib/fastclick.js"></script>
-    <script src="../static/bootstrap/bower_components/select2/dist/js/select2.full.min.js"></script>
+     <script>
+         {% if is_add_new_class %}
+            $('#modal-add-class').modal('show');
+         {% else %}
+             $('#modal-add-class').modal('hide');
+         {% endif %}
 
-    <script>
-      $(function () {
-        $('#datatable').DataTable({
-          'paging'      : true,
-          'lengthChange': false,
-          'searching'   : true,
-          'ordering'    : true,
-          'info'        : true,
-          'autoWidth'   : true
-        })
-      });
-
-      $(function () {
-        $('.select2').select2();
-      });
+        doesHaveDivision();
+        function doesHaveDivision(){
+            if($("#does_have_division").is(":checked")) {
+                $("#class_division").val("");
+                $("#class_division").attr("disabled", true);
+            }
+            else {
+                $("#class_division").attr("disabled", false);
+            }
+        }
     </script>
 {% endblock %}
