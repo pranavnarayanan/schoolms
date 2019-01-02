@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.db import IntegrityError
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
@@ -32,8 +33,8 @@ def index(request, is_add_new_class = False):
         for classData in classes:
             dataList.append({
                 "name" : classData.class_name,
-                "division":classData.class_division if(classData.class_division != None and classData.class_division != "") else "-",
-                "nickname":classData.batch_nick_name if(classData.batch_nick_name != None and classData.batch_nick_name != "") else "-",
+                "division":classData.class_division,
+                "nickname":classData.batch_nick_name if(classData.batch_nick_name != None and classData.batch_nick_name != "") else " ",
                 "start_date":classData.academic_starting_year,
                 "end_date":classData.academic_ending_year,
                 "batch":classData.batch_name,
@@ -75,21 +76,51 @@ def saveClassDetails(request):
 
                 divisions = form_data.cleaned_data.get("class_division")
                 timing = EN_SchoolTimings.objects.get(id=int(form_data.cleaned_data.get("class_time_pattern")))
-                for div in divisions.split(","):
-                    if not (div.strip() == "" or div.strip() == None):
+
+                if divisions == None or divisions == "":
+                    try:
                         classObj = EN_Classes()
                         classObj.class_name = form_data.cleaned_data.get("class_name")
-                        classObj.class_division = div.strip().upper()
+                        classObj.class_division = "A"
                         classObj.batch_nick_name = form_data.cleaned_data.get("class_nickname")
                         classObj.academic_starting_year = form_data.cleaned_data.get("class_start_date")
                         classObj.academic_ending_year = form_data.cleaned_data.get("class_end_date")
-                        classObj.batch_name = classObj.academic_starting_year.year.__str__() + "-" +classObj.academic_ending_year.year.__str__()#form_data.cleaned_data.get("class_batch")
+                        classObj.batch_name = classObj.academic_starting_year.year.__str__() + "-" + classObj.academic_ending_year.year.__str__()
                         classObj.organization = organization.related_organization
                         classObj.organization_level = TL_InstitutionLevels.objects.get(code=form_data.cleaned_data.get("institution_levels"))
                         classObj.timing = timing
                         classObj.save()
-                messages.success(request, DisplayKey.get("success_added_class"))
-                return HttpResponseRedirect("../Classes")
+                        messages.success(request, DisplayKey.get("success_added_class"))
+                        return HttpResponseRedirect("../Classes")
+                    except IntegrityError as e:
+                        messages.error(request,"Similar combination of Class,Division and ClassStartingDate Exists")
+                        return index(request, True)
+                    except Exception as e:
+                        messages.error(request, e.__str__())
+                        return index(request, True)
+                else:
+                    for div in divisions.split(","):
+                        if not (div.strip() == "" or div.strip() == None):
+                            try:
+                                classObj = EN_Classes()
+                                classObj.class_name = form_data.cleaned_data.get("class_name")
+                                classObj.class_division = div.strip().upper()
+                                classObj.batch_nick_name = form_data.cleaned_data.get("class_nickname")
+                                classObj.academic_starting_year = form_data.cleaned_data.get("class_start_date")
+                                classObj.academic_ending_year = form_data.cleaned_data.get("class_end_date")
+                                classObj.batch_name = classObj.academic_starting_year.year.__str__() + "-" +classObj.academic_ending_year.year.__str__()
+                                classObj.organization = organization.related_organization
+                                classObj.organization_level = TL_InstitutionLevels.objects.get(code=form_data.cleaned_data.get("institution_levels"))
+                                classObj.timing = timing
+                                classObj.save()
+                                messages.success(request, "Successfully added class {}-{} ".format(classObj.class_name,classObj.class_division))
+                            except IntegrityError as e:
+                                messages.error(request,"Similar combination of Class,Division and ClassStartingDate [{},{},{}] Exists".format(form_data.cleaned_data.get("class_name"),div.strip().upper(),form_data.cleaned_data.get("class_start_date")))
+                                return index(request, True)
+
+                            except Exception as e:
+                                messages.warning(request, e.__str__())
+                    return HttpResponseRedirect("../Classes")
             else:
                 messages.error(request, DisplayKey.get("current_role_doesnot_have_permission_to_do_this_action"))
                 return index(request)
