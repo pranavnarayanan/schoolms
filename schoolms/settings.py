@@ -15,7 +15,8 @@ ALLOWED_HOSTS = [
     '172.31.19.246',
     '13.233.196.178',
     '127.0.0.1',
-    'localhost'
+    'localhost',
+    'wokidz.com'
 ]
 INSTALLED_APPS = [
     'django.contrib.admin',
