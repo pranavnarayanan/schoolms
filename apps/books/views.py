@@ -50,7 +50,7 @@ def saveBookDetails(request):
             bookObj.author = form_data.cleaned_data.get("book_author")
             bookObj.publisher = form_data.cleaned_data.get("book_publisher")
             bookObj.category = TL_BooksCategory.objects.get(code=form_data.cleaned_data.get("book_category"))
-            bookObj.sub_category = TL_BooksSubCategory.objects.get(code=form_data.cleaned_data.get("book_sub_category"))
+            bookObj.sub_category = TL_BooksSubCategory.objects.get(code=request.POST.get("book_sub_category"))
             bookObj.save()
             messages.success(request, DisplayKey.get("book_added_successfully"))
             return HttpResponseRedirect("../Books")

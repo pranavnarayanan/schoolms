@@ -95,7 +95,13 @@
                 data:{
                     "category" : $("#category").val()
                 },success : function(data){
-                    alert(data);
+                    var choice = "";
+                    var parsedData = $.parseJSON(data);
+                    choice += "<option value=\"all\">List All</option>";
+                    $.each(parsedData, function(index, element) {
+                        choice += "<option value=\""+element["code"]+"\">"+element["name"]+"</option>";
+                    });
+                    $("#sub_category").html(choice);
                 },error : function(data){
                     alert(data.responseText);
                 }

@@ -76,7 +76,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Sub Category</label>
-                            <select class="form-control" id="sub_category">
+                            <select class="form-control" id="sub_category" name="book_sub_category">
                                 <option value="None">None</option>
                             </select>
                             <span class="help-block" style="color: red;"></span>
@@ -104,8 +104,12 @@
                 data:{
                     "category" : $("#category").val()
                 },success : function(data){
-                    $.each(parse);
-                    alert(data);
+                    var choice = "";
+                    var parsedData = $.parseJSON(data);
+                    $.each(parsedData, function(index, element) {
+                        choice += "<option value=\""+element["code"]+"\">"+element["name"]+"</option>";
+                    });
+                    $("#sub_category").html(choice);
                 },error : function(data){
                     alert(data.responseText);
                 }
