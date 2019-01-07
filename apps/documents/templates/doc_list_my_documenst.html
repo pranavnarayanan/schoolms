@@ -9,6 +9,85 @@
 {% endblock %}
 
 {% block content %}
+
+    <div class="row" style="cursor:pointer;">
+        <div class="col-md-8">
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">
+                  <span>Drive</span> /
+                  <span class="folder_hover" ondrop="drop(event,'dragtarget_4')" ondragover="allowDrop(event)" ondragstart="dragStart(event)" id="dragtarget_4">Inr Fldr 1</span> /
+                  <span class="folder_hover" ondrop="drop(event,'dragtarget_5')" ondragover="allowDrop(event)" ondragstart="dragStart(event)" id="dragtarget_5">Inr Fldr 2</span> /
+                  <span>Parent folder</span> /
+              </h3>
+            </div>
+
+
+
+          <div class="box-body">
+
+              <div class="col-md-4" ondrop="drop(event,'dragtarget_1')" ondragover="allowDrop(event)" draggable="true" ondragstart="dragStart(event)" id="dragtarget_1">
+                  <div class="info-box bg-aqua">
+                      <span class="info-box-icon"><i class="fa fa-folder-open-o"></i></span>
+                      <div class="info-box-content">
+                          <span class="info-box-text">Class 12 Marks</span>
+                          <span class="info-box-number"><i class="fa fa-folder-open-o"></i></span>
+                          <span class="progress-description">Modified on : 27th Dec</span>
+                      </div>
+                  </div>
+              </div>
+
+
+              <div class="col-md-4" ondrop="drop(event,'dragtarget_2')" ondragover="allowDrop(event)"  draggable="true" ondragstart="dragStart(event)" id="dragtarget_2">
+                  <div class="info-box bg-aqua">
+                      <span class="info-box-icon"><i class="fa fa-folder-open-o"></i></span>
+                      <div class="info-box-content">
+                          <span class="info-box-text">Certificates</span>
+                          <span class="info-box-number"><i class="fa fa-folder-open-o"></i></span>
+                          <span class="progress-description">Modified on : 18th Nov</span>
+                      </div>
+                  </div>
+              </div>
+
+
+              <div class="col-md-4" draggable="true" ondragstart="dragStart(event)" id="dragtarget_3">
+                  <div class="info-box bg-green-gradient">
+                      <span class="info-box-icon"><i class="fa fa-file-o"></i></span>
+                      <div class="info-box-content">
+                          <span class="info-box-text">Cheat Codes</span>
+                          <span class="info-box-number"><i class="fa fa-file-o"></i></span>
+                          <span class="progress-description">Modified on : 18th Nov</span>
+                      </div>
+                  </div>
+              </div>
+
+          </div>
+
+
+          </div>
+        </div>
+
+    <div class="col-md-4">
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Properties</h3>
+            </div>
+            <form role="form">
+              <div class="box-body">
+                <div class="form-group">
+                  <label>File Name : Class 12 Markslist</label>
+                  <br><label>Type : PDF</label>
+                  <br><label>Size : 34 KB</label>
+                  <br><label>Uploaded On  : 23rd Dec, 2018</label>
+                  <br><label>Shared  : <a>Yes</a></label>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+    </div>
+
+
     <form method="post" action="Upload" enctype="multipart/form-data" >
         {% csrf_token %}
         {% load widget_tweaks %}
@@ -19,8 +98,28 @@
 
 
 {% block page_specific_css %}
+    <style>
+        .folder_hover:hover{
+            border: 2px solid;
+            padding: 5px;
+        }
+    </style>
 {% endblock %}
 
 {% block page_specific_js  %}
+    <script>
+        function dragStart(event) {
+            var dragged_div_id =  event.target.id;
+            //alert(dragged_div_id);
+        }
+
+        function allowDrop(event) {
+            event.preventDefault();
+        }
+
+        function drop(event, drop_div_id) {
+            alert(drop_div_id);
+        }
+    </script>
 {% endblock %}
 
