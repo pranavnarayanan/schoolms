@@ -20,7 +20,10 @@ After Installing all the softwares:
    4. It will take few seconds for indexing.
    5. Once it is done, start the server.
    
-   * Done *
+   * Done 
    
 Aravind R Pillai
+
 +91-9447020535
+
+aravind.ramachandran.pillai@gmail.com
