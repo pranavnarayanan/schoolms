@@ -1,0 +1,64 @@
+{% extends "base/post_login.html" %}
+
+{% block page_title %} Announcements {% endblock %}
+{% block page_heading %} Announcements {% endblock %}
+
+{% block breadcrumb %}
+    <li><a><i class="fa fa-dashboard"></i> Home</a></li>
+    <li>Announcements</li>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="timeline">
+
+                <li class="time-label">
+                  <span class="bg-red">10 Feb. 2014</span>
+                </li>
+                <li>
+                    <i class="fa fa-bullhorn bg-blue"></i>
+                    <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o"></i> 11th May, 2017 at 12:05</span>
+                        <h3 class="timeline-header">Annual Day</h3>
+                        <div class="timeline-body">
+                            School annual day will be on 17 and 18th of next month.
+                        </div>
+                        <div class="timeline-footer">
+                            <small class="label label-danger"><i class="fa fa-tags"></i> Important</small>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <i class="fa fa-bullhorn bg-blue"></i>
+                    <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o"></i> 11th May, 2017 at 12:05</span>
+                        <h3 class="timeline-header">PTA Meeting</h3>
+                        <div class="timeline-body">
+                            All Parents are requested to come for the PTA meeting on 22nd of this month.
+                        </div>
+                        <div class="timeline-footer">
+                            <small class="label label-danger"><i class="fa fa-tags"></i> Important</small>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="time-label">
+                  <span class="bg-green">3 Jan. 2014</span>
+                </li>
+                <li>
+                    <i class="fa fa-clock-o bg-gray"></i>
+                </li>
+            </ul>
+        </div>
+        <!-- /.col -->
+    </div>
+{% endblock %}
+
+
+{% block page_specific_css %}
+{% endblock %}
+
+{% block page_specific_js  %}
+{% endblock %}
+

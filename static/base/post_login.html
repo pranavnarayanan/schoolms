@@ -243,6 +243,10 @@
                     <a href="../Batch/"><i class="fa fa-table"></i> <span>Batch Process</span></a>
                 </li>
 
+                <li class="{{ is_announcements }}">
+                    <a href="../Announcements/"><i class="fa fa-bullhorn"></i> <span>Announcements</span></a>
+                </li>
+
                 {% if ui_data.sidebar.role != "site_admin" %}
                 <li class="{{ is_attendance_home }}">
                     <a href="../Attendance/"><i class="fa fa-check-square"></i> <span>Attendance</span></a>

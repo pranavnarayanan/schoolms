@@ -44,5 +44,8 @@ class AppAccessibilityDictionary():
             "SaveClass"           : [Roles.SCHOOL_ADMIN],
             "AddSubjectToClass"   : [Roles.SCHOOL_ADMIN],
             "SaveSubjectToClass"  : [Roles.SCHOOL_ADMIN]
+        },
+        "Announcements":{
+            "Index"    : ["all"],
         }
     }
