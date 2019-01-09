@@ -138,11 +138,14 @@ def saveGroupDetails(request):
                     return HttpResponseRedirect("../Organization/RegisterOrganization")
 
                 try:
+                    pass
+                    '''
                     ActivityHelper(request).createActivity(
                         pattern=ActivityPattern.ROLE_REQUEST_APPROVED,
                         created_to=inst_super_user,
                         table=userRole
                     )
+                    '''
                 except Exception as e:
                     orgGrp.delete()
                     userRole.delete()

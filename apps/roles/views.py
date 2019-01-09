@@ -217,7 +217,7 @@ def saveAssignedRole(request):
                         try:
                             userRole.validate_unique()
                             userRole.save()
-                            activity.createActivity(ActivityPattern.ROLE_REQUEST_APPROVED, user, userRole, True)
+                            #activity.createActivity(ActivityPattern.ROLE_REQUEST_APPROVED, user, userRole, True)
                             retDict["status"] = True
                         except Exception as e:
                             retDict["message"] = e.__str__()
@@ -234,7 +234,7 @@ def saveAssignedRole(request):
                                 userRole.validate_unique()
                                 try:
                                     userRole.save()
-                                    activity.createActivity(ActivityPattern.ROLE_REQUEST_APPROVED, user, userRole, True)
+                                    #activity.createActivity(ActivityPattern.ROLE_REQUEST_APPROVED, user, userRole, True)
                                     retDict["status"] = True
                                 except Exception as e:
                                     retDict["message"] = e.__str__()
@@ -257,7 +257,7 @@ def saveAssignedRole(request):
                         try:
                             userRole.validate_unique()
                             userRole.save()
-                            activity.createActivity(ActivityPattern.ROLE_REQUEST_APPROVED, user, userRole, True)
+                            #activity.createActivity(ActivityPattern.ROLE_REQUEST_APPROVED, user, userRole, True)
                             retDict["status"] = True
                         except Exception as e:
                             retDict["message"] = e.__str__()
@@ -272,7 +272,8 @@ def saveAssignedRole(request):
                             approvers = EN_UserRoles.objects.filter(approved=True,related_organization=active_role.related_organization,role__code=Roles.SCHOOL_ADMIN)
                             if approvers.exists():
                                 for approver in approvers:
-                                    activity.createActivity(ActivityPattern.RECEIVED_ROLE_REQUEST, approver.user, userRole,False)
+                                    pass
+                                    #activity.createActivity(ActivityPattern.RECEIVED_ROLE_REQUEST, approver.user, userRole,False)
                                 retDict["status"] = True
                             else:
                                 userRole.delete()
@@ -292,7 +293,8 @@ def saveAssignedRole(request):
                                     approvers = EN_UserRoles.objects.filter(approved=True,related_organization=active_role.related_organization,role__code=Roles.SCHOOL_ADMIN)
                                     if approvers.exists():
                                         for approver in approvers:
-                                            activity.createActivity(ActivityPattern.RECEIVED_ROLE_REQUEST, approver.user,userRole, False)
+                                            pass
+                                            #activity.createActivity(ActivityPattern.RECEIVED_ROLE_REQUEST, approver.user,userRole, False)
                                         retDict["status"] = True
                                     else:
                                         userRole.delete()
