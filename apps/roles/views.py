@@ -159,7 +159,7 @@ def validateAssignedRole(request):
                 retList.append(retDict)
             diff = set(productIdList) - set(prodComparisonList)
             if diff.__len__() > 0:
-                messages.warning(request, "Invalid Myshishya IDs found : {}".format((", ".join(diff))))
+                messages.warning(request, "Invalid Wokidz IDs found : {}".format((", ".join(diff))))
                 return loadRoleSettingPage(request)
 
             data = UIDataHelper(request).getData(page="is_raise_role_request")
@@ -319,7 +319,7 @@ def saveAssignedRole(request):
 
 
 ''''
-    Function  : Ajax function to get all user details as per myshishya id provided
+    Function  : Ajax function to get all user details as per wokidz id provided
     Method    : AJAX POST
 '''
 @csrf_exempt
@@ -360,7 +360,7 @@ def getUserDetails(request):
                     retList.append(retUserDict)
                 diff = set(prdId_list) - set(prodComparisonList)
                 if diff.__len__() > 0:
-                    retDict["message"] = "Could not find Myshishya ID(s) : {}".format(diff.__str__())
+                    retDict["message"] = "Could not find Wokidz ID(s) : {}".format(diff.__str__())
                 else:
                     retDict["status"] = True
                     retDict["data"] = retList
@@ -382,7 +382,7 @@ def changeRole(request):
         request.session[SessionProperties.USER_ACTIVE_ROLE_KEY] = "home"
         UserRolesHelper(request).updateRolesOnSession()
         messages.success(request, DisplayKey.get("role_changes_successfully"))
-    elif user_id == 1: #Myshishya User
+    elif user_id == 1: #Wokidz User
         EN_UserRoles.objects.filter(user_id=user_id).update(is_selected_role = True)
         messages.warning(request, DisplayKey.get("no_role_change_permitted_for_site_admin"))
     else:

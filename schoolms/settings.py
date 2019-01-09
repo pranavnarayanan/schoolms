@@ -128,7 +128,7 @@ USE_TZ = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 1200 #seconds | 20 mins
 
-STATIC_URL = '/static/' #Change it to http://myshishya.com/static/
+STATIC_URL = '/static/' #Change it to http://wokidz.com/static/
 STATIC_ROOT = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),

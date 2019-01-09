@@ -152,7 +152,7 @@ def saveGroupDetails(request):
 
 
                 messages.success(request, DisplayKey.get("org_group_created_successfully"))
-                messages.info(request, "Myshishya ID For Organization {} is {}".format(orgGrp.group_name,orgGrp.product_id))
+                messages.info(request, "WoKidz ID For Organization {} is {}".format(orgGrp.group_name,orgGrp.product_id))
                 return HttpResponseRedirect("../Organization/OrganizationGroups")
             except Exception as e:
                 messages.warning(request, e.__context__)
@@ -207,7 +207,7 @@ def saveOrganizationDetails(request):
                 return HttpResponseRedirect("../Organization/RegisterOrganization")
 
             messages.success(request, DisplayKey.get("organization_registration_success"))
-            messages.info(request, "Myshishya ID For Organization {} is {}".format(orgDetails.school_name,orgDetails.product_id))
+            messages.info(request, "WoKidz ID For Organization {} is {}".format(orgDetails.school_name,orgDetails.product_id))
             return HttpResponseRedirect("../Organization/Organizations")
         else:
             return registerOrganization(request)

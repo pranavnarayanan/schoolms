@@ -25,5 +25,5 @@ class FORM_ResetPassword(forms.Form) :
             try:
                 EN_Contacts.objects.get(email_id=email)
             except:
-                self.add_error("email", "Entered EmailId Is Not Registered With Myshishya")
+                self.add_error("email", "Entered EmailId Is Not Registered With WoKidz")
         return data

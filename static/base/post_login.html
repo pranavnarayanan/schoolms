@@ -19,9 +19,9 @@
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
   <header class="main-header">
-    <a href="../Redirect/UserHome" class="logo">
-      <span class="logo-mini"><b>MS</b></span>
-      <span class="logo-lg"><b>M</b>yShishya</span>
+    <a href="../Home" class="logo">
+      <span class="logo-mini"><b>WK</b></span>
+      <span class="logo-lg"><b>WoKidz</b>.com</span>
     </a>
 
     <nav class="navbar navbar-static-top" role="navigation">
@@ -74,7 +74,7 @@
               <li class="user-header">
                 <img src="../static/bootstrap/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                 <p>{{ ui_data.header.name }}
-                  <small>Myshishya ID  : <b>{{ ui_data.header.product_id }}</b></small>
+                  <small>Wokidz ID  : <b>{{ ui_data.header.product_id }}</b></small>
                 </p>
               </li>
               <li class="user-footer">
@@ -239,12 +239,27 @@
                 </li>
 
 
-                <li class="{{ is_batch_home }}">
-                    <a href="../Batch/"><i class="fa fa-table"></i> <span>Batch Process</span></a>
+                <li class="treeview {{ is_announcements_home }} {{ is_create_announcement }}">
+                  <a>
+                    <i class="fa fa-bullhorn"></i>
+                    <span>Announcements</span>
+                    <span class="pull-right-container">
+                      <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                  </a>
+                  <ul class="treeview-menu">
+                    <li class="{{ is_announcements_home }}">
+                        <a href="../Announcements/"><i class="fa fa-list-ol"></i> <span>List Announcements</span></a>
+                    </li>
+                    <li class="{{ is_create_announcement }}">
+                        <a href="../Announcements/Create"><i class="fa fa-plus-square"></i> <span>Create</span></a>
+                    </li>
+                  </ul>
                 </li>
 
-                <li class="{{ is_announcements }}">
-                    <a href="../Announcements/"><i class="fa fa-bullhorn"></i> <span>Announcements</span></a>
+
+                <li class="{{ is_batch_home }}">
+                    <a href="../Batch/"><i class="fa fa-table"></i> <span>Batch Process</span></a>
                 </li>
 
                 {% if ui_data.sidebar.role != "site_admin" %}
@@ -290,7 +305,7 @@
             <small>User Home</small>
         {% endif %}
         {% if ui_data.current_role.code == "site_admin" %}
-            <small>Myshishya Site Admin</small>
+            <small>Wokidz Site Admin</small>
         {% endif %}
         {% if ui_data.current_role.type == "organization" %}
             <small>[{{ ui_data.current_role.name }}, &nbsp;{{ ui_data.current_role.address }}]</small>
@@ -358,7 +373,7 @@
 
   <footer class="main-footer">
     <div class="pull-right hidden-xs">Version: 1.0</div>
-    <strong>Copyright &copy; 2016 <a href="#">Myshishya</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; 2016 <a href="#">Wokidz</a>.</strong> All rights reserved.
   </footer>
 
    <!---- MODAL START---------------------------------->

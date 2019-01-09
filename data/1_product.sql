@@ -47,7 +47,7 @@ insert into tl_institution_type(id,code, name, description) VALUES
 (6,'business','Business','Business Studies');
 
 INSERT INTO en_activity_pattern (id, pattern_name, subject, description, priority, escalation_days) VALUES
-(1,'product_welcome_message','Welcome To Myshishya','Welcome To Myshishya',1,0),
+(1,'product_welcome_message','Welcome To Wokidz','Welcome To Wokidz',1,0),
 (2,'received_role_request','Role Request','Received new role request',1,3),
 (3,'role_request_rejected','Role Request Rejected','Role request Rejected',1,0),
 (4,'role_request_approved','Role Request Approved','Role request Approved',1,0),
@@ -56,16 +56,16 @@ INSERT INTO en_activity_pattern (id, pattern_name, subject, description, priorit
 
 -- SITE ADMIN DATA ----
 INSERT INTO en_contacts(id, mobile_number, secondary_number, is_landline_number, email_id, website, publish_your_site, mobile_country_code_id) values
-(1,'0000000000','0000000',1,'su@myshishya.com','www.myshishya.com',1,1);
+(1,'0000000000','0000000',1,'su@wokidz.com','www.wokidz.com',1,1);
 
 INSERT INTO en_users (id, product_id, name, date_of_birth, display_picture, account_status_id, contact_id, gender_id, newsletter_subscribe) VALUES
-(1,'MY90000001','Myshishya Site Admin','2000-01-01','site_admin.png',2,1,1,1);
+(1,'MY90000001','Wokidz Site Admin','2000-01-01','site_admin.png',2,1,1,1);
 
 INSERT INTO en_address_book(id,house_name,street,landmark,is_current_address,is_permanent_address,user_id,zipcode_id) VALUES
-(1,'Myshishya','Bangalore','Near PWC',1,1,1,65785);
+(1,'Wokidz','Bangalore','Near PWC',1,1,1,65785);
 
 INSERT INTO en_login_credentials (id, username, password, password_history, current_logged_in_time, last_logged_in_time, user_id, is_online) VALUES
-(1,'myshishya','myshishya',NULL, '2018-08-28', '2018-08-28',1,1);
+(1,'wokidz','wokidz',NULL, '2018-08-28', '2018-08-28',1,1);
 
 INSERT INTO en_user_roles (id, user_id , role_id, related_organization_group_id,related_organization_id,related_user_id,approved, is_selected_role,request_approved_by_id,request_raised_by_id,request_approved_on,request_raised_on) VALUES
 (1,1,1,null,null,null,1,1,1,1,'2018-09-25 07:38:00.539153','2018-09-25 07:38:00.539153');

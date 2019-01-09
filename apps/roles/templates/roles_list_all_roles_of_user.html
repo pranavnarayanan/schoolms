@@ -88,14 +88,14 @@
 
               tableContent += '</td><td><b style="color:orange">'+element["role_name"]+' '+cr+'</b> <br> of ';
               if (element["is_parent"] == true){
-                tableContent += ('<a href="../Users/GetUser?pid='+element["user_prd_id"]+'">'+element["user_name"]+"</a> <br>Myshishya Id : "+element["user_prd_id"]);
+                tableContent += ('<a href="../Users/GetUser?pid='+element["user_prd_id"]+'">'+element["user_name"]+"</a> <br>Wokidz Id : "+element["user_prd_id"]);
                 tableContent += ('<br><a href="../Organization/Organization?pid='+element["school_prd_id"]+'">'+element["school_name"]+"</a>["+element["school_prd_id"]+"]");
               }
               if (element["is_org_grp_related"] == true){
-                tableContent += ('<a href="../Organization/OrganizationGroup?pid='+element["group_prd_id"]+'">'+element["group_name"]+"</a><br>Myshishya Id : "+element["group_prd_id"]);
+                tableContent += ('<a href="../Organization/OrganizationGroup?pid='+element["group_prd_id"]+'">'+element["group_name"]+"</a><br>Wokidz Id : "+element["group_prd_id"]);
               }
               if (element["is_org_related"] == true){
-                tableContent += ('<a href="../Organization/Organization?pid='+element["school_prd_id"]+'">'+element["school_name"]+"</a>, "+element["school_street"]+"<br>Myshishya Id : "+element["school_prd_id"]);
+                tableContent += ('<a href="../Organization/Organization?pid='+element["school_prd_id"]+'">'+element["school_name"]+"</a>, "+element["school_street"]+"<br>Wokidz Id : "+element["school_prd_id"]);
               }
 
               if(element["status"]){

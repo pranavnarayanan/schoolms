@@ -269,7 +269,7 @@ def saveCredentialPageDetails(request):
 
                     Email().sendEmail(
                         template=EmailTemplates.ACCOUNT_ACTIVATION_EMAIL,
-                        subject="Activate Myshishya Account",
+                        subject="Activate Wokidz Account",
                         recipient_list=[user.contact.email_id],
                         template_data=template_data
                     )

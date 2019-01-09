@@ -61,13 +61,13 @@ def validateLogin(request):
                         }
                         Email().sendEmail(
                             template=EmailTemplates.ACCOUNT_ACTIVATION_EMAIL,
-                            subject="Activate Myshishya Account",
+                            subject="Activate Wokidz Account",
                             recipient_list=[user.contact.email_id],
                             template_data=template_data
                         )
                         messages.warning(request, "Your account inactive. Click on the activation link send to you")
                     else:
-                        messages.warning(request,"Your account status is {}. Please reach out to myshishya support team.".format(user.account_status.name))
+                        messages.warning(request,"Your account status is {}. Please reach out to Wokidz support team.".format(user.account_status.name))
                     return HttpResponseRedirect("../Login")
         else:
             return index(request)

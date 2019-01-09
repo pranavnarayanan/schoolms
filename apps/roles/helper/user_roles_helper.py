@@ -76,9 +76,9 @@ class UserRolesHelper:
                 product_id = role.related_organization.product_id
                 image = role.related_organization.display_picture
                 img_type = ImageType.USER
-            else:  # Myshishya User - Site admin
+            else:  # Wokidz User - Site admin
                 user = EN_Users.objects.get(id=self.user_id)
-                type = RoleType.MYSHISHYA_USER
+                type = RoleType.WOKIDZ_USER
                 organization_details = "Site Admin"
                 place = " "
                 product_id = user.product_id
@@ -128,9 +128,9 @@ class UserRolesHelper:
                 product_id = role.related_organization.product_id
                 image = role.related_organization.display_picture
                 img_type = ImageType.USER
-            else:#Myshishya User - Site admin
+            else:#Wokidz User - Site admin
                 user = EN_Users.objects.get(id=self.user_id)
-                type = RoleType.MYSHISHYA_USER
+                type = RoleType.WOKIDZ_USER
                 organization_details = "Site Admin"
                 place = " "
                 product_id = user.product_id

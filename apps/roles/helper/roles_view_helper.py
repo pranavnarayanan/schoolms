@@ -31,7 +31,7 @@ class RolesViewHelper:
 
             if role.role_id == 1 and role.related_organization == None and role.related_organization_group == None and role.related_user == None:
                 image = "myshishya.png"
-                role_on = "Myshishya"
+                role_on = "Wokidz"
                 product_id = ""
                 id = self.user.id
             elif role.related_user != None:
