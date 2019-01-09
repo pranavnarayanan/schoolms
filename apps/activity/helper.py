@@ -10,16 +10,11 @@ from properties.session_properties import SessionProperties
 '''
 class ActivityHelper:
 
-    def __init__(self,request, user_id=None):
+    def __init__(self,request):
         if SessionProperties.USER_ID_KEY in request.session:
-            self.CreatedBy = request.session[SessionProperties.USER_ID_KEY]
-        elif user_id != None:
-            if EN_Users.objects.filter(id=user_id).exists():
-                self.CreatedBy = user_id
-            raise Exception("Invalid User id provided for activity creation")
+            self.CreatedBy_UserID = request.session[SessionProperties.USER_ID_KEY]
         else:
-            raise Exception("User Id not available for activity creation")
-
+            self.CreatedBy_UserID = None
 
     # Desc :
     # Creates an activity based on pattern
@@ -31,10 +26,10 @@ class ActivityHelper:
 
         act = EN_Activity()
         act.created_on = date.today()
-        act.created_to_id = self.CreatedBy if created_to == None else created_to
+        act.created_to_id = int(self.CreatedBy_UserID) if created_to == None else created_to
         act.pattern = act_pattern.first()
         act.can_change_read_status_direclty = can_change_status_directly
-        act.created_by_id = self.CreatedBy
+        act.created_by_id = int(self.CreatedBy_UserID)
 
         if table != None:
             table_type = type(table).__name__
@@ -46,5 +41,8 @@ class ActivityHelper:
             table_type = None
         act.table_name = table_type
 
-        act.save()
+        try:
+            act.save()
+        except Exception as e:
+            pass
         return act

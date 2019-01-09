@@ -273,7 +273,7 @@ def saveCredentialPageDetails(request):
                         recipient_list=[user.contact.email_id],
                         template_data=template_data
                     )
-                    ActivityHelper(request,user.id).createActivity(pattern=ActivityPattern.PRODUCT_WELCOME_MESSAGE)
+                    #ActivityHelper(request).createActivity(pattern=ActivityPattern.PRODUCT_WELCOME_MESSAGE)
                     return HttpResponseRedirect("../Login")
                 except Exception as e:
                     messages.error(request,e.__str__())
