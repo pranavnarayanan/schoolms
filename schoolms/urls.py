@@ -21,7 +21,6 @@ urlpatterns = [
     path(r'SignUp/', include("apps.sign_up.urls")),
     path(r'Logout/', include("apps.logout.urls")),
     path(r'Login/', include("apps.login.urls")),
-    path(r'Notification/', include("apps.activity.urls")),
     path(r'Roles/', include("apps.roles.urls")),
     path(r'Home/', include("apps.home.urls")),
     path(r'Organization/', include("apps.organization.urls")),
@@ -37,6 +36,7 @@ urlpatterns = [
     path(r'Attendance/', include("apps.attendance.urls")),
     path(r'Batch/', include("apps.batch.urls")),
     path(r'Announcements/', include("apps.announcements.urls")),
+    path(r'Notifications/', include("apps.notifications.urls")),
 
 ]
 

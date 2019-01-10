@@ -5,12 +5,11 @@ from django.template.loader import render_to_string
 class Email:
 
     def sendEmail(self, template, subject, template_data, recipient_list, attachments = None):
-        email_from = settings.EMAIL_HOST_USER
         if recipient_list == None:
             raise Exception("No Recipient Found")
         template = 'email_templates/'+template
         message = render_to_string(template, template_data)
-        msg = EmailMultiAlternatives(subject, message, email_from, recipient_list)
+        msg = EmailMultiAlternatives(subject, message, settings.EMAIL_HOST_USER, recipient_list)
 
         if attachments != None:
             for attachment in attachments:

@@ -6,7 +6,8 @@ from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.views.decorators.csrf import csrf_exempt
-from apps.activity.helper import ActivityHelper
+
+from apps.notifications.helper import NotificationHelper
 from apps.organization.forms import *
 from apps.organization.models import *
 from apps.roles.models import EN_UserRoles, TL_Roles
@@ -18,7 +19,7 @@ from apps.utilities.entities.zipcode import EN_Zipcode
 from apps.utilities.helper.ui_data_helper import UIDataHelper
 from displaykey.display_key import DisplayKey
 from properties.app_roles import Roles
-from properties.activity_patterns import ActivityPattern
+from properties.notification_properties import NotificationTypes
 from properties.session_properties import SessionProperties
 
 '''
@@ -138,14 +139,7 @@ def saveGroupDetails(request):
                     return HttpResponseRedirect("../Organization/RegisterOrganization")
 
                 try:
-                    pass
-                    '''
-                    ActivityHelper(request).createActivity(
-                        pattern=ActivityPattern.ROLE_REQUEST_APPROVED,
-                        created_to=inst_super_user,
-                        table=userRole
-                    )
-                    '''
+                    NotificationHelper.notify(recipient_id=inst_super_user.id,type=NotificationTypes.NEW_ROLE_ADDED)
                 except Exception as e:
                     orgGrp.delete()
                     userRole.delete()

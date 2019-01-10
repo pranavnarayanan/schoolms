@@ -31,7 +31,6 @@ INSTALLED_APPS = [
     'apps.logout',
     'apps.login',
     'apps.roles',
-    'apps.activity',
     'apps.users',
     'apps.home',
     'apps.organization',
@@ -45,6 +44,7 @@ INSTALLED_APPS = [
     'apps.subjects',
     'apps.attendance',
     'apps.batch',
+    'apps.notifications',
 ]
 
 
@@ -75,7 +75,6 @@ TEMPLATES = [
             os.path.join(BASE_DIR, 'apps/home/templates'),
             os.path.join(BASE_DIR, 'apps/organization/templates'),
             os.path.join(BASE_DIR, 'apps/roles/templates'),
-            os.path.join(BASE_DIR, 'apps/activity/templates'),
             os.path.join(BASE_DIR, 'apps/books/templates'),
             os.path.join(BASE_DIR, 'apps/messaging/templates'),
             os.path.join(BASE_DIR, 'apps/settings/templates'),
@@ -88,6 +87,7 @@ TEMPLATES = [
             os.path.join(BASE_DIR, 'apps/attendance/templates'),
             os.path.join(BASE_DIR, 'apps/batch/templates'),
             os.path.join(BASE_DIR, 'apps/announcements/templates'),
+            os.path.join(BASE_DIR, 'apps/notifications/templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {

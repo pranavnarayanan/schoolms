@@ -1,6 +1,5 @@
 from uuid import uuid4
-
-from apps.activity.helper import ActivityHelper
+from apps.notifications.helper import NotificationHelper
 from apps.sign_up.forms import *
 from django.template import loader
 from django.contrib import messages
@@ -13,8 +12,8 @@ from apps.utilities.entities.zipcode import EN_Zipcode
 from apps.sign_up.helper.data_commit import SaveRecord
 from django.http import HttpResponse, HttpResponseRedirect
 from apps.sign_up.helper.session_helper import UserRegistrationSessions
-from properties.activity_patterns import ActivityPattern
 from properties.email_templates import EmailTemplates
+from properties.notification_properties import NotificationTypes
 from utils.email_util import Email
 
 ''''
@@ -266,14 +265,17 @@ def saveCredentialPageDetails(request):
                         "token": user.activation_token,
                         "product_id": user.product_id,
                     }
+                    try:
+                        Email().sendEmail(
+                            template=EmailTemplates.ACCOUNT_ACTIVATION_EMAIL,
+                            subject="Activate Wokidz Account",
+                            recipient_list=[user.contact.email_id],
+                            template_data=template_data
+                        )
+                    except Exception as e:
+                        messages.error(request,"Registered Successfully but failed to send activation Email. Please contact site admin")
 
-                    Email().sendEmail(
-                        template=EmailTemplates.ACCOUNT_ACTIVATION_EMAIL,
-                        subject="Activate Wokidz Account",
-                        recipient_list=[user.contact.email_id],
-                        template_data=template_data
-                    )
-                    #ActivityHelper(request).createActivity(pattern=ActivityPattern.PRODUCT_WELCOME_MESSAGE)
+                    NotificationHelper.notify(recipient_id=user.id, type=NotificationTypes.WELCOME_MESSAGE)
                     return HttpResponseRedirect("../Login")
                 except Exception as e:
                     messages.error(request,e.__str__())

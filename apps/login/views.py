@@ -59,13 +59,16 @@ def validateLogin(request):
                             "token": user.activation_token,
                             "product_id": user.product_id,
                         }
-                        Email().sendEmail(
-                            template=EmailTemplates.ACCOUNT_ACTIVATION_EMAIL,
-                            subject="Activate Wokidz Account",
-                            recipient_list=[user.contact.email_id],
-                            template_data=template_data
-                        )
-                        messages.warning(request, "Your account inactive. Click on the activation link send to you")
+                        try:
+                            Email().sendEmail(
+                                template=EmailTemplates.ACCOUNT_ACTIVATION_EMAIL,
+                                subject="Activate Wokidz Account",
+                                recipient_list=[user.contact.email_id],
+                                template_data=template_data
+                            )
+                            messages.warning(request,"Your account inactive. Click on the activation link send to your email id")
+                        except Exception as e:
+                            messages.error(request,"Failed to send activation email | Contact site admin")
                     else:
                         messages.warning(request,"Your account status is {}. Please reach out to Wokidz support team.".format(user.account_status.name))
                     return HttpResponseRedirect("../Login")

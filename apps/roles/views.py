@@ -15,11 +15,11 @@ from apps.users.models import EN_Users, EN_AddressBook
 from apps.utilities.helper.ui_data_helper import UIDataHelper
 from displaykey.display_key import DisplayKey
 from properties.app_roles import Roles
+from properties.notification_properties import NotificationTypes
 from properties.session_properties import SessionProperties
 from .forms import FORM_UserRoleAssignment
 from .helper.role_approval_hierarchy import RoleApprovalHierarchy
-from properties.activity_patterns import ActivityPattern
-from apps.activity.helper import ActivityHelper
+from apps.notifications.helper import NotificationHelper
 
 
 ''''
@@ -202,7 +202,6 @@ def saveAssignedRole(request):
                 active_role = active_role.first()
                 approved = (active_role.role.code in [Roles.INSTITUTION_SUPER_USER, Roles.SCHOOL_ADMIN])
                 idList = [int(s) for s in (ids.strip()).split(',')]
-                activity = ActivityHelper(request)
                 for user in EN_Users.objects.filter(id__in=idList):
                     userRole = EN_UserRoles()
                     userRole.user = user
@@ -217,7 +216,7 @@ def saveAssignedRole(request):
                         try:
                             userRole.validate_unique()
                             userRole.save()
-                            #activity.createActivity(ActivityPattern.ROLE_REQUEST_APPROVED, user, userRole, True)
+                            NotificationHelper.notify(recipient_id=user.id, type=NotificationTypes.NEW_ROLE_ADDED)
                             retDict["status"] = True
                         except Exception as e:
                             retDict["message"] = e.__str__()
