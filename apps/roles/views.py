@@ -233,7 +233,7 @@ def saveAssignedRole(request):
                                 userRole.validate_unique()
                                 try:
                                     userRole.save()
-                                    #activity.createActivity(ActivityPattern.ROLE_REQUEST_APPROVED, user, userRole, True)
+                                    NotificationHelper.notify(recipient_id=user.id,type=NotificationTypes.NEW_ROLE_ADDED)
                                     retDict["status"] = True
                                 except Exception as e:
                                     retDict["message"] = e.__str__()
@@ -256,7 +256,7 @@ def saveAssignedRole(request):
                         try:
                             userRole.validate_unique()
                             userRole.save()
-                            #activity.createActivity(ActivityPattern.ROLE_REQUEST_APPROVED, user, userRole, True)
+                            NotificationHelper.notify(recipient_id=user.id, type=NotificationTypes.NEW_ROLE_ADDED)
                             retDict["status"] = True
                         except Exception as e:
                             retDict["message"] = e.__str__()
@@ -271,8 +271,7 @@ def saveAssignedRole(request):
                             approvers = EN_UserRoles.objects.filter(approved=True,related_organization=active_role.related_organization,role__code=Roles.SCHOOL_ADMIN)
                             if approvers.exists():
                                 for approver in approvers:
-                                    pass
-                                    #activity.createActivity(ActivityPattern.RECEIVED_ROLE_REQUEST, approver.user, userRole,False)
+                                    NotificationHelper.notify(recipient_id=approver.id,type=NotificationTypes.ROLE_APPROVAL_REQUEST_RECEIVED, change_read_status_direclty=False)
                                 retDict["status"] = True
                             else:
                                 userRole.delete()
@@ -292,8 +291,9 @@ def saveAssignedRole(request):
                                     approvers = EN_UserRoles.objects.filter(approved=True,related_organization=active_role.related_organization,role__code=Roles.SCHOOL_ADMIN)
                                     if approvers.exists():
                                         for approver in approvers:
-                                            pass
-                                            #activity.createActivity(ActivityPattern.RECEIVED_ROLE_REQUEST, approver.user,userRole, False)
+                                            NotificationHelper.notify(recipient_id=approver.id,
+                                                                      type=NotificationTypes.ROLE_APPROVAL_REQUEST_RECEIVED,
+                                                                      change_read_status_direclty=False)
                                         retDict["status"] = True
                                     else:
                                         userRole.delete()
