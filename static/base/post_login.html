@@ -460,7 +460,7 @@
         notification_count = $("#notification_count").val();
         last_notification_id = $("#last_notification_id").val();
         $.ajax({
-            url:"../Notification/LiveNotify",
+            url:"../Notifications/LiveNotify",
             method:"POST",
             data:{
                 "notification_count_from_ui":notification_count,

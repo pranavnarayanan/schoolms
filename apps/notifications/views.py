@@ -10,3 +10,10 @@ def index(request):
     data = UIDataHelper(request).getData(page="is_notifications")
     template = loader.get_template("notify_homepage.html")
     return HttpResponse(template.render(data, request))
+
+
+def getLiveNotifications():
+    retData = {
+        "name":"aravind"
+    }
+    return HttpResponse(retData)
