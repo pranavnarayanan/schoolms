@@ -37,6 +37,7 @@ urlpatterns = [
     path(r'Batch/', include("apps.batch.urls")),
     path(r'Announcements/', include("apps.announcements.urls")),
     path(r'Notifications/', include("apps.notifications.urls")),
+    path(r'Users/', include("apps.users.urls")),
 
 ]
 

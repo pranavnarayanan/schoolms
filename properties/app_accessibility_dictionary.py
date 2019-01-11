@@ -48,5 +48,9 @@ class AppAccessibilityDictionary():
         "Announcements":{
             "Index"    : ["all"],
             "Create"   : [Roles.SCHOOL_ADMIN, Roles.PRINCIPAL, Roles.TEACHER],
+        },
+        "Users":{
+            "Index"              : ["all"],
+            "ChangeOnlineStatus" : ["all"],
         }
     }
