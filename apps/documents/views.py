@@ -8,13 +8,18 @@ from apps.utilities.helper.ui_data_helper import UIDataHelper
 from apps.documents.forms import FORM_Document
 from apps.documents.models import EN_Documents
 from properties.session_properties import SessionProperties
-
+from apps.documents.helper import DocumentHelper
+import ctypes
 def index(request):
     template = loader.get_template("doc_list_my_documenst.html")
     data = UIDataHelper(request).getData(page="is_list_my_documents")
     data.__setitem__("form", FORM_Document(request.POST) if request.method == "POST" else FORM_Document() )
     folder_id = request.session["USED_DOCUMENT_FOLDER_ID"] if "USED_DOCUMENT_FOLDER_ID" in request.session else "ROOT"
     data.__setitem__("folder",folder_id)
+    user_id=request.session[SessionProperties.USER_ID_KEY]
+    doc=EN_Documents.objects.filter(owner=user_id)
+    if doc is None:
+     DocumentHelper.createRootEntry(DocumentHelper,user_id)
     return HttpResponse(template.render(data, request))
 
 
