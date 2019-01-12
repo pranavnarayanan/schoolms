@@ -198,6 +198,7 @@ def saveAssignedRole(request):
             user_id = request.session[SessionProperties.USER_ID_KEY]
             accepted_user_list = [Roles.INSTITUTION_SUPER_USER, Roles.SCHOOL_ADMIN, Roles.TEACHER]
             active_role = EN_UserRoles.objects.filter(approved=True, user_id=user_id, role__code__in=accepted_user_list,is_selected_role=True)
+            notifyHelper = NotificationHelper(request)
             if active_role.exists():
                 active_role = active_role.first()
                 approved = (active_role.role.code in [Roles.INSTITUTION_SUPER_USER, Roles.SCHOOL_ADMIN])
@@ -216,7 +217,7 @@ def saveAssignedRole(request):
                         try:
                             userRole.validate_unique()
                             userRole.save()
-                            NotificationHelper.notify(recipient_id=user.id, type=NotificationTypes.NEW_ROLE_ADDED)
+                            notifyHelper.notify(recipient_id=user.id, type=NotificationTypes.NEW_ROLE_ADDED)
                             retDict["status"] = True
                         except Exception as e:
                             retDict["message"] = e.__str__()
@@ -233,7 +234,7 @@ def saveAssignedRole(request):
                                 userRole.validate_unique()
                                 try:
                                     userRole.save()
-                                    NotificationHelper.notify(recipient_id=user.id,type=NotificationTypes.NEW_ROLE_ADDED)
+                                    notifyHelper.notify(recipient_id=user.id,type=NotificationTypes.NEW_ROLE_ADDED)
                                     retDict["status"] = True
                                 except Exception as e:
                                     retDict["message"] = e.__str__()
@@ -256,7 +257,7 @@ def saveAssignedRole(request):
                         try:
                             userRole.validate_unique()
                             userRole.save()
-                            NotificationHelper.notify(recipient_id=user.id, type=NotificationTypes.NEW_ROLE_ADDED)
+                            notifyHelper.notify(recipient_id=user.id, type=NotificationTypes.NEW_ROLE_ADDED)
                             retDict["status"] = True
                         except Exception as e:
                             retDict["message"] = e.__str__()
@@ -271,7 +272,7 @@ def saveAssignedRole(request):
                             approvers = EN_UserRoles.objects.filter(approved=True,related_organization=active_role.related_organization,role__code=Roles.SCHOOL_ADMIN)
                             if approvers.exists():
                                 for approver in approvers:
-                                    NotificationHelper.notify(recipient_id=approver.id,type=NotificationTypes.ROLE_APPROVAL_REQUEST_RECEIVED, change_read_status_direclty=False)
+                                    notifyHelper.notify(recipient_id=approver.id,type=NotificationTypes.ROLE_APPROVAL_REQUEST_RECEIVED, change_read_status_direclty=False)
                                 retDict["status"] = True
                             else:
                                 userRole.delete()
@@ -291,7 +292,7 @@ def saveAssignedRole(request):
                                     approvers = EN_UserRoles.objects.filter(approved=True,related_organization=active_role.related_organization,role__code=Roles.SCHOOL_ADMIN)
                                     if approvers.exists():
                                         for approver in approvers:
-                                            NotificationHelper.notify(recipient_id=approver.id,
+                                            notifyHelper.notify(recipient_id=approver.id,
                                                                       type=NotificationTypes.ROLE_APPROVAL_REQUEST_RECEIVED,
                                                                       change_read_status_direclty=False)
                                         retDict["status"] = True

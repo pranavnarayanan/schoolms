@@ -7,5 +7,6 @@ class DocumentHelper:
         doc.is_folder=True
         doc.name="ROOT"
         doc.owner_id=user_id
+        doc.is_root = True
         doc.save()
 

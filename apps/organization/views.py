@@ -6,7 +6,6 @@ from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.views.decorators.csrf import csrf_exempt
-
 from apps.notifications.helper import NotificationHelper
 from apps.organization.forms import *
 from apps.organization.models import *
@@ -139,7 +138,7 @@ def saveGroupDetails(request):
                     return HttpResponseRedirect("../Organization/RegisterOrganization")
 
                 try:
-                    NotificationHelper.notify(recipient_id=inst_super_user.id,type=NotificationTypes.NEW_ROLE_ADDED)
+                    NotificationHelper(request).notify(recipient_id=inst_super_user.id,type=NotificationTypes.NEW_ROLE_ADDED)
                 except Exception as e:
                     orgGrp.delete()
                     userRole.delete()

@@ -277,7 +277,7 @@ def saveCredentialPageDetails(request):
                     except Exception as e:
                         messages.error(request,"Registered Successfully but failed to send activation Email. Please contact site admin")
 
-                    NotificationHelper.notify(recipient_id=user.id, type=NotificationTypes.WELCOME_MESSAGE)
+                    NotificationHelper(request).notify(recipient_id=user.id, type=NotificationTypes.WELCOME_MESSAGE)
                     return HttpResponseRedirect("../Login")
                 except Exception as e:
                     messages.error(request,e.__str__())
@@ -311,7 +311,6 @@ def activateAccount(request):
             user.activation_token = uuid4()
             user.account_status = TL_AccountStatus.objects.get(code="active")
             user.save()
-            DocumentHelper().createRootEntry(user.id)
             messages.success(request, "Account activated successfuly.")
         except Exception as e:
 

@@ -15,6 +15,7 @@ class EN_Documents(models.Model):
     owner = models.ForeignKey(EN_Users, null=False, on_delete=models.CASCADE)
     no_of_days_to_keep_file = models.IntegerField(null=True)
     moved_to_aws = models.BooleanField(default=False)
+    is_root = models.BooleanField(default=False)
 
     class Meta:
         db_table = "en_documents"
