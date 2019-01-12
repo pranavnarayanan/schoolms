@@ -1,4 +1,6 @@
 from uuid import uuid4
+
+from apps.documents.helper import DocumentHelper
 from apps.notifications.helper import NotificationHelper
 from apps.sign_up.forms import *
 from django.template import loader
@@ -309,8 +311,10 @@ def activateAccount(request):
             user.activation_token = uuid4()
             user.account_status = TL_AccountStatus.objects.get(code="active")
             user.save()
+            DocumentHelper().createRootEntry(user.id)
             messages.success(request, "Account activated successfuly.")
         except Exception as e:
+
             messages.warning(request,"Invalid token / product_id")
     else:
         messages.warning(request,"Access denied - Invalid Request Method")
