@@ -1,22 +1,60 @@
 {% extends "base/post_login.html" %}
-{% block page_title %} List Subjects {% endblock %}
-{% block page_heading %} List Subjects {% endblock %}
+
+{% block page_title %} Subjects {% endblock %}
+{% block page_heading %} Subjects {% endblock %}
 
 {% block breadcrumb %}
-    <li><a><i class="fa fa-dashboard"></i> Home</a></li>
-    <li><a><i class="fa fa-dashboard"></i> List Subjects </a></li>
+    <li><a href="../Home"><i class="fa fa-dashboard"></i> Home</a></li>
+    <li class="active"><a> Subject Details </a></li>
 {% endblock %}
+
 
 {% block content %}
-    <div class="row">
-        <h4> All Subjects of Selected School Are Listed Here</h4>
-    </div>
-{% endblock %}
+  <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
 
+
+            <div class="box-header">
+              <form action="" method="post">
+                  {% csrf_token %}
+                  {% load widget_tweaks %}
+                  {% render_field class_names.class_names class="form-control pull-left" style="width: 25%;" %}
+                  {% render_field class_names.class_div class="form-control pull-left" style="width: 25%;" %}
+                  <button class="btn btn-info btn-flat">
+                    <i class="fa fa-filter"></i> &nbsp; Filter
+                  </button>
+
+              </form>
+            </div>
+
+            <div class="box-body table-responsive no-padding">
+              <table class="table table-hover">
+                <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Duration(in minutes)</th>
+                      <th>Assigned to Class(es)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for subject in subjects %}
+                    <tr>
+                        <td>{{ subject.name }}</td>
+                        <td>{{ subject.duration }}</td>
+                        <td>{{ subject.assigned_to }}</td></tr>
+                {% endfor %}
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+
+{% endblock %}
 
 
 {% block page_specific_css %}
-{% endblock %}
-
-{% block page_specific_js  %}
 {% endblock %}
