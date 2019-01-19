@@ -31,12 +31,14 @@ def uploadDocument(request):
         doc.data_file = request.FILES['file']
         doc.type = os.path.splitext(doc.data_file.name)[1]
         doc.name  = doc.data_file.name
-        doc.uploaded_by_id = request.session[SessionProperties.USER_ID_KEY]
+        doc.is_file=True
+        doc.is_folder=False
+        doc.owner_id = request.session[SessionProperties.USER_ID_KEY]
         doc.save()
         messages.success(request,"File uploaded successfully")
         request.method = "GET"
     except Exception as e:
-        messages.warning(request,e.__str__())
+        messages.warning(request,e.__str__()),
     return index(request)
  else:
      messages.warning(request, "Direct access restricted")
@@ -56,4 +58,17 @@ def loadFolderData(request):
         return HttpResponse("Response Meow : ID is {}".format(id))
     else:
         messages.warning(request, "Direct access restricted")
+        return HttpResponseRedirect("../Home")
+@csrf_exempt
+def createfol(request):
+    if request.is_ajax():
+        doc=EN_Documents()
+        doc.is_file = False
+        doc.is_folder = True
+        doc.name="child"
+        doc.owner_id = request.session[SessionProperties.USER_ID_KEY]
+        doc.save()
+        return HttpResponse("Created successfully")
+    else:
+        messages.warning(request,"fffff")
         return HttpResponseRedirect("../Home")

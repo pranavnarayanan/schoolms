@@ -91,8 +91,10 @@
         {% csrf_token %}
         {% load widget_tweaks %}
         {% render_field form.file class="form-control" %}
+
         <input type="submit" name="Upload"/>
     </form>
+    <button onclick="createfol()">Create folder</button>
 {% endblock %}
 
 
@@ -120,7 +122,22 @@
             alert(drop_div_id);
         }
 
-
+        function createfol() {
+        $.ajax({
+            url:"Createfolder",
+            type:"POST",
+            data: {
+            },
+            success:function(data)
+            {
+                alert(data)
+            },
+            error:function(data)
+            {
+                alert(data.responseText())
+            }
+        });
+        }
 
         openFolder("{{ folder }}");
         function openFolder(folder_id){

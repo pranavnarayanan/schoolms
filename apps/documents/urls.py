@@ -6,4 +6,5 @@ urlpatterns = [
     path(r'Upload', views.uploadDocument, name="Validate and Upload Document"),
 
     path(r'LoadFolderData', views.loadFolderData, name="Load Folder Data | Ajax"),
+    path(r'Createfolder',views.createfol,name="createfol(ajax)")
 ]
