@@ -36,9 +36,10 @@ def index(request):
             subjects = EN_ClassSubjects.objects.filter(class_fk=classData)
             for subject in subjects :
                 dataList.append({
+                    "id": subject.id,
                     "name": subject.subject_name,
                     "duration": subject.duration,
-                    "assigned_to": subject.class_fk.class_name+"-"+subject.class_fk.class_division
+                    "assigned_to_class": subject.class_fk.class_name+"-"+subject.class_fk.class_division
                 })
 
         if dataList.__len__() == 0 :
