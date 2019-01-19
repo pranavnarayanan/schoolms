@@ -1,3 +1,4 @@
+from apps.notifications.helper import NotificationHelper
 from apps.users.models import EN_Users
 from apps.roles.helper.user_roles_helper import UserRolesHelper
 from properties.session_properties import SessionProperties
@@ -10,6 +11,7 @@ class UIDataHelper:
     def __init__(self, request):
         self.request = request
         self.userRoleHelper = UserRolesHelper(self.request)
+        self.notificationsHelper = NotificationHelper(self.request)
 
     '''
     # Function returns the dict of user data which needs to be displayed on the UI
@@ -31,7 +33,11 @@ class UIDataHelper:
                 "user_roles": self.userRoleHelper.getAllApprovedRolesOfUserFromSession(),
                 "current_role": self.userRoleHelper.getSelectedRolesOfUserFromSession()
             },
-            page : "active"
+            page : "active",
+            "notifications":{
+                "last_notification_id" : self.__getDataFromSession(SessionProperties.USER_UNSEEN_NOTIFICATIONS_COUNT),
+                "notifications" : self.__getDataFromSession(SessionProperties.USER_UNREAD_NOTIFICATIONS)
+            }
         }
 
     '''
@@ -55,6 +61,10 @@ class UIDataHelper:
                 self.request.session[SessionProperties.USER_ONLINE_KEY] = user.en_logincredentials.is_online
             elif session_key == SessionProperties.USER_ACTIVE_ROLE_KEY:
                 self.request.session[SessionProperties.USER_ACTIVE_ROLE_KEY] = None
+            elif session_key == SessionProperties.USER_UNSEEN_NOTIFICATIONS_COUNT:
+                self.request.session[SessionProperties.USER_UNSEEN_NOTIFICATIONS_COUNT] = self.notificationsHelper.getUnSeenNotificationCount()
+            elif session_key == SessionProperties.USER_UNREAD_NOTIFICATIONS:
+                self.request.session[SessionProperties.USER_UNREAD_NOTIFICATIONS] = self.notificationsHelper.getUnreadNotificationsAsJSON()
             else:
                 raise Exception("Invalid Session Key Passed | Class: UIDataHelper, Function: getDataFromSession")
 

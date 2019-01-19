@@ -1,22 +1,170 @@
 {% extends "base/post_login.html" %}
-{% block page_title %} List Subjects {% endblock %}
-{% block page_heading %} List Subjects {% endblock %}
+
+{% block page_title %} Subjects {% endblock %}
+{% block page_heading %} Subjects {% endblock %}
 
 {% block breadcrumb %}
-    <li><a><i class="fa fa-dashboard"></i> Home</a></li>
-    <li><a><i class="fa fa-dashboard"></i> List Subjects </a></li>
+    <li><a href="../Home"><i class="fa fa-dashboard"></i> Home</a></li>
+    <li class="active"><a> Subject Details </a></li>
 {% endblock %}
+
 
 {% block content %}
     <div class="row">
-        <h4> All Subjects of Selected School Are Listed Here</h4>
-    </div>
-{% endblock %}
+        <div class="col-xs-6">
+            <div class="box">
 
+
+                <div class="box-header">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        {% load widget_tweaks %}
+                        {% render_field class_names.class_names class="form-control pull-left" style="width: 25%;" %}
+                        {% render_field class_names.class_div class="form-control pull-left" style="width: 25%;" %}
+                        <button class="btn btn-info btn-flat">
+                            <i class="fa fa-filter"></i> &nbsp; Filter
+                        </button>
+
+                    </form>
+                </div>
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Class Assigned</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for subject in subjects %}
+                            <tr onclick="loadTeachers({{ subject.id }})">
+                                <td>{{ subject.name }} <br> <small>[duration : {{ subject.duration }} hrs]</small></td>
+                                <td>{{ subject.assigned_to_class }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="box">
+
+                <div class="box-header">
+                    <h3 class="box-title">Teachers</h3>
+                    <button onClick="enableEdit()"  id="edit_teacher_btn" class="pull-right btn btn-flat btn-warning"><i class="fa fa-pencil"></i> Edit</button>
+                    <button onClick="saveChanges()" id="save_teacher_btn" class="pull-right btn btn-flat btn-success"><i class="fa fa-save"></i> Save</button>
+                </div>
+
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Teacher Name</th>
+                            <th>Note</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td width="40%">
+                                    <select class="form-control no-border teacher_forms" disabled>
+                                        <option>Arun PV [MY12345]</option>
+                                        <option>Suma Kesu[MY345678]</option>
+                                    </select>
+                                </td>
+                                <td><input type="text" class="form-control no-border teacher_forms" value="Part A "></td>
+                                <td><button onclick="deleteTeacher(1)" class="btn btn-flat btn-danger"><i class="fa fa-trash"></i></button></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr id="add_teacher_div">
+                                <td width="40%">
+                                    <select class="form-control">
+                                        <option>Arun PV [MY12345]</option>
+                                        <option>Suma Kesu[MY345678]</option>
+                                    </select>
+                                </td>
+                                <td><input type="text" class="form-control"></td>
+                                <td><button onclick="addNewTeacher()" class="btn btn-flat btn-success"><i class="fa fa-plus"></i></button></td>
+                            </tr>
+                            <tr style="cursor: pointer">
+                                <td onClick="addTeacher()">
+                                    <div style="text-align: center;">
+                                        <i class="fa fa-plus"></i> Add Teacher (Show/Hide)
+                                    </div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
 
 
 {% block page_specific_css %}
+    <style>
+        .no-border{
+            border:0;
+            background: transparent;
+            cursor: pointer;
+        }
+        .no-border:disabled{
+            border:0;
+            background: transparent;
+            cursor: pointer;
+        }
+    </style>
 {% endblock %}
 
-{% block page_specific_js  %}
+{% block page_specific_js %}
+    <script>
+
+        $("#save_teacher_btn").hide();
+        $("#edit_teacher_btn").show();
+        $("#add_teacher_div").hide();
+
+        function loadTeachers(id){
+            alert("Subect ID : "+id);
+        }
+
+        var addTeacherTabDisplayed = false;
+        function addTeacher(){
+            addTeacherTabDisplayed = !addTeacherTabDisplayed;
+            if(addTeacherTabDisplayed){
+                $("#add_teacher_div").show();
+            }else{
+                $("#add_teacher_div").hide();
+            }
+
+        }
+
+        function enableEdit(){
+            $(".teacher_forms").removeClass("no-border");
+            $(".teacher_forms").removeAttr("disabled");
+            $("#edit_teacher_btn").hide();
+            $("#save_teacher_btn").show();
+        }
+
+        function saveChanges(){
+            $(".teacher_forms").addClass("no-border");
+            $(".teacher_forms").attr("disabled","disabled");
+            $("#save_teacher_btn").hide();
+            $("#edit_teacher_btn").show();
+        }
+
+        function deleteTeacher(teacher_id){
+            alert("Delete Teacher : "+teacher_id);
+        }
+
+        function addNewTeacher(){
+            alert("ola -- add new teacher -- control reached");
+        }
+
+    </script>
 {% endblock %}
