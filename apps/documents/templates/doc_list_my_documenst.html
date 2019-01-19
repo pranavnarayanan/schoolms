@@ -20,6 +20,7 @@
                   <span class="folder_hover" ondrop="drop(event,'dragtarget_5')" ondragover="allowDrop(event)" ondragstart="dragStart(event)" id="dragtarget_5">Inr Fldr 2</span> /
                   <span>Parent folder</span> /
               </h3>
+              <button onclick="createfolder()" class="btn btn-flat btn-info pull-right"><i class="fa fa-folder-o"></i> Create Folder</button>
             </div>
 
 
@@ -94,7 +95,6 @@
 
         <input type="submit" name="Upload"/>
     </form>
-    <button onclick="createfol()">Create folder</button>
 {% endblock %}
 
 
@@ -122,19 +122,18 @@
             alert(drop_div_id);
         }
 
-        function createfol() {
+        function createfolder() {
         $.ajax({
             url:"Createfolder",
             type:"POST",
             data: {
+                "folder_name":"folder_name"
             },
-            success:function(data)
-            {
-                alert(data)
+            success:function(data){
+                alert(data);
             },
-            error:function(data)
-            {
-                alert(data.responseText())
+            error:function(data){
+                alert(data.responseText);
             }
         });
         }
