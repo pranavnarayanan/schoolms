@@ -1,4 +1,5 @@
 from apps.documents.models import EN_Documents
+
 class DocumentHelper:
 
     def createRootEntry(self, user_id):
@@ -9,4 +10,3 @@ class DocumentHelper:
         doc.owner_id=user_id
         doc.is_root = True
         doc.save()
-

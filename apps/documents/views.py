@@ -3,6 +3,8 @@ from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.views.decorators.csrf import csrf_exempt
+
+from apps.utilities.entities.sequenceutil import EN_SequenceUtil
 from apps.utilities.helper.ui_data_helper import UIDataHelper
 from apps.documents.forms import FORM_Document
 from apps.documents.models import EN_Documents
@@ -33,6 +35,11 @@ def uploadDocument(request):
         doc.name  = doc.data_file.name
         doc.is_file=True
         doc.is_folder=False
+        if "ROOT" == request.session["USED_DOCUMENT_FOLDER_ID"]:
+            doc.parent_folder = EN_Documents.objects.get(is_folder=True, is_file=False, name="ROOT",owner=request.session[SessionProperties.USER_ID_KEY])
+        else:
+            doc.parent_folder_id = int(request.session["USED_DOCUMENT_FOLDER_ID"])
+        doc.unique_name = "file_{}{}".format(EN_SequenceUtil.next("UNIQUE_FILE_NAME"),doc.type)
         doc.owner_id = request.session[SessionProperties.USER_ID_KEY]
         doc.save()
         messages.success(request,"File uploaded successfully")
@@ -72,6 +79,7 @@ def createfolder(request):
         doc.is_file = False
         doc.is_folder = True
         doc.type = "folder"
+        doc.unique_name = "folder_{}".format(EN_SequenceUtil.next("UNIQUE_FILE_NAME"))
         doc.name = request.POST.get("folder_name")
         doc.owner_id = request.session[SessionProperties.USER_ID_KEY]
         doc.save()

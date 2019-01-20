@@ -10,7 +10,7 @@ class EN_Documents(models.Model):
     type = models.CharField(max_length=30, null=True)
     file_size = models.IntegerField(null=True)
     name = models.CharField(max_length=100, null=False)
-    unique_name = models.CharField(max_length=500, null=False, unique=True, default=EN_SequenceUtil.next("UNIQUE_FILE_NAME"))
+    unique_name = models.CharField(max_length=500, null=False, unique=True, default=("doc_{}".format(EN_SequenceUtil.next("UNIQUE_FILE_NAME"))))
     description = models.CharField(max_length=1000, null=True)
     owner = models.ForeignKey(EN_Users, null=False, on_delete=models.CASCADE)
     no_of_days_to_keep_file = models.IntegerField(null=True)
