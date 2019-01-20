@@ -20,7 +20,9 @@
                   <span class="folder_hover" ondrop="drop(event,'dragtarget_5')" ondragover="allowDrop(event)" ondragstart="dragStart(event)" id="dragtarget_5">Inr Fldr 2</span> /
                   <span>Parent folder</span> /
               </h3>
-              <button onclick="createfolder()" class="btn btn-flat btn-info pull-right"><i class="fa fa-folder-o"></i> Create Folder</button>
+              <button data-toggle="modal" data-target="#modal-folder-name" class="btn btn-flat btn-info pull-right">
+                  <i class="fa fa-folder-o"></i> Create Folder
+              </button>
             </div>
 
 
@@ -88,6 +90,33 @@
         </div>
     </div>
 
+
+
+    <div class="modal fade" id="modal-folder-name">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Enter Folder Name</h4>
+                </div>
+                <div class="col-xs-12" style="cursor: pointer">
+                    <div class="box-body table-responsive no-padding">
+                        <div class="form-group">
+                            <br>
+                            <input placeholder="enter folder name " type="text" id="folder_name" class="form-control">
+                            <br>
+                            <label id="create_folder_msg"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success pull-right" onclick="createfolder()">Create</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <form method="post" action="Upload" enctype="multipart/form-data" >
         {% csrf_token %}
         {% load widget_tweaks %}
@@ -127,13 +156,17 @@
             url:"Createfolder",
             type:"POST",
             data: {
-                "folder_name":"folder_name"
+                "folder_name":$("#folder_name").val()
             },
             success:function(data){
-                alert(data);
+                if(data == "True"){
+                    $('#modal-folder-name').modal('hide');
+                }else{
+                    $("#create_folder_msg").html(data);
+                }
             },
             error:function(data){
-                alert(data.responseText);
+                $("#create_folder_msg").html("Error : Failed to create folder");
             }
         });
         }

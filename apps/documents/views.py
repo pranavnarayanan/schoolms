@@ -3,7 +3,6 @@ from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.views.decorators.csrf import csrf_exempt
-
 from apps.utilities.entities.sequenceutil import EN_SequenceUtil
 from apps.utilities.helper.ui_data_helper import UIDataHelper
 from apps.documents.forms import FORM_Document
@@ -71,19 +70,22 @@ def loadFolderData(request):
 @csrf_exempt
 def createfolder(request):
     if request.is_ajax():
-        doc=EN_Documents()
-        if "ROOT" == request.session["USED_DOCUMENT_FOLDER_ID"]:
-            doc.parent_folder = EN_Documents.objects.get(is_folder=True,is_file=False, name="ROOT", owner=request.session[SessionProperties.USER_ID_KEY])
-        else:
-            doc.parent_folder_id = int(request.session["USED_DOCUMENT_FOLDER_ID"])
-        doc.is_file = False
-        doc.is_folder = True
-        doc.type = "folder"
-        doc.unique_name = "folder_{}".format(EN_SequenceUtil.next("UNIQUE_FILE_NAME"))
-        doc.name = request.POST.get("folder_name")
-        doc.owner_id = request.session[SessionProperties.USER_ID_KEY]
-        doc.save()
-        return HttpResponse("Created successfully")
+        try:
+            doc=EN_Documents()
+            if "ROOT" == request.session["USED_DOCUMENT_FOLDER_ID"]:
+                doc.parent_folder = EN_Documents.objects.get(is_folder=True,is_file=False, name="ROOT", owner=request.session[SessionProperties.USER_ID_KEY])
+            else:
+                doc.parent_folder_id = int(request.session["USED_DOCUMENT_FOLDER_ID"])
+            doc.is_file = False
+            doc.is_folder = True
+            doc.type = "folder"
+            doc.unique_name = "folder_{}".format(EN_SequenceUtil.next("UNIQUE_FILE_NAME"))
+            doc.name = request.POST.get("folder_name")
+            doc.owner_id = request.session[SessionProperties.USER_ID_KEY]
+            doc.save()
+            return HttpResponse(True)
+        except Exception as e:
+            return HttpResponse(e.__str__())
     else:
         messages.warning(request,"Direct Access Denied")
         return HttpResponseRedirect("../Home")
