@@ -1,5 +1,6 @@
 from apps.classes.models import EN_Classes
 from apps.roles.models import EN_UserRoles
+from apps.subjects.models import EN_SubjectTeachers
 from properties.session_properties import SessionProperties
 
 
@@ -15,12 +16,12 @@ class SubjectFormsHelper:
         allClassList = []
         classList = EN_Classes.objects.filter(organization=orgId.related_organization)
         for row in classList:
-            classList = []
-            classList.append(row.id)
+            retClassList = []
+            retClassList.append(row.id)
             class_display_name =row.class_name + "-" + row.class_division
             class_display_name = (class_display_name+"("+row.batch_nick_name+")") if row.batch_nick_name != "" else class_display_name
-            classList.append(class_display_name)
-            allClassList.append(tuple(classList))
+            retClassList.append(class_display_name)
+            allClassList.append(tuple(retClassList))
         return allClassList
 
     def getClassesForFilter(self):
@@ -50,3 +51,14 @@ class SubjectFormsHelper:
             return tuple(set(self.divisions))
         except:
             return ((None, "No Permission"))
+
+    # def getTeachersDuringLoad(self, sub_id):
+    #     if sub_id is not None :
+    #         retArray = []
+    #         teachers = EN_SubjectTeachers.objects.filter(subject_id=sub_id)
+    #         for teacher in teachers :
+    #             teacherList = []
+    #             teacherList.append(teacher.id)
+    #             teacherList.append(teacher.teacher.name+"["+teacher.teacher.product_id+"]")
+    #             teacherList.append(teacher.note)
+
