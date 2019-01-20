@@ -1,3 +1,4 @@
+import json
 import os
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
@@ -17,10 +18,8 @@ def index(request):
     folder_id = request.session["USED_DOCUMENT_FOLDER_ID"] if "USED_DOCUMENT_FOLDER_ID" in request.session else "ROOT"
     data.__setitem__("folder",folder_id)
     user_id=request.session[SessionProperties.USER_ID_KEY]
-
     if not EN_Documents.objects.filter(owner=user_id, name="ROOT", is_root = True).exists():
         DocumentHelper().createRootEntry(user_id)
-
     return HttpResponse(template.render(data, request))
 
 
@@ -50,18 +49,23 @@ def uploadDocument(request):
      messages.warning(request, "Direct access restricted")
      return HttpResponseRedirect("../Home")
 
-
 @csrf_exempt
 def loadFolderData(request):
     if request.is_ajax():
+        user_id = request.session[SessionProperties.USER_ID_KEY]
         id = request.POST.get("folder_id")
-        if id == "ROOT":
-            docs = EN_Documents.objects.filter(parent_folder=None)
-        else:
-            docs = EN_Documents.objects.filter(parent_folder=int(id))
-
+        parent_folder = None if id == "ROOT" else int(id)
+        if parent_folder == None:
+            parent_folder = EN_Documents.objects.get(owner_id=user_id,is_root=True, name="ROOT").id
+        docs = EN_Documents.objects.filter(owner_id=user_id, parent_folder_id=parent_folder)
+        retList = [{
+            "id"        : doc.id,
+            "name"      : doc.name,
+            "is_file"   : doc.is_file,
+            "is_folder" : doc.is_folder,
+        }for doc in docs]
         request.session["USED_DOCUMENT_FOLDER_ID"] = id
-        return HttpResponse("Response Meow : ID is {}".format(id))
+        return HttpResponse(json.dumps(retList))
     else:
         messages.warning(request, "Direct access restricted")
         return HttpResponseRedirect("../Home")

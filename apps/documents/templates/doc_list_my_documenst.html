@@ -27,7 +27,7 @@
 
 
 
-          <div class="box-body">
+          <div class="box-body" id="documents_div">
 
               <div class="col-md-4" onclick="openFolder(1)" ondrop="drop(event,'dragtarget_1')" ondragover="allowDrop(event)" draggable="true" ondragstart="dragStart(event)" id="dragtarget_1">
                   <div class="info-box bg-aqua">
@@ -180,7 +180,31 @@
                   "folder_id":folder_id
               },
               success:function(data){
-                  alert(data)
+               var parsedData = $.parseJSON(data);
+               var content = "";
+               $.each(parsedData, function(index, element) {
+                   content += '<div class="col-md-4" onclick="openFolder('+element["id"]+')" ondrop="drop(event,\'dragtarget_'+element["id"]+'\')" ondragover="allowDrop(event)" draggable="true" ondragstart="dragStart(event)" id="dragtarget_'+element["id"]+'">';
+
+                   if(element["is_folder"]) {
+                       content += '<div class="info-box bg-aqua">';
+                       content += '<span class="info-box-icon"><i class="fa fa-folder-open-o"></i></span>';
+                   }else {
+                       content += '<div class="info-box bg-green-gradient">';
+                       content += '<span class="info-box-icon"><i class="fa fa-file-o"></i></span>';
+                   }
+                   content += '<div class="info-box-content">';
+                   content += '<span class="info-box-text">'+element["name"]+'</span>';
+
+                   if(element["is_folder"])
+                        content += '<span class="info-box-number"><i class="fa fa-folder-open-o"></i></span>';
+                   else
+                        content += '<span class="info-box-number"><i class="fa fa-file-o"></i></span>';
+
+
+                   content += '<span class="progress-description">Modified on : 27th Dec</span>';
+                   content += '</div></div></div>';
+               });
+               $("#documents_div").html(content);
               },
               error:function(data){
                   alert("Error : "+data.responseText)
