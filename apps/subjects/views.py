@@ -22,12 +22,12 @@ def index(request):
         user_role = user_role.first()
         classes = EN_Classes.objects.filter(organization=user_role.related_organization)
         teachers = EN_UserRoles.objects.filter(related_organization=user_role.related_organization, role__code=Roles.TEACHER, approved=True)
-        if teachers.exists():
+        if not teachers.exists():
             messages.warning(request, "No Teachers added to this Organization.")
             teacherList = None
         else:
             teacherList = [{
-                "id": teacher.user.id,
+                "id": teacher.id, #setting role_id, not user_id
                 "name": teacher.user.name + " [" + teacher.user.product_id + "]"
             } for teacher in teachers]
         data.__setitem__("teachersList", teacherList)
@@ -130,30 +130,35 @@ def getTeacherList(request) :
 @csrf_exempt
 def saveNewTeacher(request) :
     if request.is_ajax():
-        subject_id = request.POST["selected_subject_id"]
-        teacher_id = request.POST["selected_teacher_id"]
-        note = request.POST["note"]
-        teacherObj = EN_Users.objects.get(id=teacher_id)
-        user_role = EN_UserRoles.objects.filter(approved=True, user = teacherObj, role__code=Roles.TEACHER).first()
-        subjectObj = EN_ClassSubjects.objects.get(id=subject_id)
-
         mainReturnList = {
-            "status" : False,
-            "message" : None
+            "status": False,
+            "message": None
         }
         try:
+            subject_id = int(request.POST.get("selected_subject_id"))
+        except:
+            mainReturnList["message"] = "No Subject Selected"
+            return HttpResponse(json.dumps(mainReturnList))
+        teacher_role_id = int(request.POST.get("selected_teacher_role_id"))
+        note = request.POST["note"]
+        my_current_role = EN_UserRoles.objects.get(is_selected_role=True,user_id=request.session[SessionProperties.USER_ID_KEY])
+        user_role = EN_UserRoles.objects.get(approved=True, id = teacher_role_id, role__code=Roles.TEACHER, related_organization=my_current_role.related_organization)
+
+        try:
             subjectTeacher = EN_SubjectTeachers()
-            subjectTeacher.teacher = teacherObj
-            subjectTeacher.subject = subjectObj
+            subjectTeacher.teacher = user_role.user
+            subjectTeacher.subject_id = subject_id
             subjectTeacher.note = note
-            subjectTeacher.organization = subjectObj.organization
+            subjectTeacher.organization = my_current_role.related_organization
             subjectTeacher.teacher_role = user_role
             subjectTeacher.save()
             mainReturnList["status"] = True
-        except :
-            mainReturnList["message"] = "The Teacher already exists on the subject"
+            mainReturnList["message"] = "Successfully added teacher to selected subject"
+        except Exception as e:
+            mainReturnList["message"] = e.__str__()
             mainReturnList["status"] = False
         jsonResponse = json.dumps(mainReturnList)
         return HttpResponse(jsonResponse)
     else:
-        return HttpResponseRedirect("../Page404/")
+        messages.warning(request,"Direct access denied")
+        return HttpResponseRedirect("../Home")
