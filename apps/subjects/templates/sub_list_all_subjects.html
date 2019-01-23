@@ -47,7 +47,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xs-6">
+        <div class="col-xs-6" id="teachers_box">
             <div class="box">
 
                 <div class="box-header">
@@ -127,6 +127,7 @@
         $("#save_teacher_btn").hide();
         $("#edit_teacher_btn").show();
         $("#add_teacher_div").hide();
+        $("#teachers_box").hide();
 
         function loadTeachers(sub_id){
             subject_id = sub_id;
@@ -152,6 +153,7 @@
                     $("#teacher_note").html(note);
                     $("#teacher_select").html(teacher);
                     $("#delete_teacher").html(delete_button);
+                    $("#teachers_box").show();
                 },
                 error:function(data){
                     alert("Error : "+data.responseText)
@@ -200,7 +202,7 @@
                 success:function(data){
                     var parsedData = $.parseJSON(data);
                     if(parsedData["status"]){
-
+                        loadTeachers(selected_subject_id);
                     }else{
                         alert(parsedData["message"])
                     }
