@@ -78,7 +78,7 @@
                         <tfoot>
                             <tr id="add_teacher_div">
                                 <td width="40%">
-                                    <select class="form-control" id="add_new_teacher">
+                                    <select class="form-control" id="teacher_role_id">
                                         {% for teacher in teachersList %}
                                             <option value="{{ teacher.id }}">{{ teacher.name }}</option>
                                         {% endfor %}
@@ -189,43 +189,26 @@
         }
 
         function addNewTeacher(){
-            var sel = document.getElementById('add_new_teacher');
-            var note = document.getElementById('add_teacher_note');
-            var opt = sel.value;
-            var noteValue = note.value;
             $.ajax({
                 url:"SaveNewTeacher",
                 method:"POST",
                 data: {
                     "selected_subject_id":selected_subject_id,
-                    "selected_teacher_id":opt,
-                    "note":noteValue
+                    "selected_teacher_role_id":$("#teacher_role_id").val(),
+                    "note":$("#add_teacher_note").val()
                 },
                 success:function(data){
                     var parsedData = $.parseJSON(data);
-                    var teacher = "";
-                    var note = "";
-                    var delete_button = "";
-                    var success = parsedData["status"];
-                    if(success) {
-                        teacher += '<select class="form-control no-border teacher_forms" disabled>';
-                        teacher += '<option value="'+opt+'">'+sel.text+'</option>';
-                        teacher += '</select>';
-                        note += '<input type="text" class="form-control no-border teacher_forms" value="'+noteValue+'">';
-                        delete_button += '<button onclick="deleteTeacher('+opt+')" class="btn btn-flat btn-danger"><i class="fa fa-trash"></i></button><br/>';
-                        alert("teacher : "+teacher);
-                    $("#teacher_note").html(note);
-                    $("#teacher_select").html(teacher);
-                    $("#delete_teacher").html(delete_button);
-                    } else {
-                        alert("error " + parsedData["message"])
+                    if(parsedData["status"]){
+
+                    }else{
+                        alert(parsedData["message"])
                     }
                 },
                 error:function(data){
                     alert("Error : "+data.responseText)
                 }
             });
-            alert("ola -- add new teacher -- control reached");
         }
 
     </script>
