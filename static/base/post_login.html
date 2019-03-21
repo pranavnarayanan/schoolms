@@ -182,19 +182,25 @@
                 {% endif %}
 
                 {% if ui_data.sidebar.role == "school_admin" or ui_data.sidebar.role == "principal" %}
-                    <li class="treeview {{ is_list_all_classes }} {{ is_add_new_class }}">
-                        <a>
-                            <i class="fa fa-building-o"></i>
-                            <span>Classes</span>
-                            <span class="pull-right-container">
-                          <i class="fa fa-angle-left pull-right"></i>
-                        </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li class="{{ is_list_all_classes }}"><a href="../Classes"><i class="fa fa-group"></i>List Classes</a></li>
-                        </ul>
+                    <li class="{{ is_messages }}">
+                        <a href="../Classes"><i class="fa fa-building-o"></i> <span>Classes</span></a>
                     </li>
                 {% endif %}
+
+                <li class="treeview {{ is_show_timetable }} ">
+                    <a>
+                        <i class="fa fa-times-circle-o"></i>
+                        <span>Timetable</span>
+                        <span class="pull-right-container">
+                          <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li class="{{ is_show_timetable }}"><a href="../Timetable/"><i class="fa fa-building"></i>My Timetable</a></li>
+                        <li class="{{ is_add_timetable}}"><a href="../Timetable/Add"><i class="fa fa-home"></i>Add Timetable</a></li>
+                        <li class="{{ is_edit_timetable}}"><a href="../Timetable/Edit"><i class="fa fa-home"></i>Edit Timetable</a></li>
+                    </ul>
+                </li>
 
                 {% if ui_data.sidebar.role == "school_admin" or ui_data.sidebar.role == "principal" %}
                     <li class="treeview {{ is_list_school_timings }} {{ is_add_school_timings }}">
