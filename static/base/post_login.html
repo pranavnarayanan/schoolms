@@ -187,6 +187,12 @@
                     </li>
                 {% endif %}
 
+                {% if ui_data.sidebar.role == "school_admin" or ui_data.sidebar.role == "principal" or ui_data.sidebar.role == "student" or ui_data.sidebar.role == "parent" or ui_data.sidebar.role == "teacher" %}
+                    <li class="{{ is_messages }}">
+                        <a href="../ClassCalendar"><i class="fa fa-calendar"></i> <span>Class Calendar</span></a>
+                    </li>
+                {% endif %}
+
                 <li class="treeview {{ is_show_timetable }} ">
                     <a>
                         <i class="fa fa-times-circle-o"></i>

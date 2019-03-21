@@ -38,6 +38,7 @@ urlpatterns = [
     path(r'Announcements/', include("apps.announcements.urls")),
     path(r'Notifications/', include("apps.notifications.urls")),
     path(r'Users/', include("apps.users.urls")),
+    path(r'ClassCalendar/', include("apps.class_calendar.urls")),
 
 ]
 

@@ -9,273 +9,48 @@
 
 {% block content %}
 
-  <div class="row">
+    <div class="row">
 
-   <div class="col-xs-12">
-      <div class="box">
-        <div class="box-header">
-          <h3 class="box-title">
-              <select class="form-control" onchange="loadBreakUpData()" id="school_timing">
-                {% for st in school_timings %}
-                    <option value="{{ st.id }}">{{ st.name }}</option>
-                {%  endfor %}
-              </select>
-          </h3>
-          <div class="box-tools">
-              <button class="btn btn-flat btn-info" data-toggle="modal" data-target="#add-class-modal"><i class="fa fa-plus"></i>&nbsp;Add</button>
-          </div>
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">
+                        <select class="form-control">
+                            {% for timing in timings %}
+                                <option value="{{ timing.id }}">{{ timing.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </h3>
+                    <div class="box-tools">
+                        <button class="btn btn-flat btn-info" data-toggle="modal" data-target="#add-class-modal"><i class="fa fa-eye"></i>&nbsp;Preview</button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="col-md-12">
+                        <table>
+                            <tr>
+                                <td>#</td><td>Period 1</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+
         </div>
 
-        <div class="box-body table-responsive no-padding">
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                  <th width="20%">Pattern</th>
-                  <th width="70%">Timing</th>
-                  <th width="10%">Action</th>
-              </tr>
-            </thead>
-            <tbody id="table_body">
-                <tr>
-                  <th></th>
-                  <th>
-                      <div class="nouislider-wrapper">
-                         <div id="slider-color-2">
-                         </div>
-                      </div>
-                  </th>
-                  <th></th>
-                </tr>
-                <tr>
-                  <th><select class="form-control"><option>Class - 12A</option><option>LKG UKG</option></select></th>
-                  <th>
-                      <table id="sunday_table" border="2px" class="table table-hover">
-
-                      </table>
-                  </th>
-                  <th>
-                      <button onClick="addColumn('sunday')" class="btn btn-flat btn-success"><i class="fa fa-plus"></i></button>
-                      <button onClick="removeColumn('sunday')" class="btn btn-flat btn-warning"><i class="fa fa-minus"></i></button>
-                  </th>
-                </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-       <div class="disp">
-           output
-       </div>
 
     </div>
-      </div>
-
-
-
-<div class="modal fade" id="add-class-modal">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-             <h4 class="modal-title">Add New Class Timing Pattern</h4>
-          </div>
-          <div class="col-xs-12">
-              <div class="box-body">
-                        <div class="form-group">
-                            <label>Timing Name</label>
-                            <input type="text" class="form-control">
-                            <span class="help-block" style="color: red;"></span>
-                        </div>
-                        <div class="form-group">
-                            <label>Class Starting Time</label>
-                            <input type="time" class="form-control">
-                            <span class="help-block" style="color: red;"></span>
-                        </div>
-                        <div class="form-group">
-                            <label>Class Closing Time</label>
-                            <input type="time" class="form-control">
-                            <span class="help-block" style="color: red;"></span>
-                        </div>
-                        <div class="form-group">
-                            <label>Off Days</label>
-                            <div class="box-body table-responsive no-padding">
-                            <table class="table table-hover">
-                                <tr>
-                                    <td><input type="checkbox" style="width: 20px; height: 20px" ></td>
-                                    <td>&nbsp; Sunday &nbsp; </td>
-                                    <td><input type="checkbox" style="width: 20px; height: 20px" ></td>
-                                    <td>&nbsp; Monday &nbsp; </td>
-                                    <td><input type="checkbox" style="width: 20px; height: 20px" ></td>
-                                    <td>&nbsp; Tuesday &nbsp; </td>
-                                    <td><input type="checkbox" style="width: 20px; height: 20px" ></td>
-                                    <td>&nbsp; Wednesday &nbsp; </td>
-                                    <td><input type="checkbox" style="width: 20px; height: 20px" ></td>
-                                    <td>&nbsp; Thursday &nbsp; </td>
-                                    <td><input type="checkbox" style="width: 20px; height: 20px" ></td>
-                                    <td>&nbsp; Friday &nbsp; </td>
-                                    <td><input type="checkbox" style="width: 20px; height: 20px" ></td>
-                                    <td>&nbsp; Saturday</td>
-                                </tr>
-                            </table>
-                            </div>
-                        </div>
-                    </div>
-          </div>
-          <div class="modal-footer">
-              <button type="submit" name="action" value="forward" class="btn btn-flat btn-info pull-left"><i class="fa fa-save"></i>&nbsp;&nbsp;Save</button>
-             <button type="button" class="btn btn-flat btn-warning pull-right" data-dismiss="modal">Close</button>
-          </div>
-        </div>
-      </div>
-</div>
-
-
 {% endblock %}
 
 
 
 
 {% block page_specific_css %}
-
-<link rel="stylesheet" href="../../../static/bootstrap/plugins/nouislider/nouislider.min.css">
-<-- link rel="stylesheet" href="../../../static/bootstrap/plugins/nouislider/main_min_custom.css"  --!>
-
-<style>
-    .c-1-color { background: red; }
-    .c-2-color { background: yellow; }
-    .c-3-color { background: green; }
-    .c-4-color { background: blue; }
-    .c-5-color { background: deeppink; }
-    .c-6-color { background: rosybrown; }
-    .c-7-color { background: orangered; }
-    .c-8-color { background: mediumseagreen; }
-</style>
+    <link rel="stylesheet" href="../../../static/bootstrap/plugins/nouislider/nouislider.min.css">
 {% endblock %}
 
 {% block page_specific_js  %}
-<script src="../../../static/bootstrap/plugins/nouislider/nouislider.min.js"></script>
-<script>
-
-    var day = "sunday"; //dynamically controll this value
-    var starting_val = 540; //9am
-    var ending_val = 960; //5pm
-    var _start = [starting_val,ending_val];
-    var _connect = [true,true,true];
-    var _tooltips = [false,false];
-    var multirange = document.getElementById('slider-color-2');
-    var _startDict = {};
-    //---------------------------------------
-
-    function addColumn(day) {
-        var connect = multirange.querySelectorAll('.noUi-connect');
-        if (connect.length > 1){
-            var valuesarr = multirange.noUiSlider.get();
-            _start = [];
-            for (i = 0; i < (connect.length - 1); i++) {
-                _start.push(Math.floor(parseInt(valuesarr[i])));
-            }
-            _start.push(ending_val);
-            _connect.push(true);
-            _tooltips.push(false);
-            multirange.noUiSlider.destroy();
-
-        }else{
-            _start = [starting_val,ending_val];
-            _connect = [true,true,true];
-            _tooltips = [false,false];
-        }
-        _slider();
-        updateTableRow();
-    }
-
-
-
-    function removeColumn(day){
-        var connect = multirange.querySelectorAll('.noUi-connect');
-        if (connect.length > 3){
-            var _valuesarr = multirange.noUiSlider.get();
-            _start = [];
-            for (i = 0; i < (connect.length - 1); i++) {
-                if(i != (connect.length - 3)){
-                    _start.push(Math.floor(parseInt(_valuesarr[i])));
-                }
-            }
-            _connect.pop();
-            _tooltips.pop();
-            multirange.noUiSlider.destroy();
-            _slider();
-            updateTableRow();
-        }
-    }
-
-
-
-
-    function _slider(){
-        noUiSlider.create(multirange, {
-          start: _start,
-          connect: _connect,
-          tooltips: _tooltips,
-          step:5,
-          margin: 10,
-          behaviour: 'drag',
-          range: {
-            'min': [ starting_val ],
-            'max': [ ending_val ]
-          }
-        });
-
-        var connect = multirange.querySelectorAll('.noUi-connect');
-        var classes = ['c-1-color', 'c-2-color', 'c-3-color', 'c-4-color', 'c-5-color', 'c-6-color', 'c-7-color', 'c-8-color'];
-        for (var i = 0; i < connect.length; i++) {
-            connect[i].classList.add(classes[i]);
-        }
-        multirange.noUiSlider.on('update', function () {
-            updateTableRow();
-        });
-    }
-
-
-
-
-    function updateTableRow(){
-        var valuesarr = multirange.noUiSlider.get();
-        var table_content = "<tr>";
-        var initial_val = starting_val;
-        var final_val = ending_val;
-        var percentage = 100;
-        var starting_time = "";
-        var ending_time = "";
-        var starting_hr = 0;
-        var starting_min = 0;
-        var ending_hr = 0;
-        var ending_min = 0;
-
-        var del_this_after_testing = "";
-
-        for(var i=0; i<valuesarr.length-1; i++) {
-            initial_val = valuesarr[i];
-            final_val = (i>=valuesarr.length-1) ? ending_val : Math.floor(parseInt(valuesarr[i+1]));
-
-            starting_hr = Math.floor(initial_val/60);
-            starting_min = Math.floor(initial_val%60);
-            starting_time = (starting_hr < 12) ? (starting_hr+":"+starting_min+" AM"):((starting_hr-12)+":"+starting_min+" PM");
-
-            ending_hr = Math.floor(final_val/60);
-            ending_min = Math.floor(final_val%60);
-            ending_time = (ending_hr < 12) ? (ending_hr+":"+ending_min+" AM"):((ending_hr-12)+":"+ending_min+" PM");
-
-            percentage = Math.floor(((final_val-initial_val)/(ending_val-starting_val))*100);
-            table_content += '<td id="' + day + '_td_'+i+'" width="'+percentage+'%">Period '+(i+1)+'<br>'+starting_time+" to "+ending_time+'</td>';
-
-            del_this_after_testing += (" -- "+percentage);
-        }
-        table_content += '</tr>';
-        $(".disp").html(del_this_after_testing);
-        $("#sunday_table").html(table_content);
-    }
-
-
-
-</script>
-
+    <script src="../../../static/bootstrap/plugins/nouislider/nouislider.min.js"></script>
 {% endblock %}

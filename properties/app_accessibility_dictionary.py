@@ -52,5 +52,8 @@ class AppAccessibilityDictionary():
         "Users":{
             "Index"              : ["all"],
             "ChangeOnlineStatus" : ["all"],
+        },
+        "ClassCalendar":{
+            "Index" : [Roles.SCHOOL_ADMIN, Roles.PRINCIPAL, Roles.TEACHER, Roles.STUDENT, Roles.PARENT]
         }
     }

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'apps.attendance',
     'apps.batch',
     'apps.notifications',
+    'apps.class_calendar',
 ]
 
 
@@ -88,6 +89,7 @@ TEMPLATES = [
             os.path.join(BASE_DIR, 'apps/batch/templates'),
             os.path.join(BASE_DIR, 'apps/announcements/templates'),
             os.path.join(BASE_DIR, 'apps/notifications/templates'),
+            os.path.join(BASE_DIR, 'apps/class_calendar/templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
