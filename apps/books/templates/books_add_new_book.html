@@ -102,6 +102,7 @@
                 url:"LoadSubCategories",
                 type:"POST",
                 data:{
+                    "csrfmiddlewaretoken": '{{ csrf_token }}',
                     "category" : $("#category").val()
                 },success : function(data){
                     var choice = "";

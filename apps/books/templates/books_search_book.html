@@ -8,77 +8,86 @@
 {% endblock %}
 
 {% block content %}
-    <form method="post" action="#">
-        {% csrf_token %}
-        {% load widget_tweaks %}
+    {% load widget_tweaks %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table">
+                            <tr>
+                                <td><label>Book Name / Code</label><input id="book_id_or_name" type=text" class="form-control" placeholder="Hornbill"></td>
+                                <td><label>Author</label><input id="book_author" type=text" class="form-control" placeholder="GK Pillai"></td>
+                                <td><label>Publisher</label><input id="book_pubilisher" type=text" class="form-control" placeholder="GK Publications"></td>
+                                <td><label>Published Year</label><input id="book_published_year" type=text" class="form-control" placeholder="2018"></td>
+                                <td>
+                                    <label>Category</label>
+                                    <select class="form-control" id="book_category" onChange="loadSubCategories()">
+                                        <option value="None">None</option>
+                                        {% for category in categories %}
+                                            <option value="{{ category.code }}">{{ category.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    <label>Sub.Cat.</label>
+                                    <select class="form-control" id="book_sub_category">
+                                        <option>None</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <label><br></label><br>
+                                    <button class="btn btn-flat btn-info" onclick="performSearch()"><i class="fa fa-search"></i> Search </button>
+                                </td>
+                                <td>
+                                    <label><br></label><br>
+                                    <button id="backward_btn" class="btn btn-flat btn-warning nav_btn" onClick="doPagination('backward')"><i class="fa fa-arrow-circle-left"></i></button>
+                                </td>
+                                <td>
+                                    <label><br></label><br>
+                                    <input type="number" onChange="doPagination('index')" id="page_no_field" class="form-control nav_btn" style="width: 60px;">
 
-        <div class="row">
-
-            <div class="col-md-12">
-                <div class="box box-primary">
-                    <div class="box-header with-border">
-                        <div class="box-body">
-                            <table>
-                                <tr>
-                                    <td>Book Name / Code</td>
-                                    <td>Author</td>
-                                    <td>Publisher</td>
-                                    <td>Published Year</td>
-                                    <td>Category</td>
-                                    <td>Sub Category</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td><input id="book_id_or_name" type=text" class="form-control" placeholder="Hornbill"></td>
-                                    <td><input id="book_author" type=text" class="form-control" placeholder="GK Pillai"></td>
-                                    <td><input id="book_pubilisher" type=text" class="form-control" placeholder="GK Publications"></td>
-                                    <td><input id="book_published_year" type=text" class="form-control" placeholder="2018"></td>
-                                    <td>
-                                        <select class="form-control" id="book_category" onChange="loadSubCategories()">
-                                            <option value="None">None</option>
-                                            {% for category in categories %}
-                                                <option value="{{ category.code }}">{{ category.name }}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <select class="form-control" id="book_sub_category">
-                                            <option>None</option>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-flat btn-info" onclick="performSearch()"><i class="fa fa-search"></i> Search </button>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="box-body">
-                            <table class="table table-hover">
-                                <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Book Name / ID</th>
-                                    <th>Author / Publisher</th>
-                                    <th>Category</th>
-                                    <th>Action</th>
-                                </tr>
-                                </thead>
-                                <tbody id="table_content"></tbody>
-                            </table>
-                        </div>
-                        <!---Loading Bar-->
-                        <div id="page_loading_div"></div>
-                        <!-- End Loading----->
+                                </td>
+                                <td>
+                                    <label><br></label><br>
+                                    <button id="forward_btn" class="btn btn-flat btn-warning nav_btn" onClick="doPagination('forward')"><i class="fa fa-arrow-circle-right"></i></button>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Book Name / ID</th>
+                                <th>Author / Publisher</th>
+                                <th>Category</th>
+                            </tr>
+                            </thead>
+                            <tbody id="table_content"></tbody>
+                        </table>
+                    </div>
+                    <!---Loading Bar-->
+                    <div id="page_loading_div"></div>
+                    <!-- End Loading----->
                 </div>
             </div>
         </div>
-    </form>
+    </div>
 {% endblock %}
 
 
 
 {% block page_specific_css %}
+    <style>
+        td{
+            padding-left:0px!important;
+            padding-right:0px!important;
+            margin-left:0px!important;
+            margin-right:0px!important;
+        }
+    </style>
 {% endblock %}
 
 {% block page_specific_js  %}
@@ -88,6 +97,7 @@
                 url:"LoadSubCategories",
                 type:"POST",
                 data:{
+                    "csrfmiddlewaretoken": '{{ csrf_token }}',
                     "category" : $("#book_category").val()
                 },success : function(data){
                     var choice = "";
@@ -103,7 +113,14 @@
             });
         }
 
+        var page = 1;
+        var total_page_count = 1;
+        $(".nav_btn").hide();
+        performSearch();
         function performSearch(){
+            $("#page_loading_div").addClass("overlay");
+            $("#page_loading_div").html('<i class="fa fa-refresh fa-spin"></i>');
+
             $.ajax({
                 url:"SearchBooks",
                 type:"POST",
@@ -114,20 +131,73 @@
                     "book_pubilisher" : $("#book_pubilisher").val(),
                     "book_published_year" : $("#book_published_year").val(),
                     "book_category" : $("#book_category").val(),
-                    "book_sub_category" : $("#book_sub_category").val()
+                    "book_sub_category" : $("#book_sub_category").val(),
+                    "page_no" : page
                 },success : function(data){
-                   // var choice = "";
-                    //var parsedData = $.parseJSON(data);
-                    //$.each(parsedData, function(index, element) {
-
-                    //});
-                    alert(data);
+                    var parsedData = $.parseJSON(data);
+                    var content = "";
+                    total_page_count = parseInt(parsedData["page_count"]);
+                    page = parseInt(parsedData["page_no"]);
+                    $("#page_no_field").val(page);
+                    if(parsedData["status"] == true && parsedData["booksData"].length > 0){
+                        $(".nav_btn").show();
+                    }else{
+                        if(parsedData["status"] == false){
+                            alert(parsedData["message"]);
+                        }
+                        $(".nav_btn").hide();
+                    }
+                    $.each(parsedData["booksData"], function(index, element) {
+                        content += '<tr>';
+                        content += '<td>'+(index+1)+'</td>';
+                        content += '<td><b>'+element["name"]+'</b><table><tr><td><tr><td>Volume </td><td> : '+element["volume"]+'</td></tr><tr><td>Book Code &nbsp;&nbsp;</td><td> : '+element["code"]+'</td></tr></table></td>';
+                        content += '<td><table><tr><td>Author </td><td> : '+element["author"]+'</td></tr><tr><td>Publisher </td><td> : '+element["publisher"]+'</td></tr> <tr><td>Published On &nbsp;&nbsp; </td><td> : '+element["published_year"]+'</td></tr> </table></td>';
+                        content += '<td>'+element["category"]+'<br> SubCat. : '+element["sub_category"]+'</td>';
+                        content += '<tr>';
+                    });
+                    if(page <= 1){
+                        $("#backward_btn").prop("disabled",true);
+                    }else{
+                        $("#backward_btn").prop("disabled",false);
+                    }
+                    if(page >= total_page_count){
+                        $("#forward_btn").prop("disabled",true);
+                    }else{
+                        $("#forward_btn").prop("disabled",false);
+                    }
+                    $("#table_content").html(content);
+                    $("#page_loading_div").removeClass("overlay");
+                    $("#page_loading_div").html('');
                 },error : function(data){
                     alert(data.responseText);
+                    $("#page_loading_div").removeClass("overlay");
+                    $("#page_loading_div").html('');
                 }
             });
+        }
 
-
+        function doPagination(action){
+            if(action == "forward" && page < total_page_count){
+                page += 1;
+            } else if(action == "backward" && page > 1){
+                page -= 1;
+            }else if(action == "index"){
+                var enteredPageNo = parseInt($("#page_no_field").val());
+                if(enteredPageNo > 0 &&  enteredPageNo < (total_page_count+1) ) {
+                    page = enteredPageNo;
+                }
+            }
+            if(page <= 1){
+                $("#backward_btn").prop("disabled",true);
+            }else{
+                $("#backward_btn").prop("disabled",false);
+            }
+            if(page >= total_page_count){
+                $("#forward_btn").prop("disabled",true);
+            }else{
+                $("#forward_btn").prop("disabled",false);
+            }
+            performSearch();
         }
     </script>
 {% endblock %}
