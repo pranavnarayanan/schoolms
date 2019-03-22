@@ -137,7 +137,7 @@
                     var parsedData = $.parseJSON(data);
                     var content = "";
                     total_page_count = parseInt(parsedData["page_count"]);
-                    page = parseInt(parsedData["page_no"]);
+                    page = parseInt(parsedData["current_page"]);
                     $("#page_no_field").val(page);
                     if(parsedData["status"] == true && parsedData["booksData"].length > 0){
                         $(".nav_btn").show();

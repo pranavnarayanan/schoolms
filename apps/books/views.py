@@ -110,7 +110,7 @@ def searchBooks(request):
 
             totalCount = books.count()
             perPageDataLimit = 2
-            if page*perPageDataLimit > totalCount :
+            if page > int(ceil(totalCount/perPageDataLimit)):
                 page = 1
             books = books[((page*perPageDataLimit)-perPageDataLimit):(page*perPageDataLimit)]
 
