@@ -60,3 +60,18 @@ def saveBookDetails(request):
         messages.warning(request, DisplayKey.get("error_not_a_post_request"))
         return HttpResponseRedirect("../Home")
 
+def searchBooks(request):
+    if request.is_ajax():
+        if request.method == "POST":
+            book_id_or_name = request.POST.get("book_id_or_name")
+            book_author = request.POST.get("book_author")
+            book_pubilisher = request.POST.get("book_pubilisher")
+            book_published_year = request.POST.get("book_published_year")
+            book_category = request.POST.get("book_category")
+            book_sub_category = request.POST.get("book_sub_category")
+            return HttpResponse(" book_id_or_name  : " + book_id_or_name+" \n book_author  : " + book_author+" \n book_pubilisher  : " + book_pubilisher+" \n book_published_year  : " + book_published_year+" \n book_category  : " + book_category+" \n book_sub_category  : " + book_sub_category)
+        else:
+            messages.warning(request,DisplayKey.get("error_not_a_post_request"))
+    else:
+        messages.warning(request, DisplayKey.get("error_not_ajax_request"))
+    return HttpResponseRedirect("../Home")
