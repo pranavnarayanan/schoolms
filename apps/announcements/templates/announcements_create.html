@@ -9,80 +9,65 @@
 {% endblock %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-md-9">
-            <div class="box box-primary">
-                <form role="form">
+    <form method="post" action="SaveAnnouncement">
+        {% csrf_token %}
+        {% load widget_tweaks %}
+
+        <div class="row">
+            <div class="col-md-9">
+                <div class="box box-primary">
                     <div class="box-body">
                         <div class="form-group col-md-12">
-                            <label>Content</label>
-                            <textarea class="form-control" rows="3" placeholder="Write your announcement content here"></textarea>
+                            {% render_field form.announcement_content class="form-control" %}
+                            <span class="help-block" style="color: red;">{{ form.announcement_content.errors }}</span>
                         </div>
                         <div class="form-group col-md-12">
                             <label>Content in brief for SMS</label>
-                            <input class="form-control" placeholder="Brief your content here for SMS">
+                            {% render_field form.sms_content class="form-control" %}
+                            <span class="help-block" style="color: red;">{{ form.sms_content.errors }}</span>
                         </div>
                         <div class="form-group col-md-4">
                             <label>Organization Group</label>
-                            <select class="form-control">
-                                <option>Sabarigiri Group</option>
-                                <option>Chinmaya Group</option>
-                            </select>
+                            {% render_field form.org_group class="form-control" onchange="loadOrganizationList()" %}
+                            <span class="help-block" style="color: red;">{{ form.org_group.errors }}</span>
                         </div>
                         <div class="form-group col-md-4">
                             <label>Organization</label>
                             <span class="pull-right"><input type="checkbox" >All Organizations</span>
-                            <select class="form-control">
-                                <option>Sabarigiri Anchal</option>
-                                <option>Sabarigiri Trivandrum</option>
+                            <select multiple class="form-control" id="organization_id" onChange="loadClasses()">
+
                             </select>
                         </div>
                         <div class="form-group col-md-4">
                             <label>Class </label>
                             <span class="pull-right"><input type="checkbox" >All Classes</span>
-                            <select multiple class="form-control">
-                                <option>12 - A - Computer Science</option>
-                                <option>12 - B - BioMaths</option>
-                                <option>12 - C - BioMaths</option>
-                                <option>12 - D - Commerce</option>
-                                <option>11 - A - Computer Science</option>
-                                <option>11 - B - BioMaths</option>
-                                <option>11 - C - BioMaths</option>
-                                <option>11 - D - Commerce</option>
+                            <select multiple class="form-control" id="class_id">
+
                             </select>
                         </div>
                     </div>
                     <div class="box-footer">
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
-                </form>
-            </div>
-        </div>
-
-
-        <div class="col-md-3">
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Select Roles </h3>
-                    <small style="cursor:pointer;" class="pull-right"><a onclick="selectAllRoles()" id="label_roles_select_all">Select All</a></small>
-                </div>
-                <div class="box-body">
-                    <table>
-                        <tr><td><input class="roles_chk_box" type="checkbox"> &nbsp;&nbsp;</td><td> School Admin </td></tr>
-                        <tr><td><input class="roles_chk_box" type="checkbox"> &nbsp;&nbsp;</td><td> Principal </td></tr>
-                        <tr><td><input class="roles_chk_box" type="checkbox"> &nbsp;&nbsp;</td><td> Directors </td></tr>
-                        <tr><td><input class="roles_chk_box" type="checkbox"> &nbsp;&nbsp;</td><td> Teachers </td></tr>
-                        <tr><td><input class="roles_chk_box" type="checkbox"> &nbsp;&nbsp;</td><td> Parents </td></tr>
-                        <tr><td><input class="roles_chk_box" type="checkbox"> &nbsp;&nbsp;</td><td> Students </td></tr>
-                        <tr><td><input class="roles_chk_box" type="checkbox"> &nbsp;&nbsp;</td><td> Lab Assistants </td></tr>
-                        <tr><td><input class="roles_chk_box" type="checkbox"> &nbsp;&nbsp;</td><td> Securities </td></tr>
-                        <tr><td><input class="roles_chk_box" type="checkbox"> &nbsp;&nbsp;</td><td> Enquiry Assistants </td></tr>
-                    </table>
                 </div>
             </div>
-        </div>
 
-    </div>
+
+            <div class="col-md-3">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Select Roles </h3>
+                        <small style="cursor:pointer;" class="pull-right"><a onclick="selectAllRoles()" id="label_roles_select_all">Select All</a></small>
+                    </div>
+                    <div class="box-body">
+                        {% render_field form.roles_list %}
+                        <span class="help-block" style="color: red;">{{ form.roles_list.errors }}</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
 
 {% endblock %}
 
@@ -98,12 +83,47 @@
 
 {% block page_specific_js  %}
     <script>
-        var rolesCheckbox = false;
-        function selectAllRoles(){
-            rolesCheckbox = !rolesCheckbox;
-            $(".roles_chk_box").prop('checked',rolesCheckbox);
-            $("#label_roles_select_all").html(!rolesCheckbox ? "Select All" : "Unselect All")
+    loadOrganizationList();
+        function selectAllRoles() {
+            var items = document.getElementsByName('roles_list');
+            var label = document.getElementById('label_roles_select_all').textContent;
+            if(label === 'Select All') {
+                for (var i = 0; i < items.length; i++) {
+                    if (items[i].type === 'checkbox')
+                        items[i].checked = true;
+                }
+                $("#label_roles_select_all").html("Deselect All")
+            } else {
+                for (var j = 0; j < items.length; j++) {
+                    if (items[j].type === 'checkbox')
+                        items[j].checked = false;
+                }
+                $("#label_roles_select_all").html("Select All")
+            }
+        }
+
+        function loadOrganizationList() {
+            var orgGrpDropDown = document.getElementById('id_org_group');
+            var selectedOrgGrpId = orgGrpDropDown.options[orgGrpDropDown.selectedIndex].value;
+            $.ajax({
+                url:"LoadOrgList",
+                type:"POST",
+                data:{
+                    "csrfmiddlewaretoken": '{{ csrf_token }}',
+                    "org_grp_id" : selectedOrgGrpId
+                },success : function(data){
+                    var choice = "";
+                    var parsedData = $.parseJSON(data);
+                    $.each(parsedData, function(index, element) {
+                        choice += "<option value=\""+element["id"]+"\">"+element["name"]+"</option>";
+                    });
+                    $("#organization_id").html(choice);
+                },error : function(data){
+                    alert(data.responseText);
+                }
+            });
         }
     </script>
 {% endblock %}
+<label>Content</label>
 
