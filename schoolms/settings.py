@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'apps.batch',
     'apps.notifications',
     'apps.class_calendar',
+    'apps.announcements',
 ]
 
 

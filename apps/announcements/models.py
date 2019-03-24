@@ -1,7 +1,5 @@
 from django.db import models
-from apps.classes.models import EN_Classes
-from apps.organization.models import EN_OrganizationGroup, EN_Organization
-from apps.roles.models import TL_Roles
+from apps.organization.models import EN_OrganizationGroup
 from apps.users.models import EN_Users
 
 
@@ -17,10 +15,10 @@ class EN_Announcements(models.Model):
 
 
 class EN_AnnouncementRecipients(models.Model):
-    organization_group = models.ForeignKey(EN_OrganizationGroup, null=True, on_delete=models.DO_NOTHING)
-    organization = models.ForeignKey(EN_Organization, null=True, on_delete=models.DO_NOTHING)
-    class_fk = models.ForeignKey(EN_Classes, null=True, on_delete=models.DO_NOTHING)
-    role = models.ForeignKey(TL_Roles, null=True, on_delete=models.DO_NOTHING)
+    organization_group = models.ForeignKey(EN_OrganizationGroup, null=False, on_delete=models.DO_NOTHING)
+    organization = models.CharField(max_length=255, null=True)
+    class_fk = models.CharField(max_length=255, null=True)
+    role = models.CharField(max_length=255, null=False)
 
     class Meta:
         db_table = "en_announcement_recipients"
