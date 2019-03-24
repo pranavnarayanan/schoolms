@@ -7,5 +7,6 @@ urlpatterns = [
     path(r'SaveSubject',views.saveSubject, name="Save New Subject"),
     path(r'LoadTeachersList',views.getTeacherList, name="Get Teachers List"),
     path(r'SaveNewTeacher',views.saveNewTeacher, name="Get Teachers List"),
+    path(r'SearchBooks',views.searchBooks, name="Search Books"),
 ]
 

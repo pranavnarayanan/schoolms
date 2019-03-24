@@ -1,8 +1,11 @@
 import json
 from django.contrib import messages
+from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.views.decorators.csrf import csrf_exempt
+
+from apps.books.models import EN_Books
 from apps.classes.models import EN_Classes
 from apps.roles.models import EN_UserRoles
 from apps.subjects.forms import FORM_SubjectDetails, FORM_ClassNamesForSubject
@@ -162,3 +165,41 @@ def saveNewTeacher(request) :
     else:
         messages.warning(request,"Direct access denied")
         return HttpResponseRedirect("../Home")
+
+
+def searchBooks(request):
+    if request.is_ajax():
+        if request.method == "POST":
+            status = True
+            message = ""
+            search_key = request.POST.get("search_key")
+            books = []
+            if search_key == None or search_key=="":
+                status = False
+                message = "Search key should not be empty"
+            else:
+                books = EN_Books.objects.filter(Q(name__contains=search_key) | Q(book_code__contains=search_key))
+                totalCount = books.count()
+                if totalCount > 30:
+                    status = False
+                    message = "Filter using bookid. Result exceeds threshold {}"
+            jsonRetData = {
+                "status" : status,
+                "message": message,
+                "booksData" : [{
+                    "id": book.id,
+                    "name": book.name,
+                    "volume": book.volume,
+                    "book_code": book.book_code,
+                    "author": book.author,
+                    "publisher": book.publisher,
+                    "category": book.category.name,
+                    "sub_category": None if book.sub_category == None else book.sub_category.name,
+                } for book in books]
+            }
+            return HttpResponse(json.dumps(jsonRetData))
+        else:
+            messages.warning(request,DisplayKey.get("error_not_a_post_request"))
+    else:
+        messages.warning(request, DisplayKey.get("error_not_ajax_request"))
+    return HttpResponseRedirect("../Home")

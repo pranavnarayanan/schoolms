@@ -36,9 +36,26 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label>Assign to Class</label>
-                                {% render_field form.assign_to_class class="form-control" %}
+                                {% render_field form.assign_to_class class="form-control select2" multiple="multiple" style="width:100%" %}
                                 <span class="help-block" style="color: red;">{{ form.assign_to_class.errors }}</span>
                             </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="box-body table-responsive no-padding">
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th><input type="checkbox"></th>
+                                            <th>Book</th>
+                                            <th>Author</th>
+                                            <th>Category</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="selected_books_table">
+                                        </tbody>
+                                    </table>
+                                </div>
                         </div>
 
                     </div>
@@ -60,32 +77,29 @@
 
                                     <div class="box-tools">
                                         <div class="input-group input-group-sm" style="width: 150px;">
-                                            <input type="text" name="table_search" class="form-control pull-right" placeholder="Book name or id">
+                                            <input type="text" id="search_key" class="form-control pull-right" placeholder="Book name or id">
                                             <div class="input-group-btn">
-                                                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                                                <button onclick="loadBooks()" type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="box-body table-responsive no-padding">
+                                <div class="box-body table-responsive no-padding" id="books_div">
                                     <table class="table table-hover">
+                                        <thead>
                                         <tr>
                                             <th><input type="checkbox"></th>
-                                            <th>Book ID</th>
-                                            <th>Name</th>
+                                            <th>Book</th>
                                             <th>Author</th>
+                                            <th>Category</th>
                                         </tr>
-                                        <tr>
-                                            <th><input type="checkbox"></th>
-                                            <td>183</td>
-                                            <td>John Doe</td>
-                                            <td>James</td>
-                                        </tr>
+                                        </thead>
+                                        <tbody id="books_table_content">
+                                        </tbody>
                                     </table>
                                 </div>
-                                <!-- /.box-body -->
+                                <div id="page_loading_div"></div>
                             </div>
-                            <!-- /.box -->
                         </div>
                     </div>
                 </div>
@@ -97,7 +111,50 @@
 
 
 {% block page_specific_css %}
+    <link rel="stylesheet" href="/static/bootstrap/bower_components/select2/dist/css/select2.min.css">
+    <link rel="stylesheet" href="/static/bootstrap/dist/css/AdminLTE.min.css">
 {% endblock %}
 
 {% block page_specific_js  %}
+    <script src="/static/bootstrap/bower_components/select2/dist/js/select2.full.min.js"></script>
+    <script>
+    $(function () {$('.select2').select2()});
+
+        function loadBooks(){
+            $("#page_loading_div").html('<i class="fa fa-refresh fa-spin"></i>');
+
+            $.ajax({
+                url:"SearchBooks",
+                type:"POST",
+                data:{
+                    "csrfmiddlewaretoken": '{{ csrf_token }}',
+                    "search_key" : $("#search_key").val()
+                },success : function(data){
+                    var parsedData = $.parseJSON(data);
+                    if(parsedData["status"] == false){
+                        alert(parsedData["message"]);
+                    }else {
+                        var content = "";
+                        $.each(parsedData["booksData"], function (index, element) {
+                            content += '<tr id=tr_'+element["id"]+'>';
+                            content += '<td><input onClick="moveToSelectedTable('+element["id"]+')" type="checkbox"></td>';
+                            content += '<td>' + element["name"] + ', V.' + element["volume"] + '&nbsp;&nbsp;[' + element["book_code"] + ']</td>';
+                            content += '<td>'+element["author"]+','+element["publisher"]+'</td>';
+                            content += '<td>' + element["category"] +((element["sub_category"] !== null) ? (', '+element["sub_category"]) : "") + '</td>';
+                            content += '<tr>';
+                        });
+                        $("#books_table_content").html(content);
+                    }
+                    $("#page_loading_div").html('');
+                },error : function(data){
+                    alert(data.responseText);
+                    $("#page_loading_div").html('');
+                }
+            });
+        }
+
+        function moveToSelectedTable(id){
+            alert(id);
+        }
+    </script>
 {% endblock %}
