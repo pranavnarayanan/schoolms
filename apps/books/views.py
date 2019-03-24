@@ -1,5 +1,5 @@
 import json
-from math import floor, ceil
+from math import ceil
 from django.contrib import messages
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
@@ -43,19 +43,24 @@ def saveBookDetails(request):
     if request.method == 'POST':
         form_data = FORM_BookDetails(request.POST)
         if (form_data.is_valid()):
-            bookObj = EN_Books()
-            bookObj.name = form_data.cleaned_data.get("book_name")
-            bookObj.book_code = form_data.cleaned_data.get("book_code")
-            bookObj.published_year = form_data.cleaned_data.get("book_year")
-            bookObj.volume = form_data.cleaned_data.get("book_volume")
-            bookObj.author = form_data.cleaned_data.get("book_author")
-            bookObj.publisher = form_data.cleaned_data.get("book_publisher")
-            bookObj.category = TL_BooksCategory.objects.get(code=form_data.cleaned_data.get("book_category"))
-            if request.POST.get("book_sub_category") != "" and request.POST.get("book_sub_category") != None:
-                bookObj.sub_category = TL_BooksSubCategory.objects.get(code=request.POST.get("book_sub_category"))
-            bookObj.save()
-            messages.success(request, DisplayKey.get("book_added_successfully"))
-            return HttpResponseRedirect("../Books")
+            try:
+                bookObj = EN_Books()
+                bookObj.name = form_data.cleaned_data.get("book_name")
+                bookObj.book_code = form_data.cleaned_data.get("book_code")
+                bookObj.published_year = form_data.cleaned_data.get("book_year")
+                vol = form_data.cleaned_data.get("book_volume")
+                bookObj.volume = 1 if (vol == None or vol == "") else int(vol)
+                bookObj.author = form_data.cleaned_data.get("book_author")
+                bookObj.publisher = form_data.cleaned_data.get("book_publisher")
+                bookObj.category = TL_BooksCategory.objects.get(code=form_data.cleaned_data.get("book_category"))
+                if request.POST.get("book_sub_category") != "" and request.POST.get("book_sub_category") != None:
+                    bookObj.sub_category = TL_BooksSubCategory.objects.get(code=request.POST.get("book_sub_category"))
+                bookObj.save()
+                messages.success(request, DisplayKey.get("book_added_successfully"))
+                return HttpResponseRedirect("../Books")
+            except Exception as e:
+                messages.error(request,e.__str__())
+                return addBook(request)
         else:
             return addBook(request)
     else:

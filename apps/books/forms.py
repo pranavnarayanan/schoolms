@@ -5,11 +5,12 @@ from apps.books.helper import BookHelper
 class FORM_BookDetails(forms.Form) :
     book_name = forms.CharField (
         max_length=150,
-        min_length=1,
+        min_length=2,
         required=True
     )
     book_code = forms.CharField(
-        max_length=100
+        max_length=100,
+        required = True
     )
     book_volume = forms.IntegerField(
         required=False
@@ -26,7 +27,7 @@ class FORM_BookDetails(forms.Form) :
     )
     book_year = forms.IntegerField(
         max_value=datetime.now().year,
-        min_value=1455,
+        min_value=1700,
         required=False
     )
     book_category = forms.ChoiceField(
