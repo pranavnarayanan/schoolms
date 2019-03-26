@@ -136,14 +136,14 @@
                     }else {
                         var content = "";
                         $.each(parsedData["booksData"], function (index, element) {
-                            content += '<tr id=tr_'+element["id"]+'>';
-                            var jsonElem = JSON.stringify(element).toString();
-                            alert(jsonElem);
-                            content += '<td><input onClick="moveToSelectedTable(\'abcd\')" type="checkbox"></td>';
-                            content += '<td>' + element["name"] + ', V.' + element["volume"] + '&nbsp;&nbsp;[' + element["book_code"] + ']</td>';
-                            content += '<td>'+element["author"]+','+element["publisher"]+'</td>';
-                            content += '<td>' + element["category"] +((element["sub_category"] !== null) ? (', '+element["sub_category"]) : "") + '</td>';
-                            content += '<tr>';
+                            if(SelectedBooksIDArrayList.indexOf(element["id"]) == -1) {
+                                content += '<tr id=tr_' + element["id"] + '>';
+                                content += '<td><input onClick="moveToSelectedTable(' + element["id"] + ')" type="checkbox"></td>';
+                                content += '<td>' + element["name"] + ', V.' + element["volume"] + '&nbsp;&nbsp;[' + element["book_code"] + ']</td>';
+                                content += '<td>' + element["author"] + ',' + element["publisher"] + '</td>';
+                                content += '<td>' + element["category"] + ((element["sub_category"] !== null) ? (', ' + element["sub_category"]) : "") + '</td>';
+                                content += '<tr>';
+                            }
                         });
                         $("#books_table_content").html(content);
                     }
@@ -155,9 +155,23 @@
             });
         }
 
-        function moveToSelectedTable(data){
-            alert(data);
-            //$('#tr_'+id).remove();
+        var SelectedBooksIDArrayList = [];
+        function moveToSelectedTable(id){
+            var content = $('#tr_'+id).html();
+            if(SelectedBooksIDArrayList.indexOf(id) == -1){
+                content = content.replace("moveToSelectedTable","removeFromSelectedTable").replace("type=","checked type=");
+                $('#tr_'+id).remove();
+                $("#selected_books_table").append("<tr id=\"tr_"+id+"\">"+content+"</tr>");
+                SelectedBooksIDArrayList.push(id);
+            }else{
+                alert("Book already added to selected list")
+            }
         }
+
+        function removeFromSelectedTable(id){
+            $('#tr_'+id).remove();
+            SelectedBooksIDArrayList.pop(id);
+        }
+
     </script>
 {% endblock %}
