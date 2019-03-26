@@ -79,33 +79,36 @@ def addSubject(request):
 
 
 def saveSubject(request):
-    if request.method == 'POST':
-        form_data = FORM_SubjectDetails(request.POST, request=request)
-        if (form_data.is_valid()):
-            subjectName = form_data.cleaned_data.get("subject_name")
-            subjectDuration = form_data.cleaned_data.get("subject_duration")
-            classId = form_data.cleaned_data.get("assign_to_class")
-            user_id = request.session[SessionProperties.USER_ID_KEY]
-            user_role = EN_UserRoles.objects.filter(approved=True, user_id=user_id, is_selected_role=True)
-            if user_role.exists():
-                user_role = user_role.first()
-                for id in classId :
-                    classObj = EN_Classes.objects.get(id = id)
-                    subjectObj = EN_ClassSubjects()
-                    subjectObj.subject_name = subjectName
-                    subjectObj.duration = subjectDuration
-                    subjectObj.organization = user_role.related_organization
-                    subjectObj.class_fk = classObj
-                    subjectObj.save()
-                messages.success(request, DisplayKey.get("success_added_subject"))
-                return HttpResponseRedirect("../Subjects")
-            else :
-                messages.warning(request, DisplayKey.get("current_role_cannot_perform_this_action"))
-                return HttpResponseRedirect("../Home")
+    if request.is_ajax():
+        if request.method == 'POST':
+            subject_name = request.POST.get("subject_name")
+            subject_duration = request.POST.get("subject_duration")
+            classes_assigned = request.POST.get("classes_assigned")
+            selected_books_id = request.POST.get("selected_books_id")
+
+            userRole = EN_UserRoles.objects.filter(is_selected_role=True,role__code=Roles.SCHOOL_ADMIN)
+            if(userRole.exists()):
+                userRole = userRole.first()
+                #TODO : -----------------
+            else:
+                status = False
+                message = "Selected Roles does not have permission to perform this action"
+
+
+            return HttpResponse("{}\n{}\n{}\n{}".format(subject_name,subject_duration,classes_assigned,selected_books_id))
+            '''
+            subjectObj = EN_ClassSubjects()
+            subjectObj.subject_name = subjectName
+            subjectObj.duration = subjectDuration
+            subjectObj.organization = user_role.related_organization
+            subjectObj.class_fk = classObj
+            subjectObj.save()
+            '''
         else:
-            return index(request)
+            messages.warning(request, DisplayKey.get("error_not_a_post_request"))
+            return HttpResponseRedirect("../Home")
     else:
-        messages.warning(request, DisplayKey.get("error_not_a_post_request"))
+        messages.warning(request, DisplayKey.get("error_not_ajax_request"))
         return HttpResponseRedirect("../Home")
 
 @csrf_exempt

@@ -8,104 +8,100 @@
 {% endblock %}
 
 {% block content %}
-    <form method="post" action="SaveSubject">
-        {% csrf_token %}
-        {% load widget_tweaks %}
+    {% load widget_tweaks %}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box box-primary">
 
-        <div class="row">
-            <div class="col-md-6">
-                <div class="box box-primary">
-
-                    <div class="box-body">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label>Subject Name</label>
-                                {% render_field form.subject_name class="form-control" %}
-                                <span class="help-block" style="color: red;">{{ form.subject_name.errors }}</span>
-                            </div>
+                <div class="box-body">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Subject Name</label>
+                            {% render_field form.subject_name class="form-control" id="subject_name" %}
+                            <span class="help-block" style="color: red;">{{ form.subject_name.errors }}</span>
                         </div>
-
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label>Subject Duration</label>
-                                {% render_field form.subject_duration class="form-control" %}
-                                <span class="help-block" style="color: red;">{{ form.subject_duration.errors }}</span>
-                            </div>
-                        </div>
-
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label>Assign to Class</label>
-                                {% render_field form.assign_to_class class="form-control select2" multiple="multiple" style="width:100%" %}
-                                <span class="help-block" style="color: red;">{{ form.assign_to_class.errors }}</span>
-                            </div>
-                        </div>
-
-                        <div class="col-md-12">
-                            <div class="box-body table-responsive no-padding">
-                                    <table class="table table-hover">
-                                        <thead>
-                                        <tr>
-                                            <th><input type="checkbox"></th>
-                                            <th>Book</th>
-                                            <th>Author</th>
-                                            <th>Category</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody id="selected_books_table">
-                                        </tbody>
-                                    </table>
-                                </div>
-                        </div>
-
                     </div>
-                    <div class="box-footer">
-                        <button type="submit" class="btn btn-info">Cancel</button>
-                        <button type="reset" class="btn btn-warning">Reset</button>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Subject Duration</label>
+                            {% render_field form.subject_duration class="form-control" id="subject_duration" %}
+                            <span class="help-block" style="color: red;">{{ form.subject_duration.errors }}</span>
+                        </div>
                     </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Assign to Class</label>
+                            {% render_field form.assign_to_class id="classes_assigned" class="form-control select2" multiple="multiple" style="width:100%" %}
+                            <span class="help-block" style="color: red;">{{ form.assign_to_class.errors }}</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="box-body table-responsive no-padding">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Book</th>
+                                    <th>Author</th>
+                                    <th>Category</th>
+                                </tr>
+                                </thead>
+                                <tbody id="selected_books_table">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-info">Cancel</button>
+                    <button type="reset" class="btn btn-warning">Reset</button>
+                    <button onclick="saveSubject()" type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="box box-primary">
+        </div>
+        <div class="col-md-6">
+            <div class="box box-primary">
 
-                    <div class="box-body">
-                        <div class="col-xs-12">
-                            <div>
-                                <div class="box-header">
-                                    <h3 class="box-title">Attach Subject</h3>
+                <div class="box-body">
+                    <div class="col-xs-12">
+                        <div>
+                            <div class="box-header">
+                                <h3 class="box-title">Attach Subject</h3>
 
-                                    <div class="box-tools">
-                                        <div class="input-group input-group-sm" style="width: 150px;">
-                                            <input type="text" id="search_key" class="form-control pull-right" placeholder="Book name or id">
-                                            <div class="input-group-btn">
-                                                <button onclick="loadBooks()" type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                                            </div>
+                                <div class="box-tools">
+                                    <div class="input-group input-group-sm" style="width: 150px;">
+                                        <input type="text" id="search_key" class="form-control pull-right" placeholder="Book name or id">
+                                        <div class="input-group-btn">
+                                            <button onclick="loadBooks()" type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="box-body table-responsive no-padding" id="books_div">
-                                    <table class="table table-hover">
-                                        <thead>
-                                        <tr>
-                                            <th><input type="checkbox"></th>
-                                            <th>Book</th>
-                                            <th>Author</th>
-                                            <th>Category</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody id="books_table_content">
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div id="page_loading_div"></div>
                             </div>
+                            <div class="box-body table-responsive no-padding" id="books_div">
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Book</th>
+                                        <th>Author</th>
+                                        <th>Category</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="books_table_content">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div id="page_loading_div"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </form>
+    </div>
 {% endblock %}
 
 
@@ -118,7 +114,7 @@
 {% block page_specific_js  %}
     <script src="/static/bootstrap/bower_components/select2/dist/js/select2.full.min.js"></script>
     <script>
-    $(function () {$('.select2').select2()});
+        $(function () {$('.select2').select2()});
 
         function loadBooks(){
             $("#page_loading_div").html('<i class="fa fa-refresh fa-spin"></i>');
@@ -171,6 +167,34 @@
         function removeFromSelectedTable(id){
             $('#tr_'+id).remove();
             SelectedBooksIDArrayList.pop(id);
+        }
+
+        function saveSubject() {
+            if($("#subject_name").val() == ""){
+                alert("Subject name cannot be left blank")
+            }else if($("#classes_assigned").val() === null){
+                alert("Subjects must be assigned to atleast one class")
+            }else if(SelectedBooksIDArrayList.length === 0){
+                alert("Atleast one book must be assigned to a subject")
+            } else {
+                if (confirm("Confirm to save subject.")) {
+                    $.ajax({
+                        url: "SaveSubject",
+                        type: "POST",
+                        data: {
+                            "csrfmiddlewaretoken": '{{ csrf_token }}',
+                            "subject_name": $("#subject_name").val(),
+                            "subject_duration": $("#subject_duration").val(),
+                            "classes_assigned": $("#classes_assigned").val().toString(),
+                            "selected_books_id": SelectedBooksIDArrayList.toString()
+                        }, success: function (data) {
+                            alert(data);
+                        }, error: function (data) {
+                            alert(data.responseText);
+                        }
+                    });
+                }
+            }
         }
 
     </script>
