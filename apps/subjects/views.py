@@ -8,7 +8,7 @@ from apps.books.models import EN_Books
 from apps.classes.models import EN_Classes
 from apps.roles.models import EN_UserRoles
 from apps.subjects.forms import FORM_SubjectDetails, FORM_ClassNamesForSubject
-from apps.subjects.models import EN_Subjects, EN_SubjectTeachers
+from apps.subjects.models import EN_Subjects, EN_SubjectTeachers, EN_SubjectBooks, EN_ClassSubjects
 from apps.users.models import EN_Users
 from apps.utilities.helper.ui_data_helper import UIDataHelper
 from displaykey.display_key import DisplayKey
@@ -82,33 +82,78 @@ def saveSubject(request):
         if request.method == 'POST':
             subject_name = request.POST.get("subject_name")
             subject_duration = request.POST.get("subject_duration")
+            tag = request.POST.get("subject_tag")
             classes_assigned = request.POST.get("classes_assigned")
             selected_books_id = request.POST.get("selected_books_id")
+
+            status = True
+            message = ""
 
             userRole = EN_UserRoles.objects.filter(is_selected_role=True,role__code=Roles.SCHOOL_ADMIN)
             if(userRole.exists()):
                 userRole = userRole.first()
-                #TODO : -----------------
+                organization = userRole.related_organization
+
+                #Validating Classes
+                for cls in classes_assigned.split(","):
+                    try:
+                        cls = EN_Classes.objects.filter(id=int(cls))
+                        if not cls.exists():
+                            raise Exception("Class {}-{} doesnot exist".format(cls.first().class_name, cls.first().class_division))
+                        elif cls.first().organization.id != organization.id:
+                            raise Exception("Class {}-{} doesnot belong to the organization where your current role is set to".format(cls.first().class_name,cls.first().class_division))
+                    except Exception as e:
+                        status = False
+                        message = e.__str__()
+                        break
+
+                #Validating Books
+                for book in selected_books_id.split(","):
+                    try:
+                        EN_Books.objects.get(id=int(book))
+                    except Exception as e:
+                        status = False
+                        message = e.__str__()
+                        break
+
+                if status:
+                    subjectObj = EN_Subjects()
+                    subjectObj.subject_name = subject_name
+                    subjectObj.tag = tag
+                    try:
+                        subjectObj.duration = int(subject_duration) if subject_duration != None or subject_duration != "" else None
+                    except:
+                        subjectObj.duration = None
+                    subjectObj.organization = organization
+                    subjectObj.save()
+
+                    for cls in classes_assigned.split(","):
+                        cs = EN_ClassSubjects()
+                        cs.subject = subjectObj
+                        cs.class_fk_id = int(cls)
+                        cs.organization = organization
+                        cs.save()
+
+                    for book_id in selected_books_id.split(","):
+                        sb = EN_SubjectBooks()
+                        sb.book_id = int(book_id)
+                        sb.organization = organization
+                        sb.subject = subjectObj
+                        sb.save()
+
+                    message = "Subjects Saved Successfully"
             else:
                 status = False
                 message = "Selected Roles does not have permission to perform this action"
-
-
-            return HttpResponse("{}\n{}\n{}\n{}".format(subject_name,subject_duration,classes_assigned,selected_books_id))
-            '''
-            subjectObj = EN_ClassSubjects()
-            subjectObj.subject_name = subjectName
-            subjectObj.duration = subjectDuration
-            subjectObj.organization = user_role.related_organization
-            subjectObj.class_fk = classObj
-            subjectObj.save()
-            '''
+            return HttpResponse(json.dumps({"status" : status,"message" : message}))
         else:
             messages.warning(request, DisplayKey.get("error_not_a_post_request"))
             return HttpResponseRedirect("../Home")
     else:
         messages.warning(request, DisplayKey.get("error_not_ajax_request"))
         return HttpResponseRedirect("../Home")
+
+
 
 @csrf_exempt
 def getTeacherList(request) :
