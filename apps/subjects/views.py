@@ -1,6 +1,6 @@
 import json
 from django.contrib import messages
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.views.decorators.csrf import csrf_exempt
@@ -42,22 +42,19 @@ def index(request):
                     classes = classes.filter(class_name=filter_class)
                 elif filter_class == "all" and filter_div != "all" :
                     classes = classes.filter(class_division=filter_div)
-                elif(filter_div != "all") :
+                elif filter_class != "all" and filter_div != "all":
                     classes = classes.filter(class_name=filter_class, class_division=filter_div)
-                    if classes == None or not classes.exists() :
-                        messages.error(request, "The given combination of class and division does not exist")
                 if not classes.exists():
-                    messages.error(request, "No subject exists for given combination of class and division")
+                    messages.error(request, "The given combination of class and division does not exist")
 
         dataList = None
-        for classData in classes:
-            subjects = EN_Subjects.objects.filter(class_fk=classData)
-            dataList = [{
-                "id": subject.id,
-                "name": subject.subject_name,
-                "duration": subject.duration,
-                "assigned_to_class": subject.class_fk.class_name+"-"+subject.class_fk.class_division
-            } for subject in subjects ]
+
+        dataList = [{
+            "id": cs.subject.id,
+            "name": cs.subject.subject_name,
+            "duration": cs.subject.duration,
+            "assigned_to_class": cs.class_fk.class_name + "-" + cs.class_fk.class_division
+        }for cs in EN_ClassSubjects.objects.filter(class_fk__in=list(classes))]
         data.__setitem__("subjects", dataList)
 
         fd_classes = FORM_ClassNamesForSubject(request.POST, request=request) if request.method == "POST" else FORM_ClassNamesForSubject(request=request)
@@ -89,7 +86,7 @@ def saveSubject(request):
             status = True
             message = ""
 
-            userRole = EN_UserRoles.objects.filter(is_selected_role=True,role__code=Roles.SCHOOL_ADMIN)
+            userRole = EN_UserRoles.objects.filter(approved=True, is_selected_role=True,role__code=Roles.SCHOOL_ADMIN)
             if(userRole.exists()):
                 userRole = userRole.first()
                 organization = userRole.related_organization
@@ -154,8 +151,6 @@ def saveSubject(request):
         return HttpResponseRedirect("../Home")
 
 
-
-@csrf_exempt
 def getTeacherList(request) :
     if request.is_ajax():
         subject_id = request.POST["subject_id"]
@@ -163,11 +158,11 @@ def getTeacherList(request) :
             "teacherData" : []
         }
         returnList = []
-        teacherList = EN_SubjectTeachers.objects.filter(subject_id=subject_id)
+        teacherList = EN_SubjectTeachers.objects.filter(id=int(subject_id))
         for teacher in teacherList:
             rowDict = {
                 "id": teacher.teacher.id,
-                "name": teacher.teacher.name+"["+teacher.teacher.product_id+"]",
+                "name": teacher.teacher.name+" &nbsp;&nbsp; ["+teacher.teacher.product_id+"]",
                 "note": teacher.note
             }
             returnList.append(rowDict)
@@ -191,7 +186,7 @@ def saveNewTeacher(request) :
             return HttpResponse(json.dumps(mainReturnList))
         teacher_role_id = int(request.POST.get("selected_teacher_role_id"))
         note = request.POST["note"]
-        my_current_role = EN_UserRoles.objects.get(is_selected_role=True,user_id=request.session[SessionProperties.USER_ID_KEY])
+        my_current_role = EN_UserRoles.objects.get(approved=True, is_selected_role=True,user_id=request.session[SessionProperties.USER_ID_KEY])
         user_role = EN_UserRoles.objects.get(approved=True, id = teacher_role_id, role__code=Roles.TEACHER, related_organization=my_current_role.related_organization)
 
         try:

@@ -136,6 +136,7 @@
                 url: "LoadTeachersList",
                 method: "POST",
                 data: {
+                    "csrfmiddlewaretoken": '{{ csrf_token }}',
                     "subject_id":sub_id
                 },
                 success:function(data){
