@@ -4,12 +4,11 @@ from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.views.decorators.csrf import csrf_exempt
-
 from apps.books.models import EN_Books
 from apps.classes.models import EN_Classes
 from apps.roles.models import EN_UserRoles
 from apps.subjects.forms import FORM_SubjectDetails, FORM_ClassNamesForSubject
-from apps.subjects.models import EN_ClassSubjects, EN_SubjectTeachers
+from apps.subjects.models import EN_Subjects, EN_SubjectTeachers
 from apps.users.models import EN_Users
 from apps.utilities.helper.ui_data_helper import UIDataHelper
 from displaykey.display_key import DisplayKey
@@ -52,7 +51,7 @@ def index(request):
 
         dataList = None
         for classData in classes:
-            subjects = EN_ClassSubjects.objects.filter(class_fk=classData)
+            subjects = EN_Subjects.objects.filter(class_fk=classData)
             dataList = [{
                 "id": subject.id,
                 "name": subject.subject_name,
