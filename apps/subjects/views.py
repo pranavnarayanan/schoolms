@@ -158,7 +158,7 @@ def getTeacherList(request) :
             "teacherData" : []
         }
         returnList = []
-        teacherList = EN_SubjectTeachers.objects.filter(id=int(subject_id))
+        teacherList = EN_SubjectTeachers.objects.filter(class_subject_id=int(subject_id))
         for teacher in teacherList:
             rowDict = {
                 "id": teacher.teacher.id,
@@ -172,7 +172,7 @@ def getTeacherList(request) :
     else:
         return HttpResponseRedirect("../Page404/")
 
-@csrf_exempt
+
 def saveNewTeacher(request) :
     if request.is_ajax():
         mainReturnList = {
@@ -192,7 +192,7 @@ def saveNewTeacher(request) :
         try:
             subjectTeacher = EN_SubjectTeachers()
             subjectTeacher.teacher = user_role.user
-            subjectTeacher.subject_id = subject_id
+            subjectTeacher.class_subject_id = int(subject_id)
             subjectTeacher.note = note
             subjectTeacher.organization = my_current_role.related_organization
             subjectTeacher.teacher_role = user_role

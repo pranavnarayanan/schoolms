@@ -80,6 +80,7 @@
                                 <td width="40%">
                                     <select class="form-control" id="teacher_role_id">
                                         {% for teacher in teachersList %}
+                                            <option value="none">Select Teacher</option>
                                             <option value="{{ teacher.id }}">{{ teacher.name }}</option>
                                         {% endfor %}
                                     </select>
@@ -188,30 +189,34 @@
         }
 
         function deleteTeacher(teacher_id){
-            alert("Delete Teacher : "+teacher_id);
+            alert("Delete Teacher (not implemented) : "+teacher_id);
         }
 
         function addNewTeacher(){
-            $.ajax({
-                url:"SaveNewTeacher",
-                method:"POST",
-                data: {
-                    "selected_subject_id":selected_subject_id,
-                    "selected_teacher_role_id":$("#teacher_role_id").val(),
-                    "note":$("#add_teacher_note").val()
-                },
-                success:function(data){
-                    var parsedData = $.parseJSON(data);
-                    if(parsedData["status"]){
-                        loadTeachers(selected_subject_id);
-                    }else{
-                        alert(parsedData["message"])
+            if($("#teacher_role_id").val() !== "none") {
+                $.ajax({
+                    url: "SaveNewTeacher",
+                    method: "POST",
+                    data: {
+                        "csrfmiddlewaretoken": '{{ csrf_token }}',
+                        "selected_subject_id": selected_subject_id,
+                        "selected_teacher_role_id": $("#teacher_role_id").val(),
+                        "note": $("#add_teacher_note").val()
+                    },
+                    success: function (data) {
+                        var parsedData = $.parseJSON(data);
+                        if (parsedData["status"]) {
+                            loadTeachers(selected_subject_id);
+                        } else {
+                            alert(parsedData["message"])
+                        }
+                        $('select[id^="teacher_role_id"] option:selected').attr("selected", null);
+                    },
+                    error: function (data) {
+                        alert("Error : " + data.responseText)
                     }
-                },
-                error:function(data){
-                    alert("Error : "+data.responseText)
-                }
-            });
+                });
+            }
         }
 
     </script>
