@@ -82,5 +82,7 @@ Password : ****************
 
 
 AWS:
-
+User Name   : programmatic_access_user
+Access Key ID  : AKIAVSQMCGUCAXZPZEGY
+Secret Access Key : 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
 
